@@ -3,6 +3,7 @@
 ## Database Schema Design
 
 ![db-schema]
+
 [db-schema]: ./images/Screenshot%202024-05-08%20132131.png
 
 ## API Documentation
