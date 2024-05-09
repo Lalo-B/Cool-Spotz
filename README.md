@@ -1,5 +1,7 @@
 # `the airbnbnb`
 
+# hey remember to change me into the one they give us in the documentation!
+
 ## Database Schema Design
 
 ![db-schema]
