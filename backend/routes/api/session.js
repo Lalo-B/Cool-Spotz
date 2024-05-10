@@ -44,4 +44,9 @@ router.post(
     }
   );
 
+  router.delete('/', (req,res)=>{
+    res.clearCookie('XSRF-TOKEN');
+    return res.json({message: 'Success'});
+  });
+
 module.exports = router;
