@@ -88,5 +88,11 @@ object with key-value pairs, and the error stack trace (if the environment is
   in development) with the status code of the error message.
 */
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "API server is running",
+  });
+});
+
 
   module.exports = app;
