@@ -13,10 +13,10 @@ router.get('/:id', async (req,res)=>{
         },
     });
     res.json(spots);
-})
-//find all spots
-// router.get('/', /*middleware maybe*/ async (req,res)=>{
-//     const allSpots = await Spot.findAll();
-//     res.json(allSpots);
-// });
+});
+// find all spots
+router.get('/', /*middleware maybe*/ async (req,res)=>{
+    const allSpots = await Spot.findAll();
+    res.json(allSpots);
+});
 module.exports = router;

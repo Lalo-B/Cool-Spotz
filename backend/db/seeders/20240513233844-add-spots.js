@@ -31,9 +31,6 @@ module.exports = {
     await Spot.bulkCreate([...seedArr], { validate: true});
   },
   async down (queryInterface, Sequelize) {
-    options.tableName = 'Spots';
-    return queryInterface.bulkDelete(options, {
-      name: seedArr.map(spot=>spot.name)
-    }, {});
+    return queryInterface.bulkDelete('Spots',null,{});
   }
 };
