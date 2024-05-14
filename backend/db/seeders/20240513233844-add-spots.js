@@ -2,6 +2,10 @@
 const { Spot } = require('../models');
 const { faker } = require('@faker-js/faker');
 let options = {};
+if (process.env.NODE_ENV === 'production') {
+ options.schema = process.env.SCHEMA; // define your schema in options object
+}
+
 const createRandomSpot = () => {
   return {
     ownerId: faker.number.int({min: 1, max: 3}),
