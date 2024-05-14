@@ -32,9 +32,10 @@ factory();
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await Spot.bulkCreate([...seedArr], { validate: true});
+    options.tableName = 'Spots';
+    await Spot.bulkCreate(options,[...seedArr], { validate: true});
   },
   async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Spots',null,{});
+    return queryInterface.bulkDelete(options,null,{});
   }
 };
