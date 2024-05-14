@@ -21,6 +21,8 @@ app.use(express.json());
 if (!isProduction) {
     // enable cors only in development
     app.use(cors());
+    // cors by default allows any origin
+    // we can restrict it later?
   }
 
   // helmet helps set a variety of headers to better secure your app
@@ -42,6 +44,12 @@ if (!isProduction) {
   );
 
 app.use(routes);
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "API server is running",
+  });
+});
 
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
@@ -88,11 +96,7 @@ object with key-value pairs, and the error stack trace (if the environment is
   in development) with the status code of the error message.
 */
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "API server is running",
-  });
-});
+
 
 
   module.exports = app;

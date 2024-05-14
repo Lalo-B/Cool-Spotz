@@ -61,6 +61,8 @@ const restoreUser = (req, res, next) => {
     });
   };
 
+  // right now only checking if req.user exists
+  // so if not signed in then error
   const requireAuth = function (req, _res, next) {
     if (req.user) return next();
 
