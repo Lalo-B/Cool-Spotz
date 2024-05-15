@@ -4,6 +4,47 @@ const { Sequelize } = require('sequelize');
 const { Spot } = require('../../db/models');
 const router = express.Router();
 
+router.post('/', async (req,res)=>{
+    const {
+        ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+    } = req.body;
+
+    const newSpot = await Spot.create({
+        ownerId: ownerId,
+        address: address,
+        city: city,
+        state: state,
+        country: country,
+        lat: lat,
+        lng: lng,
+        name: name,
+        description: description,
+        price: price
+    });
+    res.json(newSpot);
+});
+
+router.delete('/:id', async (req,res)=>{
+    const thisOne = await Spot.findByPk(req.query.id);
+    if(!thisOne){
+        res.status(404);
+        throw new Error('Spot with this id does not exist');
+    };
+    await thisOne.destroy();
+    res.json({
+        message: "successfully deleted"
+    });
+});
+
 //find spots belonging to one person
 router.get('/:id', async (req,res)=>{
     //need to check for authenticated user
