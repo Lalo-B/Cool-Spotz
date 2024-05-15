@@ -4,3 +4,4 @@ build
 .DS_Store
 *.db
 sequelize-commands.md
+readme-folder
