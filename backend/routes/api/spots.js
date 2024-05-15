@@ -20,3 +20,9 @@ router.get('/', /*middleware maybe*/ async (req,res)=>{
     res.json(allSpots);
 });
 module.exports = router;
+
+
+
+/*
+add a whole buch of code
+*/
