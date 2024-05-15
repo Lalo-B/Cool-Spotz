@@ -4,6 +4,23 @@ const { Sequelize } = require('sequelize');
 const { Spot } = require('../../db/models');
 const router = express.Router();
 
+
+router.get('/:spotId', async (req,res)=>{
+    //need to check for authenticated user
+    const spot = await Spot.findByPk(req.params.spotId)
+    if(!spot){
+        res.status(404);
+        return res.json({
+            message: "Spot couldn't be found"
+        })
+    }
+    res.json(spot);
+});
+
+router.put('/:spotId', async (req,res)=>{
+    const {} = req.body
+})
+
 router.post('/', async (req,res)=>{
     const {
         ownerId,
@@ -28,8 +45,9 @@ router.post('/', async (req,res)=>{
         lng: lng,
         name: name,
         description: description,
-        price: price
+        price: "$"+ price
     });
+    res.status(201)
     res.json(newSpot);
 });
 

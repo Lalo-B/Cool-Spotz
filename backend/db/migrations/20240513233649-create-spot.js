@@ -50,7 +50,7 @@ module.exports = {
       },
       price: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       averageRating: {
         type: Sequelize.DECIMAL,

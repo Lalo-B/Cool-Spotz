@@ -22,20 +22,18 @@ const createRandomSpot = () => {
 };
 let seedArr = [];
 //we can make as much data as we want with this
-const factory=()=>{
-  for(let i = 0; i <= 19; i++){
-    let spot = createRandomSpot();
-    seedArr.push(spot);
-  };
-};
-factory();
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Spots';
-    await Spot.bulkCreate(options,[...seedArr], { validate: true});
+    for (let i = 0; i <= 19; i++) {
+      const spot = createRandomSpot();
+      seedArr.push(spot);
+    };
+    await Spot.bulkCreate([...seedArr],options, { validate: true});
   },
   async down (queryInterface, Sequelize) {
+    options.tableName = 'Spots';
     return queryInterface.bulkDelete(options,null,{});
   }
 };
