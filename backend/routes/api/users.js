@@ -35,9 +35,25 @@ router.post(
     '/',
     validateSignup,
     async (req, res) => {
-      const { email, password, username } = req.body;
+      const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
-      const user = await User.create({ email, username, hashedPassword });
+      let emailCheck = User.findAll({
+        where: {
+          email: email
+        }
+      });
+      if(emailCheck){
+        res.status(500);
+        res.set('Content-type', 'application/json');
+        res.body = {
+          "message": "User already exists",
+          "errors": {
+            "email": "User with that email already exists"
+          }
+        }
+        return res.json();
+      };
+      const user = await User.create({ email, username, hashedPassword, firstName, lastName });
 
       const safeUser = {
         id: user.id,

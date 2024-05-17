@@ -1,25 +1,58 @@
 const express = require('express');
 // want to make sure user is signed in
 const { Sequelize } = require('sequelize');
-const { Spot } = require('../../db/models');
+const { Spot, SpotImage, User } = require('../../db/models');
 const router = express.Router();
 
 
+// add an image to a spot based on the spots id
+router.put('/:spotId/images', async (req,res)=>{
+    const newImg = req.body.url;
+    const spot = await Spot.findByPk(req.query.spotId);
+    // spot.
+    // check the association here cuz spot doesnt have it
+    // the spot image table has it
+    res.body = {
+        url: newImg,
+        preview: true
+    }
+})
+
+
+// get details for a spot from an id
 router.get('/:spotId', async (req,res)=>{
-    //need to check for authenticated user
-    const spot = await Spot.findByPk(req.params.spotId)
-    if(!spot){
+    console.log(req.query.spotId);
+    const spotInfo = await Spot.findAll({
+        where: {
+            id: req.query.spotId
+        },
+        include: [{
+            model: SpotImage,
+            through: Spot.id,
+            attributes: ['id','url','preview']
+        },
+        {
+            model: User,
+            through: User.id,
+            // as: 'Owner',
+            attributes: ['id','firstName','lastName']
+        }]
+    })
+    if(!spotInfo){
         res.status(404);
         return res.json({
             message: "Spot couldn't be found"
         })
+    };
+    res.body = {
+        spotInfo,
+        SpotImages: SpotImage,
+        Owner: User,
     }
-    res.json(spot);
+    return res.json(res.body);
 });
 
-router.put('/:spotId', async (req,res)=>{
-    const {} = req.body
-})
+
 
 router.post('/', async (req,res)=>{
     const {
@@ -65,7 +98,12 @@ router.delete('/:id', async (req,res)=>{
 
 //find spots belonging to one person
 router.get('/:id', async (req,res)=>{
-    //need to check for authenticated user
+    const user = User.findOne({
+        where: {
+            firstName: req.user.firstName
+        }
+    });
+
     const spots = await Spot.findAll({
         where: {
             ownerId: req.query.id
@@ -79,7 +117,3 @@ router.get('/', /*middleware maybe*/ async (req,res)=>{
     res.json(allSpots);
 });
 module.exports = router;
-
-
-
-
