@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Booking.belongsTo(models.User);
-      Booking.belongsTo(models.Spot);
+      Booking.belongsTo(models.User, {foreignKey: 'spotId', onDelete: 'CASCADE'});
+      Booking.belongsTo(models.Spot, {foreignKey: 'userId', onDelete: 'CASCADE'});
     }
   }
   Booking.init({
