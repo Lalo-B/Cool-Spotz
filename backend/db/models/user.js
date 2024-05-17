@@ -1,12 +1,21 @@
 'use strict';
 const { Model, Validator } = require('sequelize');
+// const { Spot } = require('../models');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // define association here
+      User.hasMany(models.Spot);
+      User.hasMany(models.Review);
+      User.hasMany(models.Booking);
     }
   };
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
