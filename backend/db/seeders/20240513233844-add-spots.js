@@ -16,7 +16,7 @@ const createRandomSpot = () => {
     lat: faker.location.latitude(),
     lng: faker.location.longitude(),
     name: faker.lorem.words({min:1,max:4}),
-    description: faker.lorem.lines({min:2, max:4}),
+    description: faker.lorem.lines({min:2, max:3}),
     price: faker.commerce.price({min: 40, max: 2500,dec: 0, symbol: '$'})
   }
 };
