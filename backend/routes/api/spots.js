@@ -1,8 +1,22 @@
 const express = require('express');
 // want to make sure user is signed in
 const { Sequelize } = require('sequelize');
+// const { check } = require('express-validator');
+// const { validateLogin } = require('./session');
 const { Spot, SpotImage, User } = require('../../db/models');
 const router = express.Router();
+
+//Get all Spots owned by the Current User
+router.get('/current', async (req,res)=>{
+    const { user } = req;
+    // console.log(req);
+    const spots = await Spot.findAll({
+        where: {
+            ownerId: user.id
+        },
+    });
+    return res.json(spots);
+});
 
 
 // add an image to a spot based on the spots id
@@ -16,6 +30,7 @@ router.put('/:spotId/images', async (req,res)=>{
         url: newImg,
         preview: true
     }
+    return res.json(res.body);
 })
 
 
@@ -81,39 +96,30 @@ router.post('/', async (req,res)=>{
         price: "$"+ price
     });
     res.status(201)
-    res.json(newSpot);
+    return res.json(newSpot);
 });
 
-router.delete('/:id', async (req,res)=>{
-    const thisOne = await Spot.findByPk(req.query.id);
+//delete spot by id
+router.delete('/:spotId', async (req,res)=>{
+    const thisOne = await Spot.findByPk(req.query.spotId);
     if(!thisOne){
         res.status(404);
-        throw new Error('Spot with this id does not exist');
+        throw new Error('Spot couldn\'t be found');
     };
     await thisOne.destroy();
-    res.json({
+    return res.json({
         message: "successfully deleted"
     });
 });
 
-//find spots belonging to one person
-router.get('/:id', async (req,res)=>{
-    const user = User.findOne({
-        where: {
-            firstName: req.user.firstName
-        }
-    });
 
-    const spots = await Spot.findAll({
-        where: {
-            ownerId: req.query.id
-        },
-    });
-    res.json(spots);
-});
+
+
 // find all spots
 router.get('/', /*middleware maybe*/ async (req,res)=>{
     const allSpots = await Spot.findAll();
-    res.json(allSpots);
+    return res.json(allSpots);
 });
+
+
 module.exports = router;

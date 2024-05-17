@@ -22,24 +22,7 @@ const validateLogin = [
   handleValidationErrors
 ];
 
-router.get(
-  '/',
-  (req, res) => {
-    const { user } = req;
-    if (user) {
-      const safeUser = {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        username: user.username,
-      };
-      return res.json({
-        user: safeUser
-      });
-    } else return res.json({ user: null });
-  }
-);
+
 
 
 //checks if a user is logged in
@@ -85,5 +68,25 @@ router.delete('/', (req,res)=>{
   res.clearCookie('token'); //is this XSRF-TOKEN or token
   return res.json({message: 'Success'});
 });
+
+
+router.get(
+  '/',
+  (req, res) => {
+    const { user } = req;
+    if (user) {
+      const safeUser = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+      };
+      return res.json({
+        user: safeUser
+      });
+    } else return res.json({ user: null });
+  }
+);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const express = require('express');
 // const cookieParser = require('cookie-parser');
-// const csurf = require('csurf'); 
-const router = express.Router();
+// const csurf = require('csurf');
 const apiRouter = require('./api');
+const router = express.Router();
 
 router.use('/api', apiRouter);
 

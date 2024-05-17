@@ -12,22 +12,21 @@ router.delete('/:bookingId', async (req,res)=>{
 })
 
 
-//get bookings for current user\
+//get bookings for current user
 router.get('/current', async (req,res)=>{
-    const user = req.user.id;
-    const all = Booking.findAll({
+    const {user} = req;
+    const all = await Booking.findAll({
         where: {
-            userId: 1
+            userId: user.id
         }
     });
+    return res.json(all);
+});
 
-    res.json(all);
-})
 
 // get all bookings in booking table
 router.get('/', async (req,res)=>{
     const all = Booking.findAll();
-
     res.json(all);
 });
 
