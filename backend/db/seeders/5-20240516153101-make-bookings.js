@@ -11,20 +11,20 @@ const bookingArr = [
   {
     spotId: 15,
     userId: 1,
-    startDate: '2024-6-24',
-    endDate: '2024-7-1'
+    startDate: new Date('2024-6-24'),
+    endDate: new Date('2024-7-1')
   },
   {
     spotId: 11,
     userId: 2,
-    startDate: '2024-6-24',
-    endDate: '2024-7-1'
+    startDate: new Date('2024-6-24'),
+    endDate: new Date('2024-7-1')
   },
   {
     spotId: 5,
     userId: 3,
-    startDate: '2024-6-24',
-    endDate: '2024-7-1'
+    startDate: new Date('2024-6-24'),
+    endDate: new Date('2024-7-1')
   },
 ];
 /** @type {import('sequelize-cli').Migration} */

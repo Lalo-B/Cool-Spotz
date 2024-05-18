@@ -68,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     averageRating: {
       type: DataTypes.DECIMAL,
-      defaultValue: null,
     },
   }, {
     sequelize,

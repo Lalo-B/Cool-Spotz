@@ -1,19 +1,22 @@
 const express = require('express');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { Booking } = require('../../db/models');
 const router = express.Router();
 
 
 
 
+
+
 //delete a booking
-router.delete('/:bookingId', async (req,res)=>{
+router.delete('/:bookingId',requireAuth, async (req,res)=>{
     const id = req.params.id;
     const booking = Booking.findByPk(id);
 })
 
 
 //get bookings for current user
-router.get('/current', async (req,res)=>{
+router.get('/current',requireAuth, async (req,res)=>{
     const {user} = req;
     const all = await Booking.findAll({
         where: {
@@ -25,7 +28,7 @@ router.get('/current', async (req,res)=>{
 
 
 // get all bookings in booking table
-router.get('/', async (req,res)=>{
+router.get('/',requireAuth, async (req,res)=>{
     const all = Booking.findAll();
     res.json(all);
 });

@@ -54,7 +54,6 @@ module.exports = {
       },
       averageRating: {
         type: Sequelize.DECIMAL,
-        defaultValue: null,
       },
       createdAt: {
         allowNull: false,
