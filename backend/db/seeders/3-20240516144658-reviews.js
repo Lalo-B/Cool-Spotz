@@ -24,7 +24,7 @@ module.exports = {
       seedArr.push(createRandomReview(i+1));
       seedArr.push(createRandomReview(i+1));
     };
-    await Review.bulkCreate([...seedArr], options, { validate: true});
+    await Review.bulkInsert(options,[...seedArr], { validate: true});
   },
 
   async down (queryInterface, Sequelize) {
