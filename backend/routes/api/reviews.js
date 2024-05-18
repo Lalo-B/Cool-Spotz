@@ -1,6 +1,6 @@
 const express = require('express');
 const { Review, ReviewImage } = require('../../db/models');
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
 
 const router = express.Router();
 
@@ -142,6 +142,20 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
     return res.json(res.body);
 });
 
+//delete a review
+router.delete('/:reviewId', requireAuth, async(req,res)=>{
+    const review = await Review.findByPk(req.params.reviewId);
+    if(!review){
+        res.status(404);
+        res.body = {
+            message: "Review couldn't be found"
+        };
+        return res.json(res.body);
+    };
+
+    await review.destroy();
+    return res.json({message: "Successfully deleted"});
+});
 
 //get all reviews of current user
 router.get('/', async (req, res) => {
@@ -154,5 +168,5 @@ router.get('/', async (req, res) => {
     res.json(reviews)
 });
 
-
+router.use(authErrorCatcher);
 module.exports = router;

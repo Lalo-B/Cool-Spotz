@@ -1,5 +1,5 @@
 const express = require('express');
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
 const { Booking, Spot } = require('../../db/models');
 const router = express.Router();
 
@@ -11,8 +11,17 @@ const router = express.Router();
 
 //delete a booking
 router.delete('/:bookingId', requireAuth, async (req, res) => {
-    const id = req.params.id;
-    const booking = Booking.findByPk(id);
+    const booking = await Booking.findByPk(req.params.bookingId);
+    if(!booking){
+        res.status(404);
+        res.body = {
+            message: "Booking couldn't be found"
+        };
+        return res.json(res.body);
+    };
+
+    await booking.destroy();
+    return res.json({message: "Successfully deleted"});
 })
 
 
@@ -129,4 +138,5 @@ router.get('/', requireAuth, async (req, res) => {
 });
 
 
+router.use(authErrorCatcher);
 module.exports = router

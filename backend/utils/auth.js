@@ -84,6 +84,13 @@ const restoreUser = (req, res, next) => {
   // we would also have to make middleware to catch this error so
   // maybe next time we can do this
 
+  const authErrorCatcher = (error,req,res,next) =>{
+    if(error.title === "Authentication required"){
+      res.status(401);
+      res.body = {message: "Authentication required"};
+      return res.json(res.body);
+    }
+  }
 
 
-  module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth };
+  module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth, authErrorCatcher };

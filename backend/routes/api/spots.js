@@ -1,6 +1,6 @@
 const express = require('express');
 const { Sequelize } = require('sequelize');
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
 const { Spot, SpotImage, User, Booking, Review } = require('../../db/models');
 const router = express.Router();
 
@@ -286,15 +286,15 @@ router.post('/', requireAuth, async (req, res) => {
 
 //delete spot by id
 router.delete('/:spotId', requireAuth, async (req, res) => {
-    const thisOne = await Spot.findByPk(req.query.spotId);
+    const thisOne = await Spot.findByPk(req.params.spotId);
     if (!thisOne) {
         res.status(404);
-        throw new Error('Spot couldn\'t be found');
+        res.body = {message:'Spot couldn\'t be found'};
+        return res.json(res.body);
     };
     await thisOne.destroy();
-    return res.json({
-        message: "successfully deleted"
-    });
+    res.body = {message: "successfully deleted"}
+    return res.json(res.body);
 });
 
 // update a spot
@@ -381,5 +381,6 @@ router.get('/', requireAuth, async (req, res) => {
     return res.json(allSpots);
 });
 
+router.use(authErrorCatcher);
 
 module.exports = router;
