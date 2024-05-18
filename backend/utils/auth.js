@@ -73,4 +73,17 @@ const restoreUser = (req, res, next) => {
     return next(err);
   };
 
-  module.exports = { setTokenCookie, restoreUser, requireAuth };
+  //middleware for checking if spot exists
+  const spotAuth = (req,res,next) => {
+    const spot = Spot.findByPk(req.params.spotId);
+    if(!spot){
+      throw new Error()
+    };
+    next();
+  };
+  // we would also have to make middleware to catch this error so
+  // maybe next time we can do this
+
+
+
+  module.exports = { setTokenCookie, restoreUser, requireAuth, spotAuth };

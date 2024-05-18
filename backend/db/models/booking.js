@@ -49,11 +49,11 @@ module.exports = (sequelize, DataTypes) => {
   },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      allowNull: false
   },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      allowNull: false
     }
   }, {
     sequelize,

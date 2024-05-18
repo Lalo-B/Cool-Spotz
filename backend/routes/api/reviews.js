@@ -4,6 +4,7 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth')
 
 const router = express.Router();
 
+
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
     const { url } = req.body;
@@ -14,9 +15,9 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
         }
     });
     console.log(imgArr)
-    if(review && imgArr.length >= 10){
+    if (review && imgArr.length >= 10) {
         res.status(403);
-        res.body = {message: "Maximum number of images for this resource was reached"};
+        res.body = { message: "Maximum number of images for this resource was reached" };
         return res.json(res.body);
     };
     if (review) {
@@ -28,9 +29,9 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
             id: newImg.id,
             url
         };
-    } else if (!review){
+    } else if (!review) {
         res.status(404);
-        res.body = {message: "Review couldn't be found"};
+        res.body = { message: "Review couldn't be found" };
         return res.json(res.body);
     };
 
@@ -87,7 +88,59 @@ router.post('/:spotId', async (req, res) => {
         stars: body.stars
     });
     return res.json(newReview)
-})
+});
+
+//edit a review
+router.put('/:reviewId', requireAuth, async (req, res) => {
+    let currRev = await Review.findByPk(req.params.reviewId);
+    if (!currRev) {
+        res.status(404);
+        res.body = {
+            message: "Review couldn't be found"
+        };
+        return res.json(res.body)
+    };
+
+    let revObj = {
+        review,
+        stars,
+    } = req.body;
+
+    if(Object.keys(revObj).length === 0){
+        res.status(400);
+            res.body = {
+                "message": "Bad Request",
+                "errors": {
+                    "review": "Review text is required",
+                    "stars": "Stars must be an integer from 1 to 5",
+                }
+            };
+            return res.json(res.body);
+    };
+
+    for (let key in revObj) {
+        if (revObj[key] === undefined || revObj[key] === '') {
+            res.status(400);
+            res.body = {
+                "message": "Bad Request",
+                "errors": {
+                    "review": "Review text is required",
+                    "stars": "Stars must be an integer from 1 to 5",
+                }
+            };
+            return res.json(res.body);
+        };
+    };
+
+    await currRev.set({
+        review: revObj.review,
+        stars: revObj.stars
+    });
+    await currRev.save();
+
+    res.body = currRev;
+    return res.json(res.body);
+});
 
 
 //get all reviews of current user
