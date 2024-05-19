@@ -40,7 +40,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
 
 //get reviews of current user
-router.get('/current', async (req, res) => {
+router.get('/current',requireAuth, async (req, res) => {
     const { user } = req;
     const reviews = await Review.findAll({
         where: {
@@ -52,7 +52,7 @@ router.get('/current', async (req, res) => {
 
 
 //get all reviews by a spots id
-router.get('/:spotId', async (req, res) => {
+router.get('/:spotId', requireAuth, async (req, res) => {
     const reviews = await Review.findAll({
         where: {
             id: req.query.spotId
@@ -68,7 +68,7 @@ router.get('/:spotId', async (req, res) => {
 });
 
 //create a review for a spot based on the spots id
-router.post('/:spotId', async (req, res) => {
+router.post('/:spotId',requireAuth, async (req, res) => {
     const body = req.body;
     if (!body.review || typeof (body.stars) !== number) {
         res.status(400);
@@ -158,7 +158,7 @@ router.delete('/:reviewId', requireAuth, async(req,res)=>{
 });
 
 //get all reviews of current user
-router.get('/', async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
     const { user } = req;
     const reviews = await Review.findAll({
         where: {
