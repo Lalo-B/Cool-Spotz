@@ -13,8 +13,8 @@ const createRandomReview = (spotId) => {
     userId: faker.number.int({min:1,max:3}),
     review: faker.lorem.lines({min:1,max:3}),
     stars: faker.number.float({min:1,max:5,multipleOf:0.5}),
-    createdAt: Date.now(),
-    updatedAt: Date.now()
+    createdAt: new Date('2024-05-14'),
+    updatedAt: new Date('2024-05-14')
   }
 };
 let seedArr = [];
