@@ -7,6 +7,9 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 
+router.use(authErrorCatcher);
+router.use(handleValidationErrors);
+
 // middle ware that checks keys and validates them
 const validateSignup = [
   check('email')
@@ -33,7 +36,7 @@ const validateSignup = [
 router.post('/', validateSignup, async (req, res) => {
   const bodyObj = { email, password, username, firstName, lastName } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
-  let emailCheck = User.findAll({
+  let emailCheck = await User.findAll({
     where: {
       email: bodyObj.email
     }
@@ -48,16 +51,17 @@ router.post('/', validateSignup, async (req, res) => {
       "errors": {
         "email": "User with that email already exists"
       }
-    }
+    };
     return res.json(res.body);
   };
-  let userNameCheck = User.findAll({
+
+  let userNameCheck = await User.findAll({
     where: {
       username: bodyObj.username
     }
   });
 
-  if (userNameCheck.lenght>0) {
+  if (userNameCheck.length>0) {
     res.status(500);
     res.set('Content-type', 'application/json');
     res.body = {
@@ -69,11 +73,10 @@ router.post('/', validateSignup, async (req, res) => {
     return res.json(res.body);
   };
 
-  //by here we know username and email are good and password is hashed
-  //here is where we would valitade the info and catch the validation error
+
 
   for (const key in bodyObj) {
-    if (bodyObj[key] === undefined || bodyObj[key] === 0) {
+    if (bodyObj[key] === undefined || bodyObj[key] === '') {
       res.status(400);
       res.body = {
         "message": "Bad Request",
@@ -103,6 +106,21 @@ router.post('/', validateSignup, async (req, res) => {
   return res.json(res.body);
 });
 
+router.use('/', (err,req,res,next)=>{
+  if(err.title === "Bad request."){
+    const statusCode = err.statusCode || 500;
+  res.status(statusCode);
+  res.body = {
+    message: err.message,
+    errors: {
+      email: "Invalid email",
+      username: "Username is required",
+      firstName: "First Name is required",
+      lastName: "Last Name is required"
+    }
+  }
+  return res.json(res.body);
+  };
+});
 
-router.use(authErrorCatcher);
 module.exports = router;

@@ -1,10 +1,11 @@
 const express = require('express');
-const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
+const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher, doesOwnSpot } = require('../../utils/auth');
 const { SpotImage } = require('../../db/models');
 const router = express.Router();
 
 
-router.delete('/:spotImageId', requireAuth, async (req,res)=>{
+
+router.delete('/:spotImageId', requireAuth,doesOwnSpot, async (req,res)=>{
     const img = await SpotImage.findByPk(req.params.spotImageId);
     if(!img){
         res.status(404);

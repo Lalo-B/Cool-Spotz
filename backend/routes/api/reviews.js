@@ -7,6 +7,12 @@ const router = express.Router();
 
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    // if(req.params.reviewId === null || req.params.reviewId === 'null'){
+    //     res.status(404);
+    //     res.body = {message: "Review couldn't be found"};
+    //     return res.json(res.body);
+    // };
+    // console.log('shouldnt see this')
     const { url } = req.body;
     const review = await Review.findByPk(req.params.reviewId);
     const imgArr = await ReviewImage.findAll({
@@ -14,28 +20,29 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
             reviewId: req.params.reviewId
         }
     });
-    console.log(imgArr)
-    if (review && imgArr.length >= 10) {
+    // console.log(imgArr)
+    if (imgArr.length >= 10) {
         res.status(403);
         res.body = { message: "Maximum number of images for this resource was reached" };
         return res.json(res.body);
     };
-    if (review) {
-        const newImg = await ReviewImage.create({
+    let newImg;
+    if (review && imgArr.length < 10) {
+        newImg = await ReviewImage.create({
             reviewId: req.params.reviewId,
             url
         });
-        res.body = {
-            id: newImg.id,
-            url
-        };
+        // res.body = {
+        //     id: newImg.id,
+        //     url
+        // };
     } else if (!review) {
         res.status(404);
         res.body = { message: "Review couldn't be found" };
         return res.json(res.body);
     };
 
-    return res.json(res.body);
+    return res.json(newImg);
 });
 
 
@@ -60,35 +67,34 @@ router.get('/:spotId', requireAuth, async (req, res) => {
     });
     if (!reviews) {
         res.status(404);
-        res.header('content-type', 'application/json');
-        res.body({ messgae: "Spot couldn't be found" });
+        res.body({ message: "Spot couldn't be found" });
         return res.json(res.body);
     };
     return res.json(reviews);
 });
 
-//create a review for a spot based on the spots id
-router.post('/:spotId',requireAuth, async (req, res) => {
-    const body = req.body;
-    if (!body.review || typeof (body.stars) !== number) {
-        res.status(400);
-        res.header('content-type', 'application/json');
-        res.body = {
-            messgae: 'Bad Request',
-            errors: {
-                review: 'Review text is required',
-                stars: 'Stars must be an integer from 1 to 5'
-            }
-        }
-    }
-    const newReview = Review.create({
-        userId: req.user.id,
-        spotId: req.query.spotId,
-        review: body.review,
-        stars: body.stars
-    });
-    return res.json(newReview)
-});
+// //create a review for a spot based on the spots id
+// router.post('/:spotId',requireAuth, async (req, res) => {
+//     const body = req.body;
+//     if (!body.review || typeof (body.stars) !== number) {
+//         res.status(400);
+//         res.header('content-type', 'application/json');
+//         res.body = {
+//             messgae: 'Bad Request',
+//             errors: {
+//                 review: 'Review text is required',
+//                 stars: 'Stars must be an integer from 1 to 5'
+//             }
+//         }
+//     }
+//     const newReview = Review.create({
+//         userId: req.user.id,
+//         spotId: req.query.spotId,
+//         review: body.review,
+//         stars: body.stars
+//     });
+//     return res.json(newReview)
+// });
 
 //edit a review
 router.put('/:reviewId', requireAuth, async (req, res) => {
@@ -138,8 +144,8 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
     });
     await currRev.save();
 
-    res.body = currRev;
-    return res.json(res.body);
+    // res.body = currRev;
+    return res.json(currRev);
 });
 
 //delete a review
