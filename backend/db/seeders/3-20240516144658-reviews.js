@@ -12,7 +12,9 @@ const createRandomReview = (spotId) => {
     spotId: spotId,
     userId: faker.number.int({min:1,max:3}),
     review: faker.lorem.lines({min:1,max:3}),
-    stars: faker.number.float({min:1,max:5,multipleOf:0.5})
+    stars: faker.number.float({min:1,max:5,multipleOf:0.5}),
+    createdAt: Date.now(),
+    updatedAt: Date.now()
   }
 };
 let seedArr = [];
@@ -24,7 +26,7 @@ module.exports = {
       seedArr.push(createRandomReview(i+1));
       seedArr.push(createRandomReview(i+1));
     };
-    await Review.bulkInsert('Reviews',[...seedArr],options, { validate: true});
+    await queryInterface.bulkInsert(options,[...seedArr], { validate: true});
   },
 
   async down (queryInterface, Sequelize) {

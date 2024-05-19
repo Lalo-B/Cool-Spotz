@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       }
-    });
+    }, options);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Bookings');
