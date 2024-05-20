@@ -7,39 +7,49 @@ const router = express.Router();
 
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
-    // if(req.params.reviewId === null || req.params.reviewId === 'null'){
-    //     res.status(404);
-    //     res.body = {message: "Review couldn't be found"};
-    //     return res.json(res.body);
-    // };
-    // console.log('shouldnt see this')
+    const { user } = req;
     const { url } = req.body;
     const review = await Review.findByPk(req.params.reviewId);
+
+
+    if (!review) {
+        res.status(404);
+        res.body = { message: "Review couldn't be found" };
+        return res.json(res.body);
+    };
+
+    if(review){
+        const belongsToUser = Review.findOne({
+            where: {
+                id: req.params.reviewId,
+                userId: user.id
+            }
+        });
+        if(!belongsToUser){
+            res.status(403);
+            return res.json({message: "Forbidden"})
+        };
+    };
+
     const imgArr = await ReviewImage.findAll({
         where: {
             reviewId: req.params.reviewId
         }
     });
-    // console.log(imgArr)
+
     if (imgArr.length >= 10) {
         res.status(403);
         res.body = { message: "Maximum number of images for this resource was reached" };
         return res.json(res.body);
     };
+
     let newImg;
     if (review && imgArr.length < 10) {
         newImg = await ReviewImage.create({
             reviewId: req.params.reviewId,
             url
         });
-        // res.body = {
-        //     id: newImg.id,
-        //     url
-        // };
-    } else if (!review) {
-        res.status(404);
-        res.body = { message: "Review couldn't be found" };
-        return res.json(res.body);
+        return res.json(newImg);
     };
 
     return res.json(newImg);

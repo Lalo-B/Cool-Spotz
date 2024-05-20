@@ -7,8 +7,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 
-router.use(authErrorCatcher);
-router.use(handleValidationErrors);
+// router.use(authErrorCatcher);
+// router.use(handleValidationErrors);
 
 // middle ware that checks keys and validates them
 const validateSignup = [
@@ -33,15 +33,23 @@ const validateSignup = [
 
 
 // this is our signup route
-router.post('/', validateSignup, async (req, res) => {
-  const bodyObj = { email, password, username, firstName, lastName } = req.body;
+router.post('/',  async (req, res) => {
+
+  const bodyObj = { email, username, password, firstName, lastName } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
+
+
   let emailCheck = await User.findAll({
     where: {
       email: bodyObj.email
     }
   });
 
+  let userNameCheck = await User.findAll({
+    where: {
+      username: bodyObj.username
+    }
+  });
 
   if (emailCheck.length > 0) {
     res.status(500);
@@ -53,15 +61,7 @@ router.post('/', validateSignup, async (req, res) => {
       }
     };
     return res.json(res.body);
-  };
-
-  let userNameCheck = await User.findAll({
-    where: {
-      username: bodyObj.username
-    }
-  });
-
-  if (userNameCheck.length>0) {
+  } else if (userNameCheck.length > 0) {
     res.status(500);
     res.set('Content-type', 'application/json');
     res.body = {
@@ -71,56 +71,167 @@ router.post('/', validateSignup, async (req, res) => {
       }
     }
     return res.json(res.body);
-  };
-
-
-
-  for (const key in bodyObj) {
-    if (bodyObj[key] === undefined || bodyObj[key] === '') {
-      res.status(400);
-      res.body = {
-        "message": "Bad Request",
-        "errors": {
-          "email": "Invalid email",
-          "username": "Username is required",
-          "firstName": "First Name is required",
-          "lastName": "Last Name is required"
-        }
+  } else {
+    for (const key in bodyObj) {
+      if (bodyObj[key] === undefined || bodyObj[key] === '') {
+        res.status(400);
+        res.body = {
+          "message": "Bad Request",
+          "errors": {
+            "email": "Invalid email",
+            "username": "Username is required",
+            "firstName": "First Name is required",
+            "lastName": "Last Name is required"
+          }
+        };
+        return res.json(res.body);
       };
-      return res.json(res.body);
-    };
-  }
-  const user = await User.create({ email, username, hashedPassword, firstName, lastName });
-
-  const safeUser = {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    username: user.username,
-  };
-
-  await setTokenCookie(res, safeUser);
-
-  res.body = {user: safeUser}
-  return res.json(res.body);
-});
-
-router.use('/', (err,req,res,next)=>{
-  if(err.title === "Bad request."){
-    const statusCode = err.statusCode || 500;
-  res.status(statusCode);
-  res.body = {
-    message: err.message,
-    errors: {
-      email: "Invalid email",
-      username: "Username is required",
-      firstName: "First Name is required",
-      lastName: "Last Name is required"
     }
-  }
-  return res.json(res.body);
+    const user = await User.create({
+      email: bodyObj.email,
+      username: bodyObj.username,
+      hashedPassword: bodyObj.hashedPassword,
+      firstName: bodyObj.firstName,
+      lastName: bodyObj.lastName
+    });
+
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+    };
+
+    await setTokenCookie(res, safeUser);
+    //does this set headers
+
+    res.body = { user: safeUser }
+    return res.json(res.body);
   };
+
 });
+
+// router.use('/', (err, req, res, next) => {
+//   if (err.title === "Bad request.") {
+//     const statusCode = err.statusCode || 500;
+//     res.status(statusCode);
+//     res.body = {
+//       message: err.message,
+//       errors: {
+//         email: "Invalid email",
+//         username: "Username is required",
+//         firstName: "First Name is required",
+//         lastName: "Last Name is required"
+//       }
+//     }
+//     return res.json(res.body);
+//   };
+// });
+
+// add body obj to create user things and see
+
+
+// router.post("/", async (req, res) => {
+//   const error = {
+//     message: {},
+//     errors: {},
+//   };
+
+
+//   const { firstName, lastName, email, username, password } = req.body;
+
+//   if (firstName && lastName && email && username && password) {
+//     const userSameEmail = await User.scope({
+//       method: ["findUser", email],
+//     }).findOne();
+
+//     const userSameUsername = await User.scope({
+//       method: ["findUser", username],
+//     }).findOne();
+//     if (userSameEmail && userSameUsername) {
+//       error.message = "User already exists";
+//       error.errors = {
+//         email: "User with that email already exists",
+//         username: "User with that username already exists",
+//       };
+
+//       res.statusCode = 500;
+
+//       return res.json(error);
+//     } else if (userSameEmail) {
+//       error.message = "User already exists";
+//       error.errors = {
+//         email: "User with that email already exists",
+//       };
+
+//       res.statusCode = 500;
+
+//       return res.json(error);
+//     } else if (userSameUsername) {
+//       error.message = "User already exists";
+//       error.errors = {
+//         username: "User with that username already exists",
+//       };
+
+//       res.statusCode = 500;
+
+//       return res.json(error);
+//     }
+
+//     if (password.length < 6) {
+//       error.message = "Password is not long";
+//       error.errors = {
+//         password: "Password must be 6 characters or more.",
+//       };
+
+//       res.statusCode = 403;
+
+//       return res.json(error);
+//     }
+//     const hashedPassword = bcrypt.hashSync(password);
+//     const user = await User.create({
+//       firstName,
+//       lastName,
+//       email,
+//       username,
+//       hashedPassword,
+//     });
+
+//     const safeUser = {
+//       id: user.id,
+//       firstName: user.firstName,
+//       lastName: user.lastName,
+//       email: user.email,
+//       username: user.username,
+//     };
+
+//     await setTokenCookie(res, safeUser);
+
+//     return res.json({
+//       user: safeUser,
+//     });
+//   } else {
+//     const credentialObj = {
+//       firstName,
+//       lastName,
+//       email,
+//       username,
+//       password,
+//     };
+
+//     res.statusCode = 400;
+//     error.message = "Bad Request";
+
+//     for (let key in credentialObj) {
+//       if (credentialObj[key] === undefined || credentialObj[key] === "") {
+//         error["errors"][key] = key + " is required";
+//       }
+//     }
+
+//     return res.json(error);
+//   }
+// });
+
 
 module.exports = router;
