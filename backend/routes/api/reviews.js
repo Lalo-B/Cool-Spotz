@@ -68,20 +68,6 @@ router.get('/current',requireAuth, async (req, res) => {
 });
 
 
-//get all reviews by a spots id
-router.get('/:spotId', requireAuth, async (req, res) => {
-    const reviews = await Review.findAll({
-        where: {
-            id: req.query.spotId
-        }
-    });
-    if (!reviews) {
-        res.status(404);
-        res.body({ message: "Spot couldn't be found" });
-        return res.json(res.body);
-    };
-    return res.json(reviews);
-});
 
 // //create a review for a spot based on the spots id
 // router.post('/:spotId',requireAuth, async (req, res) => {
@@ -109,12 +95,17 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 //edit a review
 router.put('/:reviewId', requireAuth, async (req, res) => {
     let currRev = await Review.findByPk(req.params.reviewId);
+    const { user } = req;
     if (!currRev) {
         res.status(404);
         res.body = {
             message: "Review couldn't be found"
         };
         return res.json(res.body)
+    };
+    if(currRev.userId !== user.id){
+        res.status(403);
+        return res.json({message: "Forbidden"})
     };
 
     let revObj = {
@@ -161,12 +152,17 @@ router.put('/:reviewId', requireAuth, async (req, res) => {
 //delete a review
 router.delete('/:reviewId', requireAuth, async(req,res)=>{
     const review = await Review.findByPk(req.params.reviewId);
+    const { user } = req;
     if(!review){
         res.status(404);
         res.body = {
             message: "Review couldn't be found"
         };
         return res.json(res.body);
+    };
+    if(review.userId !== user.id){
+        res.status(403);
+        return res.json({message: "Forbidden"});
     };
 
     await review.destroy();

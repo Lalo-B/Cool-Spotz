@@ -90,7 +90,7 @@ router.post('/',  async (req, res) => {
     const user = await User.create({
       email: bodyObj.email,
       username: bodyObj.username,
-      hashedPassword: bodyObj.hashedPassword,
+      hashedPassword: hashedPassword,
       firstName: bodyObj.firstName,
       lastName: bodyObj.lastName
     });

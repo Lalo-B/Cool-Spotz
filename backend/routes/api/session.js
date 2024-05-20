@@ -28,7 +28,6 @@ const validateLogin = [
 router.post('/', validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
-  console.log('error here?')
   const user = await User.unscoped().findOne({
     where: {
       [Op.or]: {
@@ -39,7 +38,6 @@ router.post('/', validateLogin, async (req, res, next) => {
   });
 
 
-  console.log('error here?')
   //if no user or if password
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error('Login failed');
