@@ -1,4 +1,5 @@
 import LoginFormPage from "./components/LoginFormPage/LoginFormPage";
+import SignUpPage from './components/SignUpPage/SignUpPage'
 import {createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { restoreUser } from './store/session.js';
 import { useDispatch } from "react-redux";
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <h1>home</h1>
+      },
+      {
+        path: '/signup',
+        element: <SignUpPage />
       }
     ]
   }
