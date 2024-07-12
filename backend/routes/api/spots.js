@@ -15,16 +15,22 @@ router.put('/', doesOwnSpot);
 
 //get all reviews by a spots id
 router.get('/:spotId/reviews', async (req, res) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    if (!spot) {
+        res.status(404);
+        return res.json({ message: "Spot could not be found" });
+    };
+
     const reviews = await Review.findAll({
         where: {
             id: req.params.spotId
         }
     });
-
-    if (reviews.length === 0) {
-        res.status(404);
-        return res.json({ message: "Spot couldn't be found" });
-    };
+    // if (reviews.length === 0) {
+    //     res.status(404);
+    //     return res.json({ message: "Spot couldn't be found" });
+    // };
+    res.status(200);
     return res.json(reviews);
 });
 
@@ -363,7 +369,7 @@ router.post('/', requireAuth, async (req, res) => {
                     "price": "Price per day must be a positive number"
                 }
             };
-        return res.json(res.body);
+            return res.json(res.body);
         };
     };
 
@@ -560,15 +566,15 @@ router.get("/", async (req, res) => {
 
 
     if (!page) {
-      page = 1;
+        page = 1;
     } else if (isNaN(page)) {
-      errors.page = "Page must be a number";
+        errors.page = "Page must be a number";
     }
 
     if (!size) {
-      size = 20;
+        size = 20;
     } else if (isNaN(size)) {
-      errors.size = "Size must be a number";
+        errors.size = "Size must be a number";
     }
 
     if (page <= 0 || page > 10) errors.page = "Page must be greater than or equal to 1 and less than or equal to 10";
@@ -580,72 +586,72 @@ router.get("/", async (req, res) => {
     pagination.offset = size * (page - 1);
 
     if (minLat) {
-      if (!isNaN(minLat)) {
-        where.lat = { ...where.lat, [Op.gte]: parseFloat(minLat) };
-      } else {
-        errors.minLat = "Minimum latitude is invalid";
-      }
+        if (!isNaN(minLat)) {
+            where.lat = { ...where.lat, [Op.gte]: parseFloat(minLat) };
+        } else {
+            errors.minLat = "Minimum latitude is invalid";
+        }
     }
 
     if (maxLat) {
-      if (!isNaN(maxLat)) {
-        where.lat = { ...where.lat, [Op.lte]: parseFloat(maxLat) };
-      } else {
-        errors.maxaLat = "Maximum latitude is invalid";
-      }
+        if (!isNaN(maxLat)) {
+            where.lat = { ...where.lat, [Op.lte]: parseFloat(maxLat) };
+        } else {
+            errors.maxaLat = "Maximum latitude is invalid";
+        }
     }
 
     if (minLng) {
-      if (!isNaN(minLng)) {
-        where.lng = { ...where.lng, [Op.gte]: parseFloat(minLng) };
-      } else {
-        errors.minLng = "Minimum longitude is invalid";
-      }
+        if (!isNaN(minLng)) {
+            where.lng = { ...where.lng, [Op.gte]: parseFloat(minLng) };
+        } else {
+            errors.minLng = "Minimum longitude is invalid";
+        }
     }
 
     if (maxLng) {
-      if (!isNaN(maxLng)) {
-        where.lng = { ...where.lng, [Op.lte]: parseFloat(maxLng) };
-      } else {
-        errors.maxLng = "Maximum longitude is invalid";
-      }
+        if (!isNaN(maxLng)) {
+            where.lng = { ...where.lng, [Op.lte]: parseFloat(maxLng) };
+        } else {
+            errors.maxLng = "Maximum longitude is invalid";
+        }
     }
 
     if (minPrice) {
-      if (!isNaN(minPrice) && minPrice >= 0) {
-        where.price = { ...where.price, [Op.gte]: parseFloat(minPrice) };
-      } else {
-        errors.minPrice = "Minimum price must be greater than or equal to 0";
-      }
+        if (!isNaN(minPrice) && minPrice >= 0) {
+            where.price = { ...where.price, [Op.gte]: parseFloat(minPrice) };
+        } else {
+            errors.minPrice = "Minimum price must be greater than or equal to 0";
+        }
     }
 
     if (maxPrice) {
-      if (!isNaN(maxPrice) && maxPrice >= 0) {
-        where.price = { ...where.price, [Op.lte]: parseFloat(maxPrice) };
-      } else {
-        errors.maxPrice = "Maximum price must be greater than or equal to 0"
-      }
+        if (!isNaN(maxPrice) && maxPrice >= 0) {
+            where.price = { ...where.price, [Op.lte]: parseFloat(maxPrice) };
+        } else {
+            errors.maxPrice = "Maximum price must be greater than or equal to 0"
+        }
     }
 
     if (Object.keys(errors).length > 0) {
-      res.status(400);
-      return res.json({
-        "message": "Bad Request",
-        errors
-      });
+        res.status(400);
+        return res.json({
+            "message": "Bad Request",
+            errors
+        });
     }
 
     let allSpots = await Spot.findAll({
-      where,
-      ...pagination
+        where,
+        ...pagination
     });
 
     res.status(200);
     return res.json({
-      "Spots": allSpots,
-      page,
-      size
+        "Spots": allSpots,
+        page,
+        size
     });
-  });
+});
 
 module.exports = router;
