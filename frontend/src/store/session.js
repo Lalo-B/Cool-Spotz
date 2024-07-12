@@ -41,9 +41,9 @@ export const signUp = user => async dispatch => {
         method: 'POST',
         body: JSON.stringify({ username, firstName, lastName, email, password })
     });
-        const data = await res.json();
-        dispatch(setUser(data.user))
-        return res;
+    const data = await res.json();
+    dispatch(setUser(data.user))
+    return res;
 
 }
 
@@ -55,6 +55,14 @@ export const restoreUser = () => async (dispatch) => {
         dispatch(setUser(data.user))
         return data
     }
+};
+
+export const logout = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+        method: 'DELETE'
+    });
+    dispatch(removeUser());
+    return response;
 };
 
 const initialState = { user: null };

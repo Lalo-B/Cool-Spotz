@@ -1,0 +1,9 @@
+/* nav css stuff */
+.profile-button {
+    color: red;
+    font-size: 100px;
+}
+
+.hidden {
+    display: none;
+}
