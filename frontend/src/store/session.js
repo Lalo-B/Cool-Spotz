@@ -30,7 +30,8 @@ export const login = (user) => async (dispatch) => {
         dispatch(setUser(data.user));
         return response;
     } else {
-        throw new Error('response was not ok')
+        const errors = await response.json()
+        return errors;
     }
 };
 
