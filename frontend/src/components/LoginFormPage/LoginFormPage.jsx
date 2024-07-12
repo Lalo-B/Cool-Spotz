@@ -25,6 +25,10 @@ function LoginFormPage() {
 
 
     const sessionUser = useSelector((state) => state.session.user);
+    if(sessionUser){
+        navigate('/')
+    }
+    console.log('this is the session user ...',sessionUser)
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user = {
