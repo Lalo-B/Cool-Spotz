@@ -1,1 +1,1 @@
-export { OpenModalButton } from './OpenModalButton.jsx'
+export { OpenModalButton } from './OpenModalButton';
