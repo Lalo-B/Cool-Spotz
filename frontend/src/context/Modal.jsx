@@ -5,7 +5,7 @@ import './Modal.css';
 const ModalContext = createContext();
 
 export function ModalProvider({ children }) {
-  const modalRef = useRef();
+  const modalRef = useRef(); // lets us reference a value not needed for rendering acc to docs
   const [modalContent, setModalContent] = useState(null);
   // callback function that will be called when modal is closing
   const [onModalClose, setOnModalClose] = useState(null);
