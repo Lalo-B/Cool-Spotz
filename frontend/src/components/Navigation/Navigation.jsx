@@ -37,12 +37,15 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <div className='header'>
+      <img className='logo'/>
+      <ul>
+        <li>
+          <NavLink to="/">Home</NavLink>
+        </li>
+        {isLoaded && sessionLinks}
+      </ul>
+    </div>
   );
 }
 
