@@ -24,6 +24,10 @@ function LoginFormModal() {
         }
       });
   };
+  const setDefault = () => {
+    setCredential('Demo-lition');
+    setPassword('password');
+  }
 
   return (
     <>
@@ -51,6 +55,7 @@ function LoginFormModal() {
           <p>{errors.credential}</p>
         )}
         <button type="submit">Log In</button>
+        <buton onClick={setDefault}>default</buton>
       </form>
     </>
   );

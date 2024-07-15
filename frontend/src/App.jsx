@@ -5,6 +5,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 // import SignUpModal from './components/SignUpModal/SignUpModal.jsx';
 import Navigation from "./components/Navigation/Navigation.jsx";
 import { restoreUser } from './store/session.js';
+import Spots from './components/Spots/Spots.jsx';
+import SpotDetails from "./components/SpotDetails/SpotDetails.jsx";
 
 
 const Layout = () => {
@@ -31,6 +33,13 @@ const router = createBrowserRouter([
         path: '/',
         element: <h1>home</h1>
       },
+      {
+        path: '/spots',
+        element: <Spots />
+      },{
+        path: '/spots/:spotId',
+        element: <SpotDetails />
+      }
     ]
   }
 ])

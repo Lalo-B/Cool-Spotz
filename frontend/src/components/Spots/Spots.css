@@ -1,0 +1,13 @@
+.spot-card {
+    height: 150px;
+    display: flex;
+    padding: 10px;
+}
+.spot-img {
+    height: 75px;
+}
+.card-container{
+    display: flex;
+    width: fit-content;
+}
+

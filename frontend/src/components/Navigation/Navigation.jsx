@@ -40,6 +40,7 @@ function Navigation({ isLoaded }) {
     <ul>
       <li>
         <NavLink to="/">Home</NavLink>
+        <NavLink to='/spots'>Spots</NavLink>
       </li>
       {isLoaded && sessionLinks}
     </ul>
