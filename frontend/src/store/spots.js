@@ -106,22 +106,40 @@ export const getOneImgThunk = (id) => async dispatch => {
 
 export const editSpot = (spot,user) => async dispatch => {
     const spotId = spot.id
-    console.log('this is spot in the thunk for submit',user)
     const res = await csrfFetch(`/api/spots/${spotId}`,{
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({spot}),
-        // user: JSON.stringify({...user})
+        method: 'PUT',
+        body: JSON.stringify(spot),
     });
-    // no
-    console.log('are we here',)
-
 
     if(res.ok){
         const data = await res.json();
-        dispatch(edit(data.spot));
+        dispatch(edit(data));
+        return data;
+    }
+}
+
+export const deleteSpot = (spotId) => async dispatch => {
+    const res = await csrfFetch(`/api/spots/${spotId}`,{
+        method: 'delete',
+    })
+
+    if(res.ok){
+        const data = await res.json();
+        console.log("🚀 ~ deleteSpot ~ data:", data)
+        dispatch(removeOne(data));
+        return data;
+    }
+}
+
+export const addSpot = (spot) => async dispatch => {
+    const res = csrfFetch('/api/spots',{
+        method: 'post',
+        body: JSON.stringify(spot)
+    });
+
+    if(res.ok){
+        const data = await res.json();
+        dispatch(makeOne(data));
         return data;
     }
 }
@@ -130,16 +148,19 @@ const spotsReducer = (state = {spots: null, spotImgs: null}, action) => {
     switch (action.type) {
         case GET_ALL:
             return {...state, spots: action.payload};
-        case MAKE_ONE:
+        case MAKE_ONE:{
+            const newState = {...state, spots: [...state.spots]}
+            console.log(newState)
             return {...state, spots: action.payload};
+        }
         case REMOVE_ONE:{
             const newState = {...state}
-            delete newState.spots[action.payload.id]
+            delete newState.oneSpot
             return {newState}
         }
         case EDIT: {
             const newState = {...state}
-            newState.spots[action.payload.id] = action.payload
+            newState.oneSpot = action.payload
             return newState
         }
         case GET_ALL_IMGS:

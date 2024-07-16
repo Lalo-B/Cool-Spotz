@@ -20,3 +20,6 @@
     align-items: center;
     justify-content: space-around;
 } */
+.edit-button {
+    cursor: pointer;
+}

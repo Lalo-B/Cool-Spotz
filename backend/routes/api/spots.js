@@ -413,17 +413,20 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // update a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
     let spot;
-    console.log('this is the params in back end',req.params.spotId)
+    // console.log('this is req.body in backend', req.body) //empty obj
+    // console.log('this is the params in back end',req.params.spotId)
     if (req.params.spotId) {
         spot = await Spot.findByPk(req.params.spotId);
     };
 
-    console.log('this is spot in the back end',spot)
+    // console.log('this is spot in the back end',spot)
 
     const updateObj = {
         address, city, state, country, lat,
         lng, name, description, price
     } = req.body;
+    console.log("🚀 ~ router.put ~ updateObj:", updateObj)
+
 
     if (Object.keys(updateObj).length === 0) {
         res.status(400);
@@ -464,6 +467,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
             return res.json(res.body);
         }
     };
+    console.log(req.user.id === spot.ownerId)
 
     if (!spot) {
         res.status(404);
@@ -482,7 +486,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
             lng: updateObj.lng,
             name: updateObj.name,
             description: updateObj.description,
-            price: `$${updateObj.price}`
+            price: updateObj.price
         });
         await spot.save();
         res.body = updateObj;

@@ -3,12 +3,12 @@ import * as spotsActions from '../../store/spots';
 import { useEffect, useState } from "react";
 import './Spots.css';
 import { useNavigate } from "react-router-dom";
+import OpenModalButton from '../OpenModalButton/OpenModalButton';
+import AddSpotModal from "../AddSpotModal/AddSpotModal";
 // import Spotsimgs from '../SpotsImgs/SpotsImgs';
 // import { SiPortswigger } from "react-icons/si";
 
 const Spots = () => {
-    //dispatch to get all spots
-    // render them
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -22,6 +22,8 @@ const Spots = () => {
 
     const spots = useSelector((state) => { return state.spots.spots })
     const spotImgs = useSelector((state) => { return state.spots.spotImgs });
+    const user = useSelector((state)=>{ return state.session.user})
+    // console.log("🚀 ~ Spots ~ user:", user)
     if (!spots) return;
     if (!spotImgs) return;
     const send = (id) => {
@@ -30,7 +32,12 @@ const Spots = () => {
 
     return (
         <>
+        <div className="upper-text">
             <h1>Spots</h1>
+            {user && <OpenModalButton
+            buttonText={'Add Spot'}
+            modalComponent={<AddSpotModal/>}/>}
+        </div>
             <div className="card-container">
                 {spots.map((spot) => {
                     let id = spot.id

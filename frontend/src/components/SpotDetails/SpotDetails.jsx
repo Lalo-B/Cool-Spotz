@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import * as spotsActions from '../../store/spots';
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import EditSpotModalItem from "../EditSpotModalItem/EditSpotModalItem";
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal'
 
 const SpotDetails = () => {
     const { spotId } = useParams();
@@ -21,10 +22,11 @@ const SpotDetails = () => {
     }, [dispatch, spotId])
     const spot = useSelector((state) => { return state.spots.oneSpot });
     const img  = useSelector((state) => { return state.spots.oneImg });
-    // console.log("🚀 ~ SpotDetails ~ img:", img)
-    // console.log("🚀 ~ SpotDetails ~ spot:", spot)
+    // const user = useSelector((state) => { return state.session.})
     if (!spot) return;
     if(!img)return;
+    // console.log("🚀 ~ SpotDetails ~ img:", img)
+    // console.log("🚀 ~ SpotDetails ~ spot:", spot)
 
     const correctUser = (user,spot) => {
         if(user.id === spot.ownerId){
@@ -47,7 +49,11 @@ const SpotDetails = () => {
             </div>
             {correctUser(user,spot) && <OpenModalMenuItem
             itemText='edit spot'
-            modalComponent={<EditSpotModalItem spot={spot}/>} />}
+            modalComponent={<EditSpotModalItem spot={spot} />} />}
+            {correctUser(user,spot) && <OpenModalMenuItem
+            itemText='delete spot'
+            modalComponent={<DeleteSpotModal spot={spot} />} />}
+            <button onClick={()=>{alert('feature coming soon')}}>reserve spot</button>
         </div>
     )
 }

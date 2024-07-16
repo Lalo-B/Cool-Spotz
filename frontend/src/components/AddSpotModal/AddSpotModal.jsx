@@ -1,40 +1,47 @@
-import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import * as spotsActions from '../../store/spots';
-import './EditSpotModalItem.css';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import * as spotsActions from '../../store/spots.js';
 
-const EditSpotModalItem = ({spot}) => {
-    const [address, setAddress] = useState(spot.address);
-    const [city, setCity] = useState(spot.city);
-    const [state, setState] = useState(spot.state);
-    const [country, setCountry] = useState(spot.country);
-    const [lat, setLat] = useState(spot.lat);
-    const [lng, setLng] = useState(spot.lng);
-    const [name, setName] = useState(spot.name);
-    const [description, setDescription] = useState(spot.description);
-    const [price, setPrice] = useState(spot.price);
+const AddSpotModal = () => {
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [lat, setLat] = useState('');
+    const [lng, setLng] = useState('');
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [price, setPrice] = useState('');
+    const [url,setUrl] = useState('');
     const dispatch = useDispatch();
-    const user = useSelector((state)=>{ return state.session.user})
-    // console.log("🚀 ~ EditSpotModalItem ~ user:", user)
 
-    // console.log('this is the spot',spot)
-
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        const update = {
-            id: spot.id,
-            // averageRating: spot.averageRating,
+        const newSpot = {
             address,city,state,country,
             lat,lng,name,description,price,
-            ownerId: spot.ownerId
+            ownerId: ''//user.id
         };
-        // console.log(update.id)
-        const data = await dispatch(spotsActions.editSpot(update, user))
-        // return data;
+        dispatch(spotsActions.addSpot(newSpot))
+    }
+
+    const autoFill = (e) => {
+        e.preventDefault();
+        setAddress('123 s street st');
+        setCity('coolCity');
+        setState('midState');
+        setCountry('murica');
+        setLat(48.8584);
+        setLng(2.2945);
+        setName('new spot');
+        setDescription('The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal.');
+        setPrice('999');
+        // setUrl('https://media.istockphoto.com/id/1272163106/photo/…20&c=WEwH-MlAqCy2kSbnaWf1ZQLHhQJHUT3avWrSacFo3Ls=')
+        //right now it breaks cuz it needs url in spots.jsx
     }
     return (
         <>
-            <h1>Edit your spot</h1>
+            <h1>Add a Spot</h1>
             <form onSubmit={onSubmit}>
                 <label>
                     Address:
@@ -100,8 +107,9 @@ const EditSpotModalItem = ({spot}) => {
                         onChange={(e) => { setPrice(e.target.value) }} />
                 </label>
                 <button type='submit'>submit</button>
+                <button onClick={autoFill}>autofill spot</button>
             </form>
         </>
     )
 }
-export default EditSpotModalItem;
+export default AddSpotModal;

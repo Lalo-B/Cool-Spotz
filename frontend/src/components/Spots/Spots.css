@@ -21,3 +21,7 @@
 .card-text {
     margin: 5px;
 }
+.upper-text{
+    display: flex;
+    justify-content: space-between;
+}
