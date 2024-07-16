@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -11,6 +10,8 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  // const err = {}
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,7 +56,7 @@ function LoginFormModal() {
           <p>{errors.credential}</p>
         )}
         <button type="submit">Log In</button>
-        <buton onClick={setDefault}>default</buton>
+        <button onClick={setDefault} disabled={Object.values(errors).length > 0 ? true : false}>default</button>
       </form>
     </>
   );

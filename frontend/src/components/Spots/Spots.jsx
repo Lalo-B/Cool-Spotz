@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as spotsActions from '../../store/spots';
 import { useEffect, useState } from "react";
 import './Spots.css';
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import Spotsimgs from '../SpotsImgs/SpotsImgs';
 // import { SiPortswigger } from "react-icons/si";
 
@@ -35,10 +35,12 @@ const Spots = () => {
                 {spots.map((spot) => {
                     let id = spot.id
                     return (
-                        <div key={id} className='spot-card' onClick={()=>{send(id)}}>
+                        <div key={id} className='spot-card' onClick={() => { send(id) }}>
                             <img className="spot-img" src={spotImgs[id - 1].url} />
-                            <p>{spot.city}</p>
-                            <p>{spot.state}</p>
+                            <div className="card-text">
+                                <p className="card-text">{spot.city}</p>
+                                <p className="card-text">{spot.state}</p>
+                            </div>
                         </div>
                     )
                 })}

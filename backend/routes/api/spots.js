@@ -413,9 +413,12 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // update a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
     let spot;
+    console.log('this is the params in back end',req.params.spotId)
     if (req.params.spotId) {
         spot = await Spot.findByPk(req.params.spotId);
     };
+
+    console.log('this is spot in the back end',spot)
 
     const updateObj = {
         address, city, state, country, lat,

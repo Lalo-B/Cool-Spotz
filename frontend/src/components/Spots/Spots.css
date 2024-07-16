@@ -1,13 +1,23 @@
 .spot-card {
     height: 150px;
-    display: flex;
-    padding: 10px;
+    justify-content: center;
+    margin: 5px;
+    border: 1px solid grey;
+    border-radius: 11px;
+    cursor: pointer;
 }
 .spot-img {
-    height: 75px;
+    height: 100px;
+    /* width: 100px; */
+    border-radius: 10px;
 }
 .card-container{
     display: flex;
-    width: fit-content;
+    width:auto;
+    justify-content: center;
+    height: auto;
+    flex-wrap: wrap;
 }
-
+.card-text {
+    margin: 5px;
+}

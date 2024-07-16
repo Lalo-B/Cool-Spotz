@@ -12,6 +12,14 @@ router.get('/', async (req, res) => {
     });
 });
 
+router.get('/:spotId', async (req,res) => {
+    const {spotId} = req.params;
+    const oneImg = await SpotImage.findByPk(spotId);
+    return res.json({
+        img: oneImg
+    })
+})
+
 
 router.delete('/:spotImageId', requireAuth, async (req, res) => {
     // wants to delete 21

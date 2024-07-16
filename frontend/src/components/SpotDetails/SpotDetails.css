@@ -1,0 +1,22 @@
+.one-spot{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    margin: 10px;
+    flex-wrap: wrap;
+}
+.spot-detail-img{
+    height: 350px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+}
+.details-box {
+    margin: 10px;
+}
+/* .details-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+} */

@@ -6,6 +6,7 @@ const EDIT = 'spots/edit';
 const REMOVE_ONE = 'spots/removeOne';
 const GET_ALL_IMGS = 'spots/spot-images/getAllImgs';
 const GET_ONE = 'spots/getOne';
+const GET_ONE_IMG = 'spots/getOneImg';
 
 const makeOne = (spot) => {
     return {
@@ -50,6 +51,13 @@ const getOne = (spot) => {
     }
 }
 
+const getOneImg = (img) => {
+    return {
+        type: GET_ONE_IMG,
+        payload: img
+    }
+}
+
 export const getAllThunk = () => async dispatch => {
     const res = await csrfFetch('/api/spots');
 
@@ -86,6 +94,38 @@ export const getOneSpot = (id) => async dispatch => {
     }
 }
 
+export const getOneImgThunk = (id) => async dispatch => {
+    const res = await csrfFetch(`/api/spot-images/${id}`);
+
+    if(res.ok){
+        const data = await res.json();
+        dispatch(getOneImg(data));
+        return data
+    }
+}
+
+export const editSpot = (spot,user) => async dispatch => {
+    const spotId = spot.id
+    console.log('this is spot in the thunk for submit',user)
+    const res = await csrfFetch(`/api/spots/${spotId}`,{
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({spot}),
+        // user: JSON.stringify({...user})
+    });
+    // no
+    console.log('are we here',)
+
+
+    if(res.ok){
+        const data = await res.json();
+        dispatch(edit(data.spot));
+        return data;
+    }
+}
+
 const spotsReducer = (state = {spots: null, spotImgs: null}, action) => {
     switch (action.type) {
         case GET_ALL:
@@ -105,7 +145,9 @@ const spotsReducer = (state = {spots: null, spotImgs: null}, action) => {
         case GET_ALL_IMGS:
             return {...state, spotImgs: action.payload};
         case GET_ONE:
-            return {...state, spots: action.payload}
+            return {...state, oneSpot: action.payload};
+        case GET_ONE_IMG:
+            return {...state, oneImg: action.payload}
         default:
             return state;
     }
