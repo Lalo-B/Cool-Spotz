@@ -6,6 +6,7 @@ import * as spotsActions from '../../store/spots';
 import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
 import EditSpotModalItem from "../EditSpotModalItem/EditSpotModalItem";
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal'
+import Reviews from "../Reviews/Reviews";
 
 const SpotDetails = () => {
     const { spotId } = useParams();
@@ -42,7 +43,7 @@ const SpotDetails = () => {
                 <img src={img.img.url} className="spot-detail-img" />
                 <div className="details-box">
                     <h1>{spot.name}</h1>
-                    <p>Location: {spot.city} {spot.state} {spot.country}</p>
+                    <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
                     {/* <p>Hosted by: {spot.owner.firstName}{spot.owner.lastName}</p> */}
                     <p>description: {spot.description}</p>
                 </div>
@@ -54,6 +55,9 @@ const SpotDetails = () => {
             itemText='delete spot'
             modalComponent={<DeleteSpotModal spot={spot} />} />}
             <button onClick={()=>{alert('feature coming soon')}}>reserve spot</button>
+            <div className="reviews-box">
+                <Reviews props={{spot,user}}/>
+            </div>
         </div>
     )
 }

@@ -42,11 +42,13 @@ const Spots = () => {
                 {spots.map((spot) => {
                     let id = spot.id
                     return (
-                        <div key={id} className='spot-card' onClick={() => { send(id) }}>
+                        <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
+                            <span className="tooltiptext">{spot.name}</span>
                             <img className="spot-img" src={spotImgs[id - 1].url} />
                             <div className="card-text">
                                 <p className="card-text">{spot.city}</p>
                                 <p className="card-text">{spot.state}</p>
+                                <p className="card-text">{spot.price} night</p>
                             </div>
                         </div>
                     )

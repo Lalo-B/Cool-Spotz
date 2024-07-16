@@ -23,7 +23,7 @@ function Navigation({ isLoaded }) {
           <NavLink to="/">Home</NavLink>
         </li>
         <li className='nav-buttons'>
-          <NavLink to="/spots">Spots</NavLink>
+          <NavLink to="/reviews">reviews</NavLink>
         </li>
         {isLoaded && (
           <li className='nav-buttons'>

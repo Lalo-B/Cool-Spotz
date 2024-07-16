@@ -12,7 +12,7 @@ const AddSpotModal = () => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
-    const [url,setUrl] = useState('');
+    // const [url,setUrl] = useState('');
     const dispatch = useDispatch();
 
     const onSubmit = (e) => {
@@ -105,6 +105,13 @@ const AddSpotModal = () => {
                         type='text'
                         value={price}
                         onChange={(e) => { setPrice(e.target.value) }} />
+                </label>
+                <label>
+                    Img Url:
+                    <input
+                        type='text'
+                        value={url}
+                        onChange={(e) => { setUrl(e.target.value) }} />
                 </label>
                 <button type='submit'>submit</button>
                 <button onClick={autoFill}>autofill spot</button>

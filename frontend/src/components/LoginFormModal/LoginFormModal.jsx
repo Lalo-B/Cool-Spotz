@@ -10,7 +10,17 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-  // const err = {}
+  const err = {}
+
+  useEffect(()=>{
+    if(credential.length < 4){
+      err.buttonDisabled = true
+    }
+    if(password.length < 6){
+      err.buttonDisabled = true
+    }
+    setErrors(err);
+  },[credential,password])
 
 
   const handleSubmit = (e) => {
@@ -55,8 +65,8 @@ function LoginFormModal() {
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
-        <button onClick={setDefault} disabled={Object.values(errors).length > 0 ? true : false}>default</button>
+        <button type="submit" disabled={errors.buttonDisabled? true : false}>Log In</button>
+        <button onClick={setDefault} >Log in as Demo User</button>
       </form>
     </>
   );

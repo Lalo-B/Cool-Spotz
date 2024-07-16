@@ -31,14 +31,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>home</h1>
-      },
-      {
-        path: '/spots',
         element: <Spots />
       },{
         path: '/spots/:spotId',
         element: <SpotDetails />
+      },{
+        path: '/reviews',
+        element: <h1>reviews</h1>
       }
     ]
   }
