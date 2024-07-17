@@ -1,6 +1,6 @@
 /* nav css stuff */
 .profile-button {
-    color: red;
+    color: #FF5A5F;
     font-size: 40px;
     cursor: pointer;
     border-radius: 50%;
@@ -23,6 +23,7 @@
 .logo-box{
     display: flex;
     /* border: 1px solid red; */
+    color: #FF5A5F;
     align-items: center;
     height: 80px;
 }

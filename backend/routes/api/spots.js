@@ -13,6 +13,25 @@ router.put('/', doesOwnSpot);
 
 
 
+//get all reviews by spot id with review owner info attached
+router.get('/:spotId/reviews/user', async (req, res) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+    if (!spot) {
+        res.status(404);
+        return res.json({ message: "Spot could not be found" });
+    };
+    const reviews = await Review.findAll({
+        where: {
+            id: req.params.spotId
+        },
+        include: [{
+            model: User,
+            through: User.id
+        }]
+    });
+    res.status(200);
+    return res.json(reviews);
+});
 //get all reviews by a spots id
 router.get('/:spotId/reviews', async (req, res) => {
     const spot = await Spot.findByPk(req.params.spotId);
@@ -20,16 +39,11 @@ router.get('/:spotId/reviews', async (req, res) => {
         res.status(404);
         return res.json({ message: "Spot could not be found" });
     };
-
     const reviews = await Review.findAll({
         where: {
             id: req.params.spotId
         }
     });
-    // if (reviews.length === 0) {
-    //     res.status(404);
-    //     return res.json({ message: "Spot couldn't be found" });
-    // };
     res.status(200);
     return res.json(reviews);
 });

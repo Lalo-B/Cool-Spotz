@@ -1,0 +1,23 @@
+.reviews-header{
+    display: flex;
+    margin: 5px;
+    justify-content: left;
+}
+.review-header-box {
+    /* border: 2px solid red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 180px;
+    height: 40px;
+    /* color: #FF5A5F; */
+}
+/* .review {
+    margin: 0px;
+} */
+.review-items {
+    margin: 5px;
+}
+.rev-button {
+    cursor: pointer;
+}

@@ -106,13 +106,13 @@ const AddSpotModal = () => {
                         value={price}
                         onChange={(e) => { setPrice(e.target.value) }} />
                 </label>
-                <label>
+                {/* <label>
                     Img Url:
                     <input
                         type='text'
                         value={url}
                         onChange={(e) => { setUrl(e.target.value) }} />
-                </label>
+                </label> */}
                 <button type='submit'>submit</button>
                 <button onClick={autoFill}>autofill spot</button>
             </form>
