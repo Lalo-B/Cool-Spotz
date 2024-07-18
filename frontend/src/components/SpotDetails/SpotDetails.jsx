@@ -46,14 +46,17 @@ const SpotDetails = () => {
                     <div className="details-box">
                         <h1>{spot.name}</h1>
                         <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
-                        {/* <p>Hosted by: {spot.owner.firstName}{spot.owner.lastName}</p> */}
+                        <p>Hosted by: {spot.User.firstName} {spot.User.lastName}</p>
                         <p>description: {spot.description}</p>
                     </div>
                     <div className="reserve-box">
                         <div className="reserve-text">
                             <p>{spot.price} night</p>
-                            <FiStar />
-                            <p>{spot.averageRating? spot.averageRating : '#.#'}</p>
+                            <div className="right-side-reserve">
+                                <FiStar />
+                                <p style={{margin:'0px'}}>{spot.averageRating ? spot.averageRating : 'New'}</p>
+
+                            </div>
                         </div>
                         <button onClick={() => { alert('feature coming soon') }} className="reserve-button">reserve spot</button>
                     </div>

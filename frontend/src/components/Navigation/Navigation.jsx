@@ -1,9 +1,9 @@
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton/OpenModalButton';
-import LoginFormModal from '../LoginFormModal/LoginFormModal';
-import SignupFormModal from '../SignupFormModal/SignupFormModal';
+// import OpenModalButton from '../OpenModalButton/OpenModalButton';
+// import LoginFormModal from '../LoginFormModal/LoginFormModal';
+// import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import { FaAirbnb } from "react-icons/fa";
 import './Navigation.css';
 

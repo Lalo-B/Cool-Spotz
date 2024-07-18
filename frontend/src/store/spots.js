@@ -88,7 +88,7 @@ export const getOneSpot = (id) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
-        // console.log('this is data',data.spotInfo[0])
+        console.log('this is data',data)
         dispatch(getOne(data.spotInfo[0]));
         return data.spotInfo[0];
     }

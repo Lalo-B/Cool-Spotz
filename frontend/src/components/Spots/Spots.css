@@ -7,7 +7,7 @@
 }
 
 .spot-img {
-    height: 100px;
+    height: 170px;
     /* width: 100px; */
     border-radius: 10px;
 }
@@ -19,12 +19,22 @@
     height: auto;
     flex-wrap: wrap;
 }
-
+.card-text-box{
+    display: flex;
+    justify-content: space-between;
+}
+.left-text{
+    /* display: flex; */
+    width:fit-content;
+}
+.right-text{
+    display: flex;
+}
 .card-text {
     margin: 5px;
 }
 
-.upper-text {
+.second-heading {
     display: flex;
     justify-content: space-between;
 }
@@ -52,4 +62,7 @@
 .tooltip:hover .tooltiptext {
     visibility: visible;
 
+}
+#rating{
+    margin: 0px;
 }
