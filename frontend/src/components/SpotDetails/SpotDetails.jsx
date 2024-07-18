@@ -3,6 +3,7 @@ import "./SpotDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotsActions from '../../store/spots';
+import * as reviewsActions from '../../store/reviews.js';
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import EditSpotModalItem from "../EditSpotModalItem/EditSpotModalItem";
 import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal'
@@ -19,17 +20,16 @@ const SpotDetails = () => {
         async function innerFunction() {
             dispatch(spotsActions.getOneSpot(spotId))
             dispatch(spotsActions.getOneImgThunk(spotId))
+            dispatch(reviewsActions.getAvgStars(spotId))
         }
         innerFunction();
     }, [dispatch, spotId])
     const spot = useSelector((state) => { return state.spots.oneSpot });
     const img = useSelector((state) => { return state.spots.oneImg });
-    // const user = useSelector((state) => { return state.session.})
+    const avg = useSelector((state)=> { return state.reviews.avgStars})
+    const numOfRev = useSelector((state)=>{ return state.reviews.numOfRev})
     if (!spot) return;
     if (!img) return;
-    // console.log("🚀 ~ SpotDetails ~ img:", img)
-    // console.log("🚀 ~ SpotDetails ~ spot:", spot)
-
     const correctUser = (user, spot) => {
         if (user.id === spot.ownerId) {
             return true
@@ -54,7 +54,7 @@ const SpotDetails = () => {
                             <p>{spot.price} night</p>
                             <div className="right-side-reserve">
                                 <FiStar />
-                                <p style={{margin:'0px'}}>{spot.averageRating ? spot.averageRating : 'New'}</p>
+                                <p style={{margin:'0px'}}>{avg ? `${avg} · ${numOfRev}` : 'New'}</p>
 
                             </div>
                         </div>

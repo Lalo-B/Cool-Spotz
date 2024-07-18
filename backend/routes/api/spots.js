@@ -22,7 +22,7 @@ router.get('/:spotId/reviews/user', async (req, res) => {
     };
     const reviews = await Review.findAll({
         where: {
-            id: req.params.spotId
+            spotId: req.params.spotId
         },
         include: [{
             model: User,
@@ -32,6 +32,7 @@ router.get('/:spotId/reviews/user', async (req, res) => {
     res.status(200);
     return res.json(reviews);
 });
+
 //get all reviews by a spots id
 router.get('/:spotId/reviews', async (req, res) => {
     const spot = await Spot.findByPk(req.params.spotId);
@@ -171,6 +172,8 @@ router.get('/current', requireAuth, async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     const { review, stars } = req.body;
+    console.log("🚀 ~ router.post ~ stars:", stars)
+    console.log("🚀 ~ router.post ~ review:", review)
     const { user } = req;
     const foundSpot = await Spot.findByPk(req.params.spotId);
     if (foundSpot === null) {

@@ -14,34 +14,34 @@ const Reviews = ({ props }) => {
     const dispatch = useDispatch();
     const [isOwner, setIsOwner] = useState(false);
     const monthObj = { '01': 'January', '02': 'February', '03': 'March', '04': 'April', '05': 'May', '06': 'June', '07': 'July', '08': 'August', '09': 'September', '10': 'October', '11': 'November', '12': "december" };
-    // let hasRev;
+    const canDelete = () => {
+
+    }
 
     useEffect(() => {
         dispatch(reviewsActions.getReviewsofSpot(spot.id))
+        dispatch(reviewsActions.getAvgStars(spot.id))
         if (user.id === spot.ownerId) { setIsOwner(true) }
-        // hasRev = reviews.find((r)=>{
-        //     return r.User.id === user.id
-        // });
-    }, [dispatch, spot,user.id]);
+    }, [dispatch, spot, user.id]);
 
     const { reviews } = useSelector((state) => { return state.reviews });
+    const avgStars = useSelector((state)=>{ return state.reviews.avgStars});
     if (!reviews) return;
 
-    // console.log(hasRev);
 
     return (
         <>
             <div className='reviews-header'>
                 <div className='review-header-box'>
                     <FiStar />
-                    <p>{spot.averageRating ? spot.averageRating : '#.#'}  {reviews.length}</p>
-                    <h2>reviews</h2>
+                    <p>{avgStars ? `${avgStars} · ${reviews.length}` : 'New'}</p>
+                    <h2>{reviews.length > 1 ? 'reviews' : 'review'}</h2>
                 </div>
             </div>
             {isOwner ? null : <OpenModalButton
-            className='rev-button'
-            buttonText='Post Your Review'
-            modalComponent={<MakeReviewModal className='modal-comp'/>}/>}
+                className='rev-button'
+                buttonText='Post Your Review'
+                modalComponent={<MakeReviewModal className='modal-comp' spotId={spot.id}/>} />}
             {reviews.map((rev) => {
                 const monthNum = rev.createdAt.slice(5, 7);
                 const month = monthObj[monthNum];
@@ -54,12 +54,8 @@ const Reviews = ({ props }) => {
                 )
             })}
             <OpenModalButton
-
-            buttonText='delete review'
-            modalComponent={<DeleteReviewModal />}/>
-
-            {/* how to get styles onto the modal for cursor pointer */}
-            {/* {isOwner || hasRev ? <p>yes owner or has reviewed</p> : <p>you get to review here</p>} */}
+                buttonText='delete review'
+                modalComponent={<DeleteReviewModal spotId={spot.id}/>} />
         </>
     )
 }

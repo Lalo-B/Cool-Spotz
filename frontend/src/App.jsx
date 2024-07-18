@@ -7,6 +7,7 @@ import Navigation from "./components/Navigation/Navigation.jsx";
 import { restoreUser } from './store/session.js';
 import Spots from './components/Spots/Spots.jsx';
 import SpotDetails from "./components/SpotDetails/SpotDetails.jsx";
+import AddSpot from "./components/AddSpot/AddSpot.jsx";
 
 
 const Layout = () => {
@@ -38,6 +39,9 @@ const router = createBrowserRouter([
       },{
         path: '/reviews',
         element: <h1>reviews</h1>
+      },{
+        path: '/newSpot',
+        element: <AddSpot />
       }
     ]
   }

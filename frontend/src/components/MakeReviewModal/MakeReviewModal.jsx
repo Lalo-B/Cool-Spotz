@@ -1,29 +1,32 @@
 import { useEffect, useState } from "react";
 import * as reviewsActions from '../../store/reviews';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FiStar } from "react-icons/fi";
 import './MakeReviewModal.css';
 
-const MakeReviewModal = () => {
+const MakeReviewModal = ({spotId}) => {
+
     const [review, setReview] = useState();
     const [star, setStar] = useState();
     const [rating, setRating] = useState(0);
+    // console.log("🚀 ~ MakeReviewModal ~ rating:", rating)
     const [activeRating, setActiveRating] = useState(rating);
     const [errors,setErrors] = useState({});
     const dispatch = useDispatch();
     const disabled = false;
     let res;
+    const user = useSelector((state)=>{return state.session.user})
 
     useEffect(() => {
         setActiveRating(rating);
-        // console.log(rating)
-        // console.log(activeRating)
+        setStar(rating);
     }, [rating]);
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const reviewObj = { review, star };
-        res = dispatch(reviewsActions.makeReviewThunk(reviewObj))
+        // setStar(rating);
+        const reviewObj = { review,stars: star };
+        res = dispatch(reviewsActions.makeReviewThunk(reviewObj,spotId))
         if(res.errors)setErrors(res.errors)
     };
 
@@ -80,7 +83,7 @@ const MakeReviewModal = () => {
                     </div>
                     <p>Stars</p>
                 </div>
-                <button id='button' >Submit Your Review</button>
+                <button id='button'>Submit Your Review</button>
             </form>
         </div>
     )
