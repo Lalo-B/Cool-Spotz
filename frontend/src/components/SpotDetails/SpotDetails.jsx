@@ -1,12 +1,11 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import "./SpotDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotsActions from '../../store/spots';
 import * as reviewsActions from '../../store/reviews.js';
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import EditSpotModalItem from "../EditSpotModalItem/EditSpotModalItem";
-import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal'
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 import Reviews from "../Reviews/Reviews";
 import { FiStar } from "react-icons/fi";
 
@@ -19,17 +18,15 @@ const SpotDetails = () => {
     useEffect(() => {
         async function innerFunction() {
             dispatch(spotsActions.getOneSpot(spotId))
-            dispatch(spotsActions.getOneImgThunk(spotId))
             dispatch(reviewsActions.getAvgStars(spotId))
         }
         innerFunction();
     }, [dispatch, spotId])
     const spot = useSelector((state) => { return state.spots.oneSpot });
-    const img = useSelector((state) => { return state.spots.oneImg });
+    // console.log("🚀 ~ SpotDetails ~ spot:", spot)
     const avg = useSelector((state)=> { return state.reviews.avgStars})
     const numOfRev = useSelector((state)=>{ return state.reviews.numOfRev})
-    if (!spot) return;
-    if (!img) return;
+    if (!spot) return; // if i move this higher it breaks why?
     const correctUser = (user, spot) => {
         if (user.id === spot.ownerId) {
             return true
@@ -37,11 +34,12 @@ const SpotDetails = () => {
             return false
         }
     }
+    // console.log(spot)
 
     return (
         <div className="details-body">
             <div className="one-spot">
-                <img src={img.img.url} className="spot-detail-img" />
+                <img src={spot.SpotImages[0].url} className="spot-detail-img" />
                 <div className="middle-sect">
                     <div className="details-box">
                         <h1>{spot.name}</h1>
@@ -62,12 +60,11 @@ const SpotDetails = () => {
                     </div>
                 </div>
             </div>
-            {correctUser(user, spot) && <OpenModalButton
-                buttonText='edit spot'
-                modalComponent={<EditSpotModalItem spot={spot} />} />}
+            {correctUser(user, spot) && <NavLink to='/edit-spot'> Update </NavLink>}
             {correctUser(user, spot) && <OpenModalButton
                 buttonText='delete spot'
-                modalComponent={<DeleteSpotModal spot={spot} />} />}
+                modalComponent={<DeleteSpotModal spot={spot} />}
+                />}
 
             <div className="reviews-box">
                 <Reviews props={{ spot, user }} />

@@ -27,7 +27,7 @@ let seedArr = [];
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Spots';
-    for (let i = 0; i <= 19; i++) {
+    for (let i = 0; i <= 11; i++) {
       const spot = createRandomSpot();
       seedArr.push(spot);
     };

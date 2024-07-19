@@ -2,14 +2,11 @@ import { useEffect } from "react";
 import * as spotsActions from '../../store/spots';
 import { useDispatch, useSelector } from "react-redux";
 
-const SpotsImgs = ({spot}) => {
+const SpotsImgs = () => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        async function innerFunct(){
-            const imgRes = await dispatch(spotsActions.getAllImg());
-        }
-        innerFunct()
+        dispatch(spotsActions.getAllImg());
     },[dispatch]);
 
     const spotImgs = useSelector((state) => {return state.spots.spotImgs});

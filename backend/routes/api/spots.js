@@ -172,8 +172,8 @@ router.get('/current', requireAuth, async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     const { review, stars } = req.body;
-    console.log("🚀 ~ router.post ~ stars:", stars)
-    console.log("🚀 ~ router.post ~ review:", review)
+    // console.log("🚀 ~ router.post ~ stars:", stars)
+    // console.log("🚀 ~ router.post ~ review:", review)
     const { user } = req;
     const foundSpot = await Spot.findByPk(req.params.spotId);
     if (foundSpot === null) {
@@ -266,6 +266,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 // add an image to a spot based on the spots id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
+    // console.log('ADD AN IMAGE TO A SPOT',req.body)
+
     const spot = await Spot.findByPk(req.params.spotId);
     if (spot === null) {
         res.status(404);
@@ -278,10 +280,12 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         return res.json(res.body);
     };
     const newImg = req.body.url;
+    console.log("🚀 ~ router.post ~ newImg:", newImg)
     const img = await SpotImage.create({
         spotId: req.params.spotId,
         url: newImg,
-        preview: true
+        preview: true,
+
     });
 
     // res.body = {
@@ -335,6 +339,7 @@ router.get('/:spotId', requireAuth, async (req, res) => {
 
 // create new spot
 router.post('/', requireAuth, async (req, res) => {
+    // console.log('this is req.body in the route handler for CREATE NEW SPOT',req.body)
     const { user } = req;
     let spotObj = {
         ownerId,
@@ -512,7 +517,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 });
 
 
-
+// router.get('/', a)
 
 // find all spots with query parameters
 
@@ -601,7 +606,11 @@ router.get("/", async (req, res) => {
 
     let allSpots = await Spot.findAll({
         where,
-        ...pagination
+        ...pagination,
+        include: [{
+            model: SpotImage,
+            through: Spot.id,
+        }]
     });
 
     res.status(200);

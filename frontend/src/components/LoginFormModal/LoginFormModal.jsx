@@ -20,7 +20,7 @@ function LoginFormModal() {
       err.buttonDisabled = true
     }
     setErrors(err);
-  },[credential,password])
+  },[credential,password]) //linter says needs err in the array
 
 
   const handleSubmit = (e) => {

@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const seedArr = [];
 const seedFunct = () => {
-  for(let i = 0; i <= 19; i++){
+  for(let i = 0; i <= 11; i++){
     seedArr.push({
       reviewId: (i+1),
       url: "https://media.istockphoto.com/id/1293762741/photo/modern-living-room-interior-3d-render.jpg?s=612x612&w=0&k=20&c=iZ561ZIXOtPYGSzqlKUnLrliorreOYVz1pzu8WJmrnc="

@@ -4,9 +4,11 @@ const MAKE_ONE = 'spots/makeOne';
 const GET_ALL = 'spots/getAll';
 const EDIT = 'spots/edit';
 const REMOVE_ONE = 'spots/removeOne';
-const GET_ALL_IMGS = 'spots/spot-images/getAllImgs';
 const GET_ONE = 'spots/getOne';
 const GET_ONE_IMG = 'spots/getOneImg';
+const ADD_IMAGE = 'spots/addImage';
+const GET_USER_SPOTS = 'spots/get-user-spots';
+
 
 const makeOne = (spot) => {
     return {
@@ -37,12 +39,6 @@ const removeOne = (spot) => {
     };
 };
 
-const getAllImages = (imgs) => {
-    return {
-        type: GET_ALL_IMGS,
-        payload: imgs
-    }
-}
 
 const getOne = (spot) => {
     return {
@@ -58,28 +54,31 @@ const getOneImg = (img) => {
     }
 }
 
+const addImg = (img) => {
+    return {
+        type: ADD_IMAGE,
+        payload: img
+    }
+}
+
+const userSpots = (spots) => {
+    return {
+        type: GET_USER_SPOTS,
+        payload: spots
+    }
+}
+
+
 export const getAllThunk = () => async dispatch => {
     const res = await csrfFetch('/api/spots');
 
     if(res.ok){
         const data = await res.json();
-        // console.log('this is data in thunk',data.Spots)
         dispatch(getAll(data.Spots)) //or just data?
-        return data;
+        return data.Spots;
     } else {
         const errors = await res.json();
         return errors;
-    }
-}
-
-export const getAllImg = () => async dispatch => {
-    const res = await csrfFetch('/api/spot-images');
-
-    if(res.ok){
-        const data = await res.json();
-        // console.log('this is data for spot imgs',data.spotImgs)
-        dispatch(getAllImages(data.spotImgs));
-        return data.spotImgs;
     }
 }
 
@@ -88,7 +87,6 @@ export const getOneSpot = (id) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
-        // console.log('this is data',data)
         dispatch(getOne(data.spotInfo[0]));
         return data.spotInfo[0];
     }
@@ -104,7 +102,7 @@ export const getOneImgThunk = (id) => async dispatch => {
     }
 }
 
-export const editSpot = (spot,user) => async dispatch => {
+export const editSpot = (spot) => async dispatch => {
     const spotId = spot.id
     const res = await csrfFetch(`/api/spots/${spotId}`,{
         method: 'PUT',
@@ -125,17 +123,20 @@ export const deleteSpot = (spotId) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
-        console.log("🚀 ~ deleteSpot ~ data:", data)
+        // console.log("🚀 ~ deleteSpot ~ data:", data)
         dispatch(removeOne(data));
         return data;
     }
 }
 
 export const addSpot = (spot) => async dispatch => {
-    const res = csrfFetch('/api/spots',{
+
+    const res = await csrfFetch('/api/spots',{
         method: 'post',
         body: JSON.stringify(spot)
     });
+
+
 
     if(res.ok){
         const data = await res.json();
@@ -144,14 +145,41 @@ export const addSpot = (spot) => async dispatch => {
     }
 }
 
-const spotsReducer = (state = {spots: null, spotImgs: null}, action) => {
+export const addImgThunk = (id,url) => async dispatch => {
+    // console.log("🚀 ~ addImgThunk ~ url:", url)
+    // console.log('this is the addimg thunk in the spots.js store file before the fetch')
+    const res = await csrfFetch(`/api/spots/${id}/images`,{
+        method: 'post',
+        headaers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({url: url})
+    });
+    // console.log('this is the addimg thunk in the spots.js store file AFTER THE FETCH')
+    // console.log('this is res', await res.json())
+    if(res.ok){
+        const data = await res.json();
+        dispatch(addImg(data));
+        return data;
+    }
+}
+
+export const getUserSpots = () => async dispatch => {
+    const res = await csrfFetch('/api/spots/current');
+
+     if (res.ok){
+        const data = await res.json();
+        dispatch(userSpots(data));
+        return data;
+     }
+}
+const spotsReducer = (state = {spots: null}, action) => {
     switch (action.type) {
         case GET_ALL:
             return {...state, spots: action.payload};
         case MAKE_ONE:{
-            const newState = {...state, spots: [...state.spots]}
-            console.log(newState)
-            return {...state, spots: action.payload};
+            const newState = {...state}
+            newState.spots.push(action.payload);
+            console.log('this is new state checking for arr length',newState);
+            return newState;
         }
         case REMOVE_ONE:{
             const newState = {...state}
@@ -163,12 +191,15 @@ const spotsReducer = (state = {spots: null, spotImgs: null}, action) => {
             newState.oneSpot = action.payload
             return newState
         }
-        case GET_ALL_IMGS:
-            return {...state, spotImgs: action.payload};
+        case ADD_IMAGE: {
+            return state
+        }
         case GET_ONE:
             return {...state, oneSpot: action.payload};
         case GET_ONE_IMG:
-            return {...state, oneImg: action.payload}
+            return {...state, oneImg: action.payload};
+        case GET_USER_SPOTS:
+            return {...state, spots: action.payload};
         default:
             return state;
     }

@@ -14,8 +14,12 @@ const Reviews = ({ props }) => {
     const dispatch = useDispatch();
     const [isOwner, setIsOwner] = useState(false);
     const monthObj = { '01': 'January', '02': 'February', '03': 'March', '04': 'April', '05': 'May', '06': 'June', '07': 'July', '08': 'August', '09': 'September', '10': 'October', '11': 'November', '12': "december" };
-    const canDelete = () => {
-
+    const canDelete = (rev,user) => {
+        if(user.id === rev.User.id){
+            return true
+        } else {
+            return false
+        }
     }
 
     useEffect(() => {
@@ -24,8 +28,9 @@ const Reviews = ({ props }) => {
         if (user.id === spot.ownerId) { setIsOwner(true) }
     }, [dispatch, spot, user.id]);
 
-    const { reviews } = useSelector((state) => { return state.reviews });
+    const reviews = useSelector((state) => { return state.reviews.reviews });
     const avgStars = useSelector((state)=>{ return state.reviews.avgStars});
+    // shouldnt these cause a rerender when we update the state with a new review?
     if (!reviews) return;
 
 
@@ -50,12 +55,12 @@ const Reviews = ({ props }) => {
                         <h4 className='review-items'>{rev.User.firstName}</h4>
                         <p className='review-items'>{month} 20{rev.createdAt.slice(2, 4)}</p>
                         <p className='review-items'>review: {rev.review}</p>
+                        {canDelete(rev,user) ? <OpenModalButton
+                buttonText='delete review'
+                modalComponent={<DeleteReviewModal revId={rev.id}/>} /> : null}
                     </div>
                 )
             })}
-            <OpenModalButton
-                buttonText='delete review'
-                modalComponent={<DeleteReviewModal spotId={spot.id}/>} />
         </>
     )
 }

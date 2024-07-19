@@ -9,7 +9,7 @@ const { faker } = require('@faker-js/faker');
 
 const seedArr = [];
 const seedFunct = () => {
-  for(let i = 0; i <= 19; i++){
+  for(let i = 0; i <= 11; i++){
     seedArr.push({
       spotId: (i+1),
       url: 'https://media.istockphoto.com/id/1272163106/photo/large-house-with-steep-roof-and-side-entry-three-car-garage.jpg?s=1024x1024&w=is&k=20&c=WEwH-MlAqCy2kSbnaWf1ZQLHhQJHUT3avWrSacFo3Ls=',

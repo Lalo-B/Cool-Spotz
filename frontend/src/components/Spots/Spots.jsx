@@ -12,20 +12,19 @@ const Spots = () => {
     useEffect(() => {
         async function innerFunct() {
             await dispatch(spotsActions.getAllThunk());
-            await dispatch(spotsActions.getAllImg());
         }
         innerFunct();
     }, [dispatch])
 
     const spots = useSelector((state) => { return state.spots.spots })
-    const spotImgs = useSelector((state) => { return state.spots.spotImgs });
-    const user = useSelector((state) => { return state.session.user })
+    // console.log('this is spots', spots)
+    useSelector((state) => { return state.session.user })
     if (!spots) return;
-    if (!spotImgs) return;
     const send = (id) => {
         navigate(`/spots/${id}`)
     }
 
+    // console.log('this is spot',spots[19].SpotImages)
     return (
         <>
             <div className="second-heading">
@@ -35,11 +34,12 @@ const Spots = () => {
                 {spots.map((spot) => {
                     let id = spot.id
                     let avg = spot.averageRating;
-                    if(avg.toString().length === 1){avg = `${avg}.0`}
+                    let imgs = spot.SpotImages;
+                    if(avg && avg.toString().length === 1){avg = `${avg}.0`}
                     return (
                         <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
                             <span className="tooltiptext">{spot.name}</span>
-                            <img className="spot-img" src={spotImgs[id - 1].url} />
+                            <img className="spot-img" src={imgs ? imgs[0].url : null} alt=''/>
                             <div className="card-text-box">
                                 <div className="left-text">
                                     <p className="card-text">{spot.city}, {spot.state}</p>

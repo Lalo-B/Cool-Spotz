@@ -22,7 +22,7 @@ let seedArr = [];
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Reviews';
-    for(let i = 0; i <= 19; i++){
+    for(let i = 0; i <= 11; i++){
       seedArr.push(createRandomReview(i+1));
       seedArr.push(createRandomReview(i+1));
     };

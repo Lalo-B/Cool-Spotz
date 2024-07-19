@@ -3,19 +3,21 @@ import * as reviewsActions from '../../store/reviews';
 import { useDispatch, useSelector } from "react-redux";
 import { FiStar } from "react-icons/fi";
 import './MakeReviewModal.css';
+import {useModal} from '../../context/Modal.jsx';
+
 
 const MakeReviewModal = ({spotId}) => {
+    const {closeModal} = useModal()
 
     const [review, setReview] = useState();
     const [star, setStar] = useState();
     const [rating, setRating] = useState(0);
-    // console.log("🚀 ~ MakeReviewModal ~ rating:", rating)
     const [activeRating, setActiveRating] = useState(rating);
     const [errors,setErrors] = useState({});
     const dispatch = useDispatch();
     const disabled = false;
     let res;
-    const user = useSelector((state)=>{return state.session.user})
+    useSelector((state)=>{return state.session.user})
 
     useEffect(() => {
         setActiveRating(rating);
@@ -27,7 +29,8 @@ const MakeReviewModal = ({spotId}) => {
         // setStar(rating);
         const reviewObj = { review,stars: star };
         res = dispatch(reviewsActions.makeReviewThunk(reviewObj,spotId))
-        if(res.errors)setErrors(res.errors)
+        if(res.errors)setErrors(res.errors);
+        closeModal();
     };
 
     const onChange = (number) => {

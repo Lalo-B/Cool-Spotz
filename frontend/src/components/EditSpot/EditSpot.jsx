@@ -1,53 +1,46 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as spotsActions from '../../store/spots.js';
-import './AddSpot.css';
+import './EditSpot.css';
 import { useNavigate } from "react-router-dom";
 
-const AddSpot = () => {
+const EditSpot = () => {
+    const spot = useSelector((state)=>{return state.spots.oneSpot});
+    // if(!spot)return;
+    const user = useSelector((state)=>{ return state.session.user});
+    // console.log(spot)
     const navigate = useNavigate();
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
-    const [url, setUrl] = useState('');
+    const [address, setAddress] = useState(spot.address);
+    const [city, setCity] = useState(spot.city);
+    const [state, setState] = useState(spot.state);
+    const [country, setCountry] = useState(spot.country);
+    const [lat, setLat] = useState(spot.lat);
+    const [lng, setLng] = useState(spot.lng);
+    const [name, setName] = useState(spot.name);
+    const [description, setDescription] = useState(spot.description);
+    const [price, setPrice] = useState(spot.price);
+    const [url, setUrl] = useState(spot.SpotImages[0].url);
     const dispatch = useDispatch();
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const newSpot = {
-            address, city, state, country,
-            lat, lng, name, description, price
+        const update = {
+            id: spot.id,
+            // averageRating: spot.averageRating,
+            address,city,state,country,
+            lat,lng,name,description,price,
+            ownerId: spot.ownerId
         };
-        const res = await dispatch(spotsActions.addSpot(newSpot));
-        await dispatch(spotsActions.addImgThunk(res.id,url))
-        navigate(`/spots/${res.id}`);
+        // console.log(update.id)
+        dispatch(spotsActions.editSpot(update, user))
+        navigate(`/spots/${spot.id}`);
     }
 
-    const autoFill = (e) => {
-        e.preventDefault();
-        setAddress('123 s street st');
-        setCity('coolCity');
-        setState('midState');
-        setCountry('murica');
-        setLat(48.8584);
-        setLng(2.2945);
-        setName('new spot');
-        setDescription('The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal.');
-        setPrice('99');
-        setUrl('https://images.pexels.com/photos/1115804/pexels-photo-1115804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')
-        //right now it breaks cuz it needs url in spots.jsx
-    }
     return (
         <div className="biggest">
             <div className="big-box">
                 <div className="head-box">
-                    <h1 className="headers">Create a new Spot</h1>
+                    <h1 className="headers">Update your Spot</h1>
                     <h3 className="headers">Where&apos;s your place located?</h3>
                     <p className="headers">Guests will only get your exact address once they booked a
                         reservation.</p>
@@ -153,11 +146,12 @@ const AddSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit'>Create Spot</button>
-                    <button onClick={autoFill}>autofill spot</button>
+                    <button type='submit'>Update Spot</button>
                 </form>
             </div>
         </div>
     )
 }
-export default AddSpot;
+
+
+export default EditSpot;

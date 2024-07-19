@@ -80,10 +80,11 @@ const reviewsReducer = (state = { reviews: null }, action) => {
         case GET_REVIEWS:
             return { ...state, reviews: action.payload };
         case MAKE_REVIEW:
-            return { ...state, oneReview: action.payload };
+            return { ...state, reviews: action.payload };
         case DELETE_REVIEW: {
             const newState = { ...state };
-            delete newState.oneReview;
+            const newrevs = newState.reviews.filter((el)=>{return el.id !== action.payload});
+            newState.reviews = newrevs;
             return newState;
         }
         case AVERAGE_STAR: {
