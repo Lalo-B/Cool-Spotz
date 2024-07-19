@@ -1,0 +1,69 @@
+.spot-card {
+    justify-content: center;
+    margin: 5px;
+    border: 1px solid grey;
+    border-radius: 11px;
+    cursor: pointer;
+}
+
+.spot-img {
+    height: 170px;
+    /* width: 100px; */
+    border-radius: 10px;
+}
+
+.card-container {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    height: auto;
+    flex-wrap: wrap;
+}
+.card-text-box{
+    display: flex;
+    justify-content: space-between;
+}
+.left-text{
+    /* display: flex; */
+    width:fit-content;
+}
+.right-text{
+    display: flex;
+}
+.card-text {
+    margin: 5px;
+}
+
+.second-heading {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: grey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.9;
+
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+
+}
+#rating{
+    margin: 0px;
+}
+

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-// import LoginFormModal from "./components/LoginFormModal/LoginFormModal.jsx";
-// import SignUpModal from './components/SignUpModal/SignUpModal.jsx';
 import Navigation from "./components/Navigation/Navigation.jsx";
 import { restoreUser } from './store/session.js';
+import Spots from './components/Spots/Spots.jsx';
+import SpotDetails from "./components/SpotDetails/SpotDetails.jsx";
+import AddSpot from "./components/AddSpot/AddSpot.jsx";
+import ManageSpots from "./components/ManageSpots/ManageSpots.jsx";
+import EditSpot from "./components/EditSpot/EditSpot.jsx";
 
 
 const Layout = () => {
@@ -29,8 +32,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>home</h1>
-      },
+        element: <Spots />
+      },{
+        path: '/spots/:spotId',
+        element: <SpotDetails />
+      },{
+        path: '/reviews',
+        element: <h1>reviews</h1>
+      },{
+        path: '/newSpot',
+        element: <AddSpot />
+      },{
+        path:'/manage',
+        element: <ManageSpots />
+      },{
+        path: '/edit-spot',
+        element: <EditSpot/>
+      }
     ]
   }
 ])

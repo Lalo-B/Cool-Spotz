@@ -1,0 +1,31 @@
+.biggest{
+    display: flex;
+    justify-content: center;
+}
+.big-box{
+    width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.headers{
+    margin: 5px 0px;
+    display: flex;
+    justify-content: left;
+}
+input {
+    width: 100%;
+    background-color: aliceblue;
+    border-radius: 3px;
+}
+textarea{
+    width: 100%;
+    background-color: aliceblue;
+    border-radius: 3px;
+    border: 2px solid black;
+    resize: none;
+}
+p {
+    font-size: 13px;
+}

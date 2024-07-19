@@ -1,9 +1,44 @@
 /* nav css stuff */
 .profile-button {
-    color: red;
-    font-size: 100px;
+    color: #FF5A5F;
+    font-size: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 0px;
 }
 
 .hidden {
     display: none;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid grey;
+    height:fit-content
+}
+.logo {
+    font-size: 50px;
+    cursor: pointer;
+}
+.logo-box{
+    display: flex;
+    /* border: 1px solid red; */
+    color: #FF5A5F;
+    align-items: center;
+    height: 80px;
+}
+.airbnb{
+    /* font-family: */
+}
+.no-bullets {
+    list-style-type: none;
+    cursor: pointer;
+}
+.profile-group{
+    display: flex;
+    align-items: center;
+    margin: 10px
+}
+.nav-buttons{
+    margin: 5px;
 }

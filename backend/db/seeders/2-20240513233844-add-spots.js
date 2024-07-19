@@ -17,7 +17,8 @@ const createRandomSpot = () => {
     lng: faker.location.longitude(),
     name: faker.lorem.words({min:1,max:4}),
     description: faker.lorem.lines({min:2, max:3}),
-    price: faker.commerce.price({min: 40, max: 2500,dec: 0, symbol: '$'})
+    price: faker.commerce.price({min: 40, max: 500,dec: 0, symbol: '$'}),
+    averageRating: 4.0
   }
 };
 let seedArr = [];
@@ -26,7 +27,7 @@ let seedArr = [];
 module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'Spots';
-    for (let i = 0; i <= 19; i++) {
+    for (let i = 0; i <= 11; i++) {
       const spot = createRandomSpot();
       seedArr.push(spot);
     };

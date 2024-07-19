@@ -1,5 +1,5 @@
 const express = require('express');
-const { Review, ReviewImage } = require('../../db/models');
+const { Review, ReviewImage, User } = require('../../db/models');
 const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
 
 const router = express.Router();
@@ -67,30 +67,6 @@ router.get('/current',requireAuth, async (req, res) => {
     return res.json(reviews);
 });
 
-
-
-// //create a review for a spot based on the spots id
-// router.post('/:spotId',requireAuth, async (req, res) => {
-//     const body = req.body;
-//     if (!body.review || typeof (body.stars) !== number) {
-//         res.status(400);
-//         res.header('content-type', 'application/json');
-//         res.body = {
-//             messgae: 'Bad Request',
-//             errors: {
-//                 review: 'Review text is required',
-//                 stars: 'Stars must be an integer from 1 to 5'
-//             }
-//         }
-//     }
-//     const newReview = Review.create({
-//         userId: req.user.id,
-//         spotId: req.query.spotId,
-//         review: body.review,
-//         stars: body.stars
-//     });
-//     return res.json(newReview)
-// });
 
 //edit a review
 router.put('/:reviewId', requireAuth, async (req, res) => {
@@ -169,6 +145,23 @@ router.delete('/:reviewId', requireAuth, async(req,res)=>{
     return res.json({message: "Successfully deleted"});
 });
 
+//get all reviews
+router.get('/all', async (req,res)=>{
+    const reviews = await Review.findAll({
+        where: {},
+        include: [{
+                model: User,
+                through: User.id
+            }]
+    });
+    let obj = {};
+    reviews.forEach(el => {
+        obj[el.id] = el;
+    });
+    res.status(200);
+    return res.json(obj);
+})
+
 //get all reviews of current user
 router.get('/', requireAuth, async (req, res) => {
     const { user } = req;
@@ -179,6 +172,8 @@ router.get('/', requireAuth, async (req, res) => {
     });
     res.json(reviews)
 });
+
+
 
 router.use(authErrorCatcher);
 module.exports = router;

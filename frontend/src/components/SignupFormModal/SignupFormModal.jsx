@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
@@ -14,13 +14,24 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const err = {anyEmpty: false};
+
+  useEffect(()=>{
+    if(!email || !username || !firstName || !lastName || !password || !confirmPassword){
+      err.anyEmpty = true;
+    }
+    if(username.length < 4 || password.length < 6){
+      err.lengthCheck = true;
+    }
+    setErrors(err);
+  },[firstName,lastName,email,username,password,confirmPassword])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
-        sessionActions.signup({
+        sessionActions.signUp({
           email,
           username,
           firstName,
@@ -45,6 +56,26 @@ function SignupFormModal() {
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
+      <label>
+          First Name
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.firstName && <p>{errors.firstName}</p>}
+        <label>
+          Last Name
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+        </label>
+        {errors.lastName && <p>{errors.lastName}</p>}
         <label>
           Email
           <input
@@ -65,26 +96,6 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -107,7 +118,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={errors.anyEmpty || errors.lengthCheck}>Sign Up</button>
       </form>
     </>
   );
