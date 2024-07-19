@@ -16,30 +16,36 @@ const SpotDetails = () => {
 
 
     useEffect(() => {
-        async function innerFunction() {
+        // async function innerFunction() {
             dispatch(spotsActions.getOneSpot(spotId))
             dispatch(reviewsActions.getAvgStars(spotId))
-        }
-        innerFunction();
+        // }
+        // innerFunction();
     }, [dispatch, spotId])
     const spot = useSelector((state) => { return state.spots.oneSpot });
-    // console.log("🚀 ~ SpotDetails ~ spot:", spot)
-    const avg = useSelector((state)=> { return state.reviews.avgStars})
-    const numOfRev = useSelector((state)=>{ return state.reviews.numOfRev})
+    const avg = useSelector((state) => { return state.reviews.avgStars })
+    const numOfRev = useSelector((state) => { return state.reviews.numOfRev })
     if (!spot) return; // if i move this higher it breaks why?
     const correctUser = (user, spot) => {
+        if (!user) { return false }
         if (user.id === spot.ownerId) {
             return true
         } else {
             return false
         }
     }
-    // console.log(spot)
 
     return (
         <div className="details-body">
             <div className="one-spot">
-                <img src={spot.SpotImages[0].url} className="spot-detail-img" />
+                <div className="image-container">
+                    {/* {console.log(spot)} */}
+                    {spot.SpotImages.length >= 1 && <img src={spot.SpotImages[0].url} className="spot-detail-img one" />}
+                    {spot.SpotImages.length >= 2 && <img src={spot.SpotImages[1].url} className="spot-detail-img two" />}
+                    {spot.SpotImages.length >= 3 && <img src={spot.SpotImages[2].url} className="spot-detail-img three" />}
+                    {spot.SpotImages.length >= 4 && <img src={spot.SpotImages[3].url} className="spot-detail-img four" />}
+                    {spot.SpotImages.length === 5 && <img src={spot.SpotImages[4].url} className="spot-detail-img five" />}
+                </div>
                 <div className="middle-sect">
                     <div className="details-box">
                         <h1>{spot.name}</h1>
@@ -52,7 +58,7 @@ const SpotDetails = () => {
                             <p>{spot.price} night</p>
                             <div className="right-side-reserve">
                                 <FiStar />
-                                <p style={{margin:'0px'}}>{avg ? `${avg} · ${numOfRev}` : 'New'}</p>
+                                <p style={{ margin: '0px' }}>{isNaN(avg) ? 'New' : `${avg} · ${numOfRev}`}</p>
 
                             </div>
                         </div>
@@ -64,7 +70,7 @@ const SpotDetails = () => {
             {correctUser(user, spot) && <OpenModalButton
                 buttonText='delete spot'
                 modalComponent={<DeleteSpotModal spot={spot} />}
-                />}
+            />}
 
             <div className="reviews-box">
                 <Reviews props={{ spot, user }} />

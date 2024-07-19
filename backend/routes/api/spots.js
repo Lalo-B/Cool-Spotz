@@ -165,6 +165,10 @@ router.get('/current', requireAuth, async (req, res) => {
         where: {
             ownerId: user.id
         },
+        include: [{
+            model: SpotImage,
+            through: Spot.id
+        }]
     });
     return res.json(spots);
 });
@@ -298,7 +302,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 
 // get details for a spot from an id
-router.get('/:spotId', requireAuth, async (req, res) => {
+router.get('/:spotId', async (req, res) => {
     if (req.params.spotId === undefined) {
         res.status(404);
         return res.json({
@@ -435,19 +439,33 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // update a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
     let spot;
+    const currentUser = req.user;
+    let spotId = req.params.spotId;
     // console.log('this is req.body in backend', req.body) //empty obj
     // console.log('this is the params in back end',req.params.spotId)
     if (req.params.spotId) {
-        spot = await Spot.findByPk(req.params.spotId);
+        spot = await Spot.findOne({
+            where: {
+                id: req.params.spotId,
+                // ownderId: currentUser.id
+            },
+            include: [{
+                model: SpotImage,
+                through: Spot.id
+            },{
+                model: User,
+                through: Spot.id
+            }]
+        });
     };
 
-    // console.log('this is spot in the back end',spot)
+    console.log('this is spot in the back end',spot)
 
     const updateObj = {
         address, city, state, country, lat,
         lng, name, description, price
     } = req.body;
-    console.log("🚀 ~ router.put ~ updateObj:", updateObj)
+    // console.log("🚀 ~ router.put ~ updateObj:", updateObj)
 
 
     if (Object.keys(updateObj).length === 0) {
@@ -489,7 +507,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
             return res.json(res.body);
         }
     };
-    console.log(req.user.id === spot.ownerId)
+    // console.log(req.user.id === spot.ownerId)
 
     if (!spot) {
         res.status(404);
@@ -511,7 +529,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
             price: updateObj.price
         });
         await spot.save();
-        res.body = updateObj;
+        res.body = {...updateObj, SpotImages: spot.SpotImages, User: spot.User};
         return res.json(res.body);
     };
 });

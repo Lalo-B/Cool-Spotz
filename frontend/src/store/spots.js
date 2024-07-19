@@ -87,6 +87,8 @@ export const getOneSpot = (id) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
+        // console.log('this is one spot', data.spotInfo[0]);
+        console.log('inside the get one spot thunk')
         dispatch(getOne(data.spotInfo[0]));
         return data.spotInfo[0];
     }
@@ -111,6 +113,7 @@ export const editSpot = (spot) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
+        console.log('did we edit propperly?',data)
         dispatch(edit(data));
         return data;
     }
@@ -123,8 +126,8 @@ export const deleteSpot = (spotId) => async dispatch => {
 
     if(res.ok){
         const data = await res.json();
-        // console.log("🚀 ~ deleteSpot ~ data:", data)
-        dispatch(removeOne(data));
+        console.log("🚀 ~ deleteSpot ~ data:", data)
+        dispatch(removeOne(spotId));
         return data;
     }
 }
@@ -135,8 +138,6 @@ export const addSpot = (spot) => async dispatch => {
         method: 'post',
         body: JSON.stringify(spot)
     });
-
-
 
     if(res.ok){
         const data = await res.json();
@@ -167,6 +168,7 @@ export const getUserSpots = () => async dispatch => {
 
      if (res.ok){
         const data = await res.json();
+        console.log('this is user spots',data)
         dispatch(userSpots(data));
         return data;
      }
@@ -178,13 +180,14 @@ const spotsReducer = (state = {spots: null}, action) => {
         case MAKE_ONE:{
             const newState = {...state}
             newState.spots.push(action.payload);
-            console.log('this is new state checking for arr length',newState);
+            // console.log('this is new state checking for arr length',newState);
             return newState;
         }
         case REMOVE_ONE:{
             const newState = {...state}
-            delete newState.oneSpot
-            return {newState}
+            const spotIndex = newState.spots.findIndex((el)=>{return el.id === action.payload})
+            newState.spots.splice(spotIndex,1);
+            return newState;
         }
         case EDIT: {
             const newState = {...state}
@@ -194,8 +197,9 @@ const spotsReducer = (state = {spots: null}, action) => {
         case ADD_IMAGE: {
             return state
         }
-        case GET_ONE:
+        case GET_ONE:{
             return {...state, oneSpot: action.payload};
+        }
         case GET_ONE_IMG:
             return {...state, oneImg: action.payload};
         case GET_USER_SPOTS:

@@ -18,6 +18,7 @@ const ManageSpots = () => {
 
     const spots = useSelector((state => { return state.spots.spots }))
     if (!spots) return;
+    // console.log('this is spots in the manage spots page',spots)
 
     const send = (id) => {
         navigate(`/spots/${id}`)
@@ -30,40 +31,51 @@ const ManageSpots = () => {
             return false
         }
     };
+    const clickNav = async (id) => {
+        console.log('sendiung click nav with this id',id)
+        await dispatch(spotsActions.getOneSpot(id))
+    }
+    // console.log('this is spots',spots)
 
     return (
         <div className="super-big-box">
             <h1>Manage Spots</h1>
-            {!spots && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
-            {spots.map((spot) => {
-                let id = spot.id
-                let avg = spot.averageRating;
-                let imgs = spot.SpotImages;
-                if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
-                return (
-                    <>
-                        <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
-                            <span className="tooltiptext">{spot.name}</span>
-                            <img className="spot-img" src={imgs ? imgs[0].url : null} alt='' />
-                            <div className="card-text-box">
-                                <div className="left-text">
-                                    <p className="card-text">{spot.city}, {spot.state}</p>
-                                    <p className="card-text">{spot.price} night</p>
-                                </div>
-                                <div className="right-text">
-                                    <FiStar />
-                                    <p id='rating'>{avg ? avg : 'New'}</p>
+            <div id='manage-container'>
+                {!spots && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
+                {spots.map((spot) => {
+                    // console.log(spot)
+                    let id = spot.id
+                    let avg = spot.averageRating;
+                    let imgs = spot.SpotImages;
+                    // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
+                    if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
+                    return (
+                        <div key={id} className="manage-spots-container">
+                            <div className='spot-card tooltip' onClick={() => { send(id) }}>
+                                <span className="tooltiptext">{spot.name}</span>
+                                <img className="spot-img" src={imgs ? imgs[0].url : null} alt='' />
+                                <div className="card-text-box">
+                                    <div className="left-text">
+                                        <p className="card-text">{spot.city}, {spot.state}</p>
+                                        <p className="card-text">{spot.price} night</p>
+                                    </div>
+                                    <div className="right-text">
+                                        <FiStar />
+                                        <p id='rating'>{avg ? avg : 'New'}</p>
+                                    </div>
                                 </div>
                             </div>
+                            <div>
+                                {correctUser(user, spot) && <NavLink to='/edit-spot' onClick={async ()=>{ await clickNav(spot.id)}}> Update </NavLink>}
+                                {correctUser(user, spot) && <OpenModalButton
+                                    buttonText='delete spot'
+                                    modalComponent={<DeleteSpotModal spot={spot} />}
+                                />}
+                            </div>
                         </div>
-                        {correctUser(user, spot) && <NavLink to='/edit-spot'> Update </NavLink>}
-                        {correctUser(user, spot) && <OpenModalButton
-                            buttonText='delete spot'
-                            modalComponent={<DeleteSpotModal spot={spot} />}
-                        />}
-                    </>
-                )
-            })}
+                    )
+                })}
+            </div>
         </div>
     )
 }

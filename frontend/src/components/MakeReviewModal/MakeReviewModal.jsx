@@ -42,7 +42,7 @@ const MakeReviewModal = ({spotId}) => {
             <h2 id='heading'>How was your stay?</h2>
             {errors.errors ? <p>{errors.errors}</p> : null}
             <form onSubmit={onSubmit} id='form'>
-                <textarea className='text-box' value={review} onChange={(e) => { setReview(e.target.value) }} placeholder="Just a quick review." />
+                <textarea className='text-box' value={review} onChange={(e) => { setReview(e.target.value) }} placeholder="Leave your review here..." />
                 <div className="rating-input">
                     <div
                         className={activeRating >= 1 ? "filled" : "empty"}
@@ -86,7 +86,7 @@ const MakeReviewModal = ({spotId}) => {
                     </div>
                     <p>Stars</p>
                 </div>
-                <button id='button'>Submit Your Review</button>
+                <button id='button' disabled={!review || review.length < 10 ? true : false}>Submit Your Review</button>
             </form>
         </div>
     )

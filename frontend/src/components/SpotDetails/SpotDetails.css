@@ -10,7 +10,6 @@
     flex-wrap: wrap;
 }
 .spot-detail-img{
-    height: 350px;
     border-radius: 30px;
 }
 .middle-sect{
@@ -22,11 +21,24 @@
 .details-box {
     margin: 10px;
 }
-/* .details-body {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-} */
+.image-container {
+    display: grid;
+    grid-template-areas:
+     'one one two four'
+     'one one three five';
+    height: 350px;
+    gap: 5px
+}
+.one {
+    grid-area: one;
+    height: 350px;
+}
+.two, .three, .four, .five {
+    padding: none;
+    margin: none;
+    height: 170px;
+    width: 260px;
+}
 .edit-button {
     cursor: pointer;
 }

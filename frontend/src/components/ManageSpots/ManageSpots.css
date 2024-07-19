@@ -2,3 +2,9 @@
     display: flex;
     flex-wrap: wrap;
 } */
+.manage-spots-container {
+    width: fit-content;
+}
+#manage-container{
+    display: flex;
+}

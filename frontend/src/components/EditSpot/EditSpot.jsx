@@ -5,11 +5,24 @@ import './EditSpot.css';
 import { useNavigate } from "react-router-dom";
 
 const EditSpot = () => {
-    const spot = useSelector((state)=>{return state.spots.oneSpot});
-    // if(!spot)return;
-    const user = useSelector((state)=>{ return state.session.user});
-    // console.log(spot)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const spot = useSelector((state) => { return state.spots.oneSpot });
+    // console.log("🚀 ~ EditSpot ~ spot:", spot)
+    const user = useSelector((state) => { return state.session.user });
+    // if (!spot) {return};
+    // console.log(spot)
+    // const [address, setAddress] = useState('');
+    // const [city, setCity] = useState('');
+    // const [state, setState] = useState('');
+    // const [country, setCountry] = useState('');
+    // const [lat, setLat] = useState('');
+    // const [lng, setLng] = useState('');
+    // const [name, setName] = useState('');
+    // const [description, setDescription] = useState('');
+    // const [price, setPrice] = useState('');
+    // const [url, setUrl] = useState('');
+
     const [address, setAddress] = useState(spot.address);
     const [city, setCity] = useState(spot.city);
     const [state, setState] = useState(spot.state);
@@ -20,21 +33,36 @@ const EditSpot = () => {
     const [description, setDescription] = useState(spot.description);
     const [price, setPrice] = useState(spot.price);
     const [url, setUrl] = useState(spot.SpotImages[0].url);
-    const dispatch = useDispatch();
+
+
+
+    // if (spot) {
+    //     setAddress(spot.address);
+    //     setCity(spot.city);
+    //     setState(spot.state);
+    //     setCountry(spot.country);
+    //     setLat(spot.lat);
+    //     setLng(spot.lng);
+    //     setName(spot.name);
+    //     setDescription(spot.description);
+    //     setPrice(spot.price);
+    //     setUrl(spot.SpotImages[0].url);
+    // }
 
     const onSubmit = async (e) => {
         e.preventDefault();
         const update = {
             id: spot.id,
             // averageRating: spot.averageRating,
-            address,city,state,country,
-            lat,lng,name,description,price,
+            address, city, state, country,
+            lat, lng, name, description, price,
             ownerId: spot.ownerId
         };
         // console.log(update.id)
         dispatch(spotsActions.editSpot(update, user))
         navigate(`/spots/${spot.id}`);
-    }
+    };
+    // console.log(name)
 
     return (
         <div className="biggest">
@@ -146,7 +174,7 @@ const EditSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit'>Update Spot</button>
+                    <button type='submit'>Update your Spot</button>
                 </form>
             </div>
         </div>

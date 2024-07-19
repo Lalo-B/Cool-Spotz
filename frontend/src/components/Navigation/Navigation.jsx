@@ -13,7 +13,7 @@ function Navigation({ isLoaded }) {
     <div className='header'>
       <div className='logo-box' onClick={() => { navigate('/')}} >
         <FaAirbnb className='logo' />
-        <p className='logo airbnb'>airbnb</p>
+        <p className='logo airbnb'>airbnbnb</p>
       </div>
       <ul className='no-bullets profile-group'>
         {sessionUser && <NavLink to='/newSpot'>Create a New Spot</NavLink>}

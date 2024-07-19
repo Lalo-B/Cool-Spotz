@@ -16,6 +16,7 @@ const AddSpot = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [url, setUrl] = useState('');
+    const [errors, setErrors] = useState('')
     const dispatch = useDispatch();
 
     const onSubmit = async (e) => {
@@ -24,8 +25,16 @@ const AddSpot = () => {
             address, city, state, country,
             lat, lng, name, description, price
         };
-        const res = await dispatch(spotsActions.addSpot(newSpot));
-        await dispatch(spotsActions.addImgThunk(res.id,url))
+        const res = await dispatch(spotsActions.addSpot(newSpot))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    console.log(data.errors)
+                    setErrors(data.errors);
+                }
+            })
+
+        await dispatch(spotsActions.addImgThunk(res.id, url))
         navigate(`/spots/${res.id}`);
     }
 
@@ -62,6 +71,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setCountry(e.target.value) }}
                                 placeholder='Country' />
                         </label>
+                        {errors.country && <p>{errors.country}</p>}
                         <label>
                             Street Address
                             <input
@@ -70,6 +80,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
                         </label>
+                        {errors.address && <p>{errors.address}</p>}
                         <label>
                             City
                             <input
@@ -78,6 +89,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setCity(e.target.value) }}
                                 placeholder='City' />
                         </label>
+                        {errors.city && <p>{errors.city}</p>}
                         <label>
                             State
                             <input
@@ -86,7 +98,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setState(e.target.value) }}
                                 placeholder='STATE' />
                         </label>
-
+                        {errors.lat && <p>{errors.lat}</p>}
                         <label>
                             Latitude
                             <input
@@ -95,6 +107,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setLat(e.target.value) }}
                                 placeholder='Latitude' />
                         </label>
+                        {errors.lng && <p>{errors.lng}</p>}
                         <label>
                             Longitude
                             <input
@@ -115,6 +128,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setDescription(e.target.value) }}
                                 placeholder='Please write at least 30 characters' />
                         </label>
+                        {errors.description && <p>{errors.description}</p>}
                     </div>
                     <div className="third-sect">
                         <h3>Create a title for your spot</h3>
@@ -127,6 +141,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setName(e.target.value) }}
                                 placeholder='Name of your spot' />
                         </label>
+                        {errors.name && <p>{errors.name}</p>}
                     </div>
                     <div className="fourth-sect">
                         <h3>Set a base price for your spot</h3>
@@ -139,6 +154,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setPrice(e.target.value) }}
                                 placeholder='Price per night (USD)' />
                         </label>
+                        {errors.price && <p>{errors.price}</p>}
                     </div>
                     <div className="fifth-sect">
                         <h3>Liven up your spot with photos</h3>

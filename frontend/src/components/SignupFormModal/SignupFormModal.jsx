@@ -19,11 +19,14 @@ function SignupFormModal() {
   useEffect(()=>{
     if(!email || !username || !firstName || !lastName || !password || !confirmPassword){
       err.anyEmpty = true;
+    } else {
+      err.anyEmpty = false;
     }
     if(username.length < 4 || password.length < 6){
       err.lengthCheck = true;
     }
     setErrors(err);
+    // console.log(err.anyEmpty)
   },[firstName,lastName,email,username,password,confirmPassword])
 
   const handleSubmit = (e) => {
