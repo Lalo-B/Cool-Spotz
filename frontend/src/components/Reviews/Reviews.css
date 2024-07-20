@@ -12,10 +12,16 @@
     height: 40px;
     /* color: #FF5A5F; */
 }
+
+.hidden-h{
+    display: none;
+}
 /* .review {
     margin: 0px;
 } */
 .review-items {
     margin: 5px;
 }
-
+.shouldb-skinny{
+    width: 50px;
+}

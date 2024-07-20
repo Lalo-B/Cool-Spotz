@@ -1,6 +1,13 @@
 /* .details-body {
 } */
-.one-spot{
+ .header-container-spotd{
+    justify-self: left;
+    margin: 0px 20px;
+ }
+ .spotname-header{
+    margin: 10px 0px;
+ }
+.one-spot {
     display: flex;
     /* width: fit-content; */
     justify-content: space-around;
@@ -9,54 +16,73 @@
     margin: 10px;
     flex-wrap: wrap;
 }
-.spot-detail-img{
+
+.spot-detail-img {
     border-radius: 30px;
+    width: 100%;
 }
-.middle-sect{
+
+.middle-sect {
     display: flex;
     width: 100%;
     justify-content: space-between;
 
 }
+
 .details-box {
     margin: 10px;
 }
+
 .image-container {
     display: grid;
     grid-template-areas:
-     'one one two four'
-     'one one three five';
-    height: 350px;
+        'one one two four'
+        'one one three five';
+    /* height: 350px; */
+    width: 100%;
     gap: 5px
 }
+
 .one {
     grid-area: one;
-    height: 350px;
+    /* height: 350px; */
+    width: 100%;
 }
-.two, .three, .four, .five {
+
+.two {
+    height: 100%;
+}
+
+.two,
+.three,
+.four,
+.five {
     padding: none;
     margin: none;
-    height: 170px;
-    width: 260px;
 }
+
 .edit-button {
     cursor: pointer;
 }
-.reserve-box{
+
+.reserve-box {
     border: 1px grey solid;
     border-radius: 5px;
     width: 300px;
     height: 125px;
     display: flex;
     flex-wrap: wrap;
+    margin: 20px 0px;
 }
-.reserve-text{
+
+.reserve-text {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
 }
-.reserve-button{
+
+.reserve-button {
     background-color: #FF5A5F;
     color: white;
     margin: 5px 5%;
@@ -65,11 +91,13 @@
     box-shadow: 3px 3px 1px grey;
     border-radius: 2px;
 }
+
 .reviews-box {
     margin-top: 10px;
     border-top: 1px solid grey;
 }
-.right-side-reserve{
+
+.right-side-reserve {
     display: flex;
     align-items: center;
     margin: 5px;

@@ -2,7 +2,41 @@
     display: block;
     justify-content: center;
 } */
+#login-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 .errors {
     color: red;
+}
+
+.login-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.login-inputs {
+    width: 90%;
+    margin: 5px 10px;
+}
+
+.isdisabled {
+    background-color: lightgray;
+}
+
+.notdisabled {
+    background-color: #FF5A5F;
+}
+
+#login-button {
+    width: 92%;
+    margin: 5px 10px;
+
+}
+
+#demouser-button {
+    position: unset;
 }

@@ -2,71 +2,81 @@
     margin: none;
 } */
 #modal-content {
-    border-radius: 10px;
-    border: 4px black solid;
-    width: 300px;
-    height: 270px;
-    /* display: flex; */
+  border-radius: 10px;
+  border: 4px black solid;
+  width: 300px;
+  height: 270px;
+  /* display: flex; */
 
 }
-.outer-box {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    /* align-items: center; */
+
+.outer-box-rev {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  /* align-items: center; */
 }
+
 .rating-input {
-    display: flex;
-    /* margin-right: 4px; */
-    width: 50%;
-    align-items: center;
-    margin: 3px;
-    height: 18px;
+  display: flex;
+  /* margin-right: 4px; */
+  width: 50%;
+  align-items: center;
+  margin: 3px;
+  height: 18px;
 
-  }
-
-  .review-item {
-    display: flex;
-  }
-  .rating-input {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    left: 75px;
-  }
-
-  .rating-input .filled {
-    color: gold;
-  }
-
-  .rating-input .empty {
-    color: black;
-  }
-  .text-box {
-    margin: 10px 10px 0px;
-    width: 90%;
-    height: 100px;
-    resize: none;
-    border: 3px solid black;
-    border-radius: 3px;
-    background-color: aliceblue;
-  }
-#button {
-    background-color: #FF5A5F;
-    border-radius: 3px;
-    position: relative;
-    background-color: #FF5A5F;
-    color: white;
-    width: 90%;
-    height: 35px;
-    box-shadow: 3px 3px 1px grey;
-    left: 15px;
 }
-#form{
-    width:100%;
-    /* display: flex; */
-    /* flex-wrap: wrap; */
-    /* justify-content: center; */
-    /* align-items: center; */
+
+.review-item {
+  display: flex;
+}
+
+.rating-input {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  left: 75px;
+}
+
+.rating-input .filled {
+  color: gold;
+}
+
+.rating-input .empty {
+  color: black;
+}
+
+.text-box {
+  margin: 10px 10px 0px;
+  width: 90%;
+  height: 100px;
+  resize: none;
+  border: 3px solid black;
+  border-radius: 3px;
+  background-color: aliceblue;
+}
+
+.review-button {
+  /* background-color: #FF5A5F; */
+  border-radius: 3px;
+  position: relative;
+  /* background-color: #FF5A5F; */
+  color: white;
+  width: 90%;
+  height: 35px;
+  box-shadow: 3px 3px 1px grey;
+  left: 15px;
+}
+
+.isdisabled {
+  background-color: lightgray;
+}
+
+.notdisabled {
+  background-color: #FF5A5F;
+}
+
+.review-form {
+  width: 100%;
 }

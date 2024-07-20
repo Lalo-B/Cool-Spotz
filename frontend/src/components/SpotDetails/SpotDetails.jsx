@@ -17,8 +17,8 @@ const SpotDetails = () => {
 
     useEffect(() => {
         // async function innerFunction() {
-            dispatch(spotsActions.getOneSpot(spotId))
-            dispatch(reviewsActions.getAvgStars(spotId))
+        dispatch(spotsActions.getOneSpot(spotId))
+        dispatch(reviewsActions.getAvgStars(spotId))
         // }
         // innerFunction();
     }, [dispatch, spotId])
@@ -37,6 +37,10 @@ const SpotDetails = () => {
 
     return (
         <div className="details-body">
+            <div className="header-container-spotd">
+                <h1 className="spotname-header">{spot.name}</h1>
+                <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
+            </div>
             <div className="one-spot">
                 <div className="image-container">
                     {/* {console.log(spot)} */}
@@ -48,8 +52,6 @@ const SpotDetails = () => {
                 </div>
                 <div className="middle-sect">
                     <div className="details-box">
-                        <h1>{spot.name}</h1>
-                        <p>Location: {spot.city}, {spot.state}, {spot.country}</p>
                         <p>Hosted by: {spot.User.firstName} {spot.User.lastName}</p>
                         <p>description: {spot.description}</p>
                     </div>

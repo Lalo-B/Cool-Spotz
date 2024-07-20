@@ -1,0 +1,17 @@
+.delete-spot-modal-box{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.delete-spot-button {
+    width: 90%;
+    margin: 5px;
+    border-radius: 3px;
+    height: 30px;
+}
+.red{
+    background-color: #FF5A5F;
+}
+.grey {
+    background-color: lightgray;
+}

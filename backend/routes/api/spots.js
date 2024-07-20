@@ -535,7 +535,6 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 });
 
 
-// router.get('/', a)
 
 // find all spots with query parameters
 

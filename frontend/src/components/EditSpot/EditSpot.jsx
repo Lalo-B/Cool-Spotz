@@ -23,6 +23,7 @@ const EditSpot = () => {
     // const [price, setPrice] = useState('');
     // const [url, setUrl] = useState('');
 
+
     const [address, setAddress] = useState(spot.address);
     const [city, setCity] = useState(spot.city);
     const [state, setState] = useState(spot.state);
@@ -63,6 +64,7 @@ const EditSpot = () => {
         navigate(`/spots/${spot.id}`);
     };
     // console.log(name)
+    // if(!spot)return;
 
     return (
         <div className="biggest">
@@ -73,7 +75,7 @@ const EditSpot = () => {
                     <p className="headers">Guests will only get your exact address once they booked a
                         reservation.</p>
                 </div>
-                <form onSubmit={onSubmit}>
+                {spot && <form onSubmit={onSubmit}>
                     <div className="first-section">
                         <label>
                             Country
@@ -175,7 +177,7 @@ const EditSpot = () => {
                         <input type="text" placeholder="Image URL" />
                     </div>
                     <button type='submit'>Update your Spot</button>
-                </form>
+                </form>}
             </div>
         </div>
     )

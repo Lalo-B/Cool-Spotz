@@ -66,10 +66,10 @@ const Reviews = ({ props }) => {
     return (
         <>
             <div className='reviews-header'>
-                <div className='review-header-box'>
+                <div className={'review-header-box '+ (isNaN(avgStars) ? 'shouldb-skinny' : '')}>
                     <FiStar />
                     <p>{isNaN(avgStars) ? 'New' : `${avgStars} · ${reviews.length}`}</p>
-                    <h2>{reviews.length > 1 ? 'reviews' : 'review'}</h2>
+                    <h2 className={reviews.length === 0 ? 'hidden-h' : ''}>{reviews.length > 1 ? 'reviews' : 'review'}</h2>
                 </div>
             </div>
             {canreview(reviews, isOwner) ? <OpenModalButton
@@ -77,6 +77,7 @@ const Reviews = ({ props }) => {
                 buttonText='Post Your Review'
                 modalComponent={<MakeReviewModal className='modal-comp' spotId={spot.id} />} />
                 : null}
+            {reviews.length === 0 ? <p>Be the first to post a review!</p> : null}
             {flipped && flipped.map((rev) => {
                 const monthNum = rev.createdAt.slice(5, 7);
                 const month = monthObj[monthNum];
@@ -86,7 +87,7 @@ const Reviews = ({ props }) => {
                         <p className='review-items'>{month} 20{rev.createdAt.slice(2, 4)}</p>
                         <p className='review-items'>review: {rev.review}</p>
                         {canDelete(rev, user) ? <OpenModalButton
-                            buttonText='delete review'
+                            buttonText='Delete'
                             modalComponent={<DeleteReviewModal revId={rev.id} />} /> : null}
                     </div>
                 )

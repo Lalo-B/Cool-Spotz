@@ -32,8 +32,11 @@ const ManageSpots = () => {
         }
     };
     const clickNav = async (id) => {
-        console.log('sendiung click nav with this id',id)
-        await dispatch(spotsActions.getOneSpot(id))
+        // console.log('sendiung click nav with this id',id)
+        const data = await dispatch(spotsActions.getOneSpot(id));
+        console.log(data);
+        navigate('/edit-spot');
+        return data;
     }
     // console.log('this is spots',spots)
 
@@ -41,7 +44,7 @@ const ManageSpots = () => {
         <div className="super-big-box">
             <h1>Manage Spots</h1>
             <div id='manage-container'>
-                {!spots && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
+                {spots.length === 0 && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
                 {spots.map((spot) => {
                     // console.log(spot)
                     let id = spot.id
@@ -65,8 +68,8 @@ const ManageSpots = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                {correctUser(user, spot) && <NavLink to='/edit-spot' onClick={async ()=>{ await clickNav(spot.id)}}> Update </NavLink>}
+                            <div className="buttons-manage-spot">
+                                {correctUser(user, spot) && <button onClick={()=>{clickNav(spot.id)}}> Update </button>}
                                 {correctUser(user, spot) && <OpenModalButton
                                     buttonText='delete spot'
                                     modalComponent={<DeleteSpotModal spot={spot} />}
