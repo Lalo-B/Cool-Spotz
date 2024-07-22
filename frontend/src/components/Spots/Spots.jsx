@@ -39,7 +39,7 @@ const Spots = () => {
                     return (
                         <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
                             <span className="tooltiptext">{spot.name}</span>
-                            {imgs && <img className="spot-img" src={imgs.length > 0 ? imgs[0].url : null} alt=''/>}
+                            {imgs.length !== 0 && <img className="spot-img" src={imgs.length > 0 ? imgs[0].url : null} alt=''/>}
                             <div className="card-text-box">
                                 <div className="left-text">
                                     <p className="card-text">{spot.city}, {spot.state}</p>
