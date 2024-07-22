@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as spotsActions from '../../store/spots.js';
 import './AddSpot.css';
@@ -18,7 +18,18 @@ const AddSpot = () => {
     const [url, setUrl] = useState('');
     const [errors, setErrors] = useState('')
     const dispatch = useDispatch();
+    const err = {};
 
+    useEffect(() => {
+        if (lat > 180 || lat < -180) {
+            err.lat = "latitude must be between -180 and 180"
+        }
+        if (lng > 180 || lng < -180) {
+            err.lng = "longitude must be between -180 and 180"
+        }
+        setErrors(err)
+    }, [lat, lng]);
+    
     const onSubmit = async (e) => {
         e.preventDefault();
         const newSpot = {
@@ -66,6 +77,7 @@ const AddSpot = () => {
                         <label>
                             Country
                             <input
+                                required
                                 type='text'
                                 value={country}
                                 onChange={(e) => { setCountry(e.target.value) }}
@@ -76,6 +88,7 @@ const AddSpot = () => {
                             Street Address
                             <input
                                 type='text'
+                                required
                                 value={address}
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
@@ -85,6 +98,7 @@ const AddSpot = () => {
                             City
                             <input
                                 type='text'
+                                required
                                 value={city}
                                 onChange={(e) => { setCity(e.target.value) }}
                                 placeholder='City' />
@@ -94,6 +108,7 @@ const AddSpot = () => {
                             State
                             <input
                                 type='text'
+                                required
                                 value={state}
                                 onChange={(e) => { setState(e.target.value) }}
                                 placeholder='STATE' />
@@ -102,7 +117,7 @@ const AddSpot = () => {
                         <label>
                             Latitude
                             <input
-                                type='text'
+                                type='number'
                                 value={lat}
                                 onChange={(e) => { setLat(e.target.value) }}
                                 placeholder='Latitude' />
@@ -111,7 +126,7 @@ const AddSpot = () => {
                         <label>
                             Longitude
                             <input
-                                type='text'
+                                type='number'
                                 value={lng}
                                 onChange={(e) => { setLng(e.target.value) }}
                                 placeholder='Longitude' />
@@ -149,7 +164,7 @@ const AddSpot = () => {
                             in search results.</p>
                         <label>
                             <input
-                                type='text'
+                                type='number'
                                 value={price}
                                 onChange={(e) => { setPrice(e.target.value) }}
                                 placeholder='Price per night (USD)' />
@@ -163,7 +178,8 @@ const AddSpot = () => {
                             type='text'
                             value={url}
                             onChange={(e) => { setUrl(e.target.value) }}
-                            placeholder="Preview Image URL" />
+                            placeholder="Preview Image URL"
+                            required />
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />

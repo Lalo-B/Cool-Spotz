@@ -195,7 +195,7 @@ const spotsReducer = (state = {spots: null}, action) => {
             return newState
         }
         case ADD_IMAGE: {
-            return state
+            return {...state}
         }
         case GET_ONE:{
             return {...state, oneSpot: action.payload};
