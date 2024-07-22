@@ -52,6 +52,7 @@ const MakeReviewModal = ({ spotId }) => {
         // setStar(rating);
         const reviewObj = { review, stars: star };
         res = dispatch(reviewsActions.makeReviewThunk(reviewObj, spotId))
+        // dispatch(reviewsActions.getAvgStars(spot.id))
         if (res.errors) setErrors(res.errors);
         closeModal();
     };

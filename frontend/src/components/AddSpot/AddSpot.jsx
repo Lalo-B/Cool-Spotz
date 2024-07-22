@@ -20,6 +20,14 @@ const AddSpot = () => {
     const dispatch = useDispatch();
     const err = {};
 
+    const isValidUrl = urlString => {
+        if(urlString.includes('www') || urlString.includes('https://') || urlString.includes('.jpeg')){
+            return true
+        } else {
+            return false
+        }
+    };
+
     useEffect(() => {
         if (lat > 180 || lat < -180) {
             err.lat = "latitude must be between -180 and 180"
@@ -27,9 +35,19 @@ const AddSpot = () => {
         if (lng > 180 || lng < -180) {
             err.lng = "longitude must be between -180 and 180"
         }
+        if (name.length > 50) {
+            err.name = 'name must be less than 50 characters'
+        }
+        if (price < 1) {
+            err.price = 'Price per day must be a positive number'
+        }
+        const urValid = isValidUrl(url)
+        if (!urValid) {
+            err.url = 'must be a valid url'
+        }
         setErrors(err)
-    }, [lat, lng]);
-    
+    }, [lat, lng,name,url,price]);
+
     const onSubmit = async (e) => {
         e.preventDefault();
         const newSpot = {
@@ -83,7 +101,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setCountry(e.target.value) }}
                                 placeholder='Country' />
                         </label>
-                        {errors.country && <p>{errors.country}</p>}
+                        {errors.country && <p className='errors'>{errors.country}</p>}
                         <label>
                             Street Address
                             <input
@@ -93,7 +111,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
                         </label>
-                        {errors.address && <p>{errors.address}</p>}
+                        {errors.address && <p className='errors'>{errors.address}</p>}
                         <label>
                             City
                             <input
@@ -103,7 +121,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setCity(e.target.value) }}
                                 placeholder='City' />
                         </label>
-                        {errors.city && <p>{errors.city}</p>}
+                        {errors.city && <p className='errors'>{errors.city}</p>}
                         <label>
                             State
                             <input
@@ -113,7 +131,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setState(e.target.value) }}
                                 placeholder='STATE' />
                         </label>
-                        {errors.lat && <p>{errors.lat}</p>}
+                        {errors.state && <p className='errors'>{errors.state}</p>}
                         <label>
                             Latitude
                             <input
@@ -122,7 +140,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setLat(e.target.value) }}
                                 placeholder='Latitude' />
                         </label>
-                        {errors.lng && <p>{errors.lng}</p>}
+                        {errors.lat && <p className='errors'>{errors.lat}</p>}
                         <label>
                             Longitude
                             <input
@@ -131,6 +149,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setLng(e.target.value) }}
                                 placeholder='Longitude' />
                         </label>
+                        {errors.lng && <p className='errors'>{errors.lng}</p>}
                     </div>
                     <div className="second-sect">
                         <h3>Describe your place to guests</h3>
@@ -156,7 +175,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setName(e.target.value) }}
                                 placeholder='Name of your spot' />
                         </label>
-                        {errors.name && <p>{errors.name}</p>}
+                        {errors.name && <p className='errors'>{errors.name}</p>}
                     </div>
                     <div className="fourth-sect">
                         <h3>Set a base price for your spot</h3>
@@ -169,13 +188,14 @@ const AddSpot = () => {
                                 onChange={(e) => { setPrice(e.target.value) }}
                                 placeholder='Price per night (USD)' />
                         </label>
-                        {errors.price && <p>{errors.price}</p>}
+                        {errors.price && <p className='errors'>{errors.price}</p>}
                     </div>
                     <div className="fifth-sect">
                         <h3>Liven up your spot with photos</h3>
                         <p>Submit a link to at least one photo to publish your spot.</p>
+                        {errors.url && <p className='errors'>{errors.url}</p>}
                         <input
-                            type='text'
+                            type='url'
                             value={url}
                             onChange={(e) => { setUrl(e.target.value) }}
                             placeholder="Preview Image URL"
@@ -185,7 +205,7 @@ const AddSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit'>Create Spot</button>
+                    <button type='submit' disabled={errors ? true : false}>Create Spot</button>
                     <button onClick={autoFill}>autofill spot</button>
                 </form>
             </div>
