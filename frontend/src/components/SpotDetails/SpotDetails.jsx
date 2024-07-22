@@ -13,17 +13,26 @@ const SpotDetails = () => {
     const { spotId } = useParams();
     const dispatch = useDispatch();
     const user = useSelector((state) => { return state.session.user });
+    const spots = useSelector((state) => { return state.spots.spots })
+    const avg = useSelector((state) => { return state.reviews.avgStars })
+    const numOfRev = useSelector((state) => { return state.reviews.numOfRev }) //instead state.reviews.length?
+    console.log("🚀 ~ SpotDetails ~ spots:", spots)
 
+    let spot;
+    if (spots) {
+        spot = spots.find((spot) => {
+            return spot.id === +spotId
+        })
+            // console.log("🚀 ~ SpotDetails ~ spot:", spot)
+    }
 
     useEffect(() => {
-        dispatch(spotsActions.getOneSpot(spotId))
-        dispatch(reviewsActions.getAvgStars(spotId))
+        // dispatch(spotsActions.getOneSpot(spotId))
+        dispatch(spotsActions.getAllThunk());
+        dispatch(reviewsActions.getAvgStars(spotId));
     }, [dispatch, spotId])
-    const spot = useSelector((state) => { return state.spots.oneSpot });
-    const avg = useSelector((state) => { return state.reviews.avgStars })
+    // const spot = useSelector((state) => { return state.spots.oneSpot });
     // state.reviews.reviews? i dont want it to be too broad but it might need to be
-    const numOfRev = useSelector((state) => { return state.reviews.numOfRev }) //instead state.reviews.length?
-    if (!spot) return; // if i move this higher it breaks why?
     const correctUser = (user, spot) => {
         if (!user) { return false }
         if (user.id === spot.ownerId) {
@@ -32,6 +41,7 @@ const SpotDetails = () => {
             return false
         }
     }
+    if (!spot) return; // if i move this higher it breaks why?
 
     return (
         <div className="details-body">
@@ -50,7 +60,7 @@ const SpotDetails = () => {
                 </div>
                 <div className="middle-sect">
                     <div className="details-box">
-                        <p>Hosted by: {spot.User.firstName}, {spot.User.lastName}</p>
+                        {spot.User && <p>Hosted by: {spot.User.firstName}, {spot.User.lastName}</p>}
                         <p>description: {spot.description}</p>
                     </div>
                     <div className="reserve-box">

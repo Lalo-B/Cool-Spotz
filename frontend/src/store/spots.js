@@ -147,17 +147,15 @@ export const addSpot = (spot) => async dispatch => {
 }
 
 export const addImgThunk = (id,url) => async dispatch => {
-    // console.log("🚀 ~ addImgThunk ~ url:", url)
-    // console.log('this is the addimg thunk in the spots.js store file before the fetch')
     const res = await csrfFetch(`/api/spots/${id}/images`,{
         method: 'post',
         headaers: {'Content-Type': 'application/json'},
         body: JSON.stringify({url: url})
     });
-    // console.log('this is the addimg thunk in the spots.js store file AFTER THE FETCH')
-    // console.log('this is res', await res.json())
+
     if(res.ok){
         const data = await res.json();
+        // console.log("🚀 ~ addImgThunk ~ data:", data)
         dispatch(addImg(data));
         return data;
     }
@@ -184,9 +182,11 @@ const spotsReducer = (state = {spots: null}, action) => {
             return newState;
         }
         case REMOVE_ONE:{
-            const newState = {...state}
-            const spotIndex = newState.spots.findIndex((el)=>{return el.id === action.payload})
+            console.log('this is state in remove reducer before changes',state)
+            const newState = {...state};
+            const spotIndex = newState.spots.findIndex((el)=>{return el.id === action.payload});
             newState.spots.splice(spotIndex,1);
+            console.log('this is new state after changes',newState)
             return newState;
         }
         case EDIT: {
@@ -195,10 +195,15 @@ const spotsReducer = (state = {spots: null}, action) => {
             return newState
         }
         case ADD_IMAGE: {
-            return {...state}
+            const newState = {...state};
+            const spot = newState.spots.find((spot) => spot.id === +action.payload.spotId)
+            const i = newState.spots.indexOf(spot)
+            newState.spots[i]  = {...spot, SpotImages: action.payload}
+            return {...newState}
         }
         case GET_ONE:{
-            return {...state, oneSpot: action.payload};
+            const newState = {...state};
+            return {...newState};
         }
         case GET_ONE_IMG:
             return {...state, oneImg: action.payload};

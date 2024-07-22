@@ -24,7 +24,7 @@ const Spots = () => {
         navigate(`/spots/${id}`)
     }
 
-    // console.log('this is spot',spots[19].SpotImages)
+    // console.log('this is all the spots: ',spots)
     return (
         <>
             <div className="second-heading">
@@ -35,7 +35,7 @@ const Spots = () => {
                     let id = spot.id
                     let avg = spot.averageRating;
                     let imgs = spot.SpotImages;
-                    console.log("🚀 ~ {spots.map ~ imgs:", imgs)
+                    // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
                     if(avg && avg.toString().length === 1){avg = `${avg}.0`}
                     return (
                         <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
