@@ -35,6 +35,7 @@ const Spots = () => {
                     let id = spot.id
                     let avg = spot.averageRating;
                     let imgs = spot.SpotImages;
+                    console.log("🚀 ~ {spots.map ~ imgs:", imgs)
                     if(avg && avg.toString().length === 1){avg = `${avg}.0`}
                     return (
                         <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
