@@ -284,7 +284,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         return res.json(res.body);
     };
     const newImg = req.body.url;
-    console.log("🚀 ~ router.post ~ newImg:", newImg)
+    // console.log("🚀 ~ router.post ~ newImg:", newImg)
     const img = await SpotImage.create({
         spotId: req.params.spotId,
         url: newImg,
@@ -627,6 +627,9 @@ router.get("/", async (req, res) => {
         include: [{
             model: SpotImage,
             through: Spot.id,
+        },{
+            model: User,
+            through: Spot.id
         }]
     });
 
