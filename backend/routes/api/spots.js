@@ -45,6 +45,7 @@ router.get('/:spotId/reviews', async (req, res) => {
             id: req.params.spotId
         }
     });
+    console.log('this is reviews in vackend', reviews)
     res.status(200);
     return res.json(reviews);
 });
@@ -179,6 +180,8 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     // console.log("🚀 ~ router.post ~ stars:", stars)
     // console.log("🚀 ~ router.post ~ review:", review)
     const { user } = req;
+    console.log("🚀 ~ router.post ~ user:", user)
+
     const foundSpot = await Spot.findByPk(req.params.spotId);
     if (foundSpot === null) {
         res.status(404);
@@ -217,10 +220,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
         return res.json(res.body);
     };
     res.status(201);
-    // res.body = {
-    //     review, stars
-    // };
-    return res.json(newR);
+    return res.json({...newR.dataValues,User:  {...user.dataValues}});
 });
 
 

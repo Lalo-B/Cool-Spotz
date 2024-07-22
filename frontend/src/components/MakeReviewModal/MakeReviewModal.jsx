@@ -31,7 +31,7 @@ const MakeReviewModal = ({ spotId }) => {
                 err.buttonDisabled = true;
             }
 
-            console.log('this is review', review)
+            // console.log('this is review', review)
             if (review.length >= 10 && star) {
                 err.buttonDisabled = false;
             }
@@ -39,7 +39,7 @@ const MakeReviewModal = ({ spotId }) => {
         if (!review) {
             err.buttonDisabled = true;
         }
-        console.log('this is star', star)
+        // console.log('this is star', star)
         if (!star) {
             err.buttonDisabled = true;
         }

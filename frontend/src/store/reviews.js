@@ -43,13 +43,15 @@ export const getReviewsofSpot = (spotId) => async dispatch => {
 }
 
 export const makeReviewThunk = (review, spotId) => async dispatch => {
-    const res = csrfFetch(`/api/spots/${spotId}/reviews`, {
+    // console.log('this is review at very begining of make review thunk: ', review) this looks good
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: 'post',
         body: JSON.stringify(review)
     });
 
     if (res.ok) {
         const data = await res.json();
+        console.log("🚀 ~ makeReviewThunk ~ data:", data)
         dispatch(makeReview(data));
         return data;
     }
@@ -80,7 +82,7 @@ const reviewsReducer = (state = { reviews: null }, action) => {
         case GET_REVIEWS:
             return { ...state, reviews: action.payload };
         case MAKE_REVIEW:
-            return { ...state, reviews: action.payload };
+            return { ...state, reviews: [...state.reviews, action.payload] };
         case DELETE_REVIEW: {
             const newState = { ...state };
             const newrevs = newState.reviews.filter((el)=>{return el.id !== action.payload});
@@ -93,7 +95,7 @@ const reviewsReducer = (state = { reviews: null }, action) => {
             let count = 0;
             const num = action.payload.length;
             action.payload.forEach(el => {
-                count = count + el.stars
+                count = count + (+el.stars)
             });
             count = count / action.payload.length;
             if (count.toString().length === 1) {

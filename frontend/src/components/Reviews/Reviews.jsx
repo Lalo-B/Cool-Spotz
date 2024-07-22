@@ -36,6 +36,8 @@ const Reviews = ({ props }) => {
     let flipped;
     if (reviews) {
         flipped = reviewsFlip(reviews);
+        // console.log("🚀 ~ Reviews ~ flipped:", flipped)
+
     }
     const canreview = (reviews, isOwner) => {
         if (user) {

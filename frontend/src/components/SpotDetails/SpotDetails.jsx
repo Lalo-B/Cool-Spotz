@@ -16,15 +16,13 @@ const SpotDetails = () => {
 
 
     useEffect(() => {
-        // async function innerFunction() {
         dispatch(spotsActions.getOneSpot(spotId))
         dispatch(reviewsActions.getAvgStars(spotId))
-        // }
-        // innerFunction();
     }, [dispatch, spotId])
     const spot = useSelector((state) => { return state.spots.oneSpot });
     const avg = useSelector((state) => { return state.reviews.avgStars })
-    const numOfRev = useSelector((state) => { return state.reviews.numOfRev })
+    // state.reviews.reviews? i dont want it to be too broad but it might need to be
+    const numOfRev = useSelector((state) => { return state.reviews.numOfRev }) //instead state.reviews.length?
     if (!spot) return; // if i move this higher it breaks why?
     const correctUser = (user, spot) => {
         if (!user) { return false }
@@ -52,7 +50,7 @@ const SpotDetails = () => {
                 </div>
                 <div className="middle-sect">
                     <div className="details-box">
-                        <p>Hosted by: {spot.User.firstName} {spot.User.lastName}</p>
+                        <p>Hosted by: {spot.User.firstName}, {spot.User.lastName}</p>
                         <p>description: {spot.description}</p>
                     </div>
                     <div className="reserve-box">
@@ -61,7 +59,6 @@ const SpotDetails = () => {
                             <div className="right-side-reserve">
                                 <FiStar />
                                 <p style={{ margin: '0px' }}>{isNaN(avg) ? 'New' : `${avg} · ${numOfRev}`}</p>
-
                             </div>
                         </div>
                         <button onClick={() => { alert('feature coming soon') }} className="reserve-button">reserve spot</button>
