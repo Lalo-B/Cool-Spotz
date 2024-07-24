@@ -28,6 +28,8 @@ const AddSpot = () => {
         }
     };
 
+
+    //these need to be in onsubmit not before that
     useEffect(() => {
         if (lat > 180 || lat < -180) {
             err.lat = "latitude must be between -180 and 180"

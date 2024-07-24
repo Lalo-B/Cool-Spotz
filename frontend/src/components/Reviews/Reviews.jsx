@@ -57,6 +57,12 @@ const Reviews = ({ props }) => {
 
     }
 
+useEffect(()=>{
+    dispatch(reviewsActions.getAvgStars(spot.id))
+},[dispatch,flipped,spot.id])
+
+    // reviews structure: [{id,spotId,userId,review,stars,User:{id,firstName,lastName,username}},...]
+
 
 
 
@@ -68,7 +74,7 @@ const Reviews = ({ props }) => {
     return (
         <>
             <div className='reviews-header'>
-                <div className={'review-header-box '+ (isNaN(avgStars) ? 'shouldb-skinny' : '')}>
+                <div className={'review-header-box ' + (isNaN(avgStars) ? 'shouldb-skinny' : '')}>
                     <FiStar />
                     <p>{isNaN(avgStars) ? 'New' : `${avgStars} · ${reviews.length}`}</p>
                     <h2 className={reviews.length === 0 ? 'hidden-h' : ''}>{reviews.length > 1 ? 'reviews' : 'review'}</h2>

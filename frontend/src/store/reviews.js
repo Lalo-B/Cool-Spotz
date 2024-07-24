@@ -91,13 +91,13 @@ const reviewsReducer = (state = { reviews: null }, action) => {
         }
         case AVERAGE_STAR: {
             const newState = { ...state }
-            // console.log(action.payload)
+            console.log('this is payload in avg star reducer',action.payload)
             let count = 0;
             const num = action.payload.length;
             action.payload.forEach(el => {
                 count = count + (+el.stars)
             });
-            count = count / action.payload.length;
+            count = count / num;
             if (count.toString().length === 1) {
                 newState.avgStars = `${count}.0`;
                 newState.numOfRev = num;
