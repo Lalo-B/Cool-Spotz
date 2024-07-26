@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as spotsActions from '../../store/spots';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiStar } from "react-icons/fi";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
@@ -11,14 +11,22 @@ const ManageSpots = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state) => { return state.session.user });
+    const spots = useSelector((state => { return state.spots.spots }))
+    const [deletes, setDeletes] = useState(false);
+
 
     useEffect(() => {
+        // dispatch(spotsActions.getAllThunk())
         dispatch(spotsActions.getUserSpots(user.id))
-    }, [dispatch, user.id]);
+        setDeletes(false)
+    }, [dispatch, user.id, deletes]);
 
-    const spots = useSelector((state => { return state.spots.spots }))
     if (!spots) return;
-    // console.log('this is spots in the manage spots page',spots)
+    // setSpots(allSpots.filter((spot)=>spot.ownerId === user.id))
+    // const spots = useSelector((state => { return state.spots.spots }))
+
+    console.log('this is spots in the manage spots page',spots)
+
 
     const send = (id) => {
         navigate(`/spots/${id}`)
@@ -34,7 +42,7 @@ const ManageSpots = () => {
     const clickNav = async (id) => {
         // console.log('sendiung click nav with this id',id)
         const data = await dispatch(spotsActions.getOneSpot(id));
-        console.log(data);
+        // console.log('this is data in click nav in manage spots jsx',data);
         navigate('/edit-spot');
         return data;
     }
@@ -56,7 +64,7 @@ const ManageSpots = () => {
                         <div key={id} className="manage-spots-container">
                             <div className='spot-card tooltip' onClick={() => { send(id) }}>
                                 <span className="tooltiptext">{spot.name}</span>
-                                <img className="spot-img" src={imgs ? imgs[0].url : null} alt='' />
+                                <img className="spot-img" src={imgs.length ? imgs[0].url : null} alt='' />
                                 <div className="card-text-box">
                                     <div className="left-text">
                                         <p className="card-text">{spot.city}, {spot.state}</p>

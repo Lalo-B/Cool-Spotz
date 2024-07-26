@@ -207,7 +207,7 @@ const AddSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit' disabled={errors ? true : false}>Create Spot</button>
+                    <button type='submit' disabled={Object.values(errors).length ? true : false}>Create Spot</button>
                     <button onClick={autoFill}>autofill spot</button>
                 </form>
             </div>
