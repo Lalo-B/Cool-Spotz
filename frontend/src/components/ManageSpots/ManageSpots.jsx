@@ -13,7 +13,7 @@ const ManageSpots = () => {
     const user = useSelector((state) => { return state.session.user });
     const spots = useSelector((state => { return state.spots.spots }))
     const [deletes, setDeletes] = useState(false);
-
+    console.log('this is at the begining of manage spots')
 
     useEffect(() => {
         // dispatch(spotsActions.getAllThunk())
@@ -24,9 +24,7 @@ const ManageSpots = () => {
     if (!spots) return;
     // setSpots(allSpots.filter((spot)=>spot.ownerId === user.id))
     // const spots = useSelector((state => { return state.spots.spots }))
-
-    console.log('this is spots in the manage spots page',spots)
-
+    // console.log('this is spots in the manage spots page',spots)
 
     const send = (id) => {
         navigate(`/spots/${id}`)
@@ -42,7 +40,7 @@ const ManageSpots = () => {
     const clickNav = async (id) => {
         // console.log('sendiung click nav with this id',id)
         const data = await dispatch(spotsActions.getOneSpot(id));
-        // console.log('this is data in click nav in manage spots jsx',data);
+        console.log('this is data in click nav in manage spots jsx',data);
         navigate('/edit-spot');
         return data;
     }
@@ -80,7 +78,8 @@ const ManageSpots = () => {
                                 {correctUser(user, spot) && <button onClick={()=>{clickNav(spot.id)}}> Update </button>}
                                 {correctUser(user, spot) && <OpenModalButton
                                     buttonText='delete spot'
-                                    modalComponent={<DeleteSpotModal spot={spot} />}
+                                    modalComponent={<DeleteSpotModal spot={spot}/>}
+                                    onButtonClick={()=>console.log('this is onbutton click in manage spots')}
                                 />}
                             </div>
                         </div>
