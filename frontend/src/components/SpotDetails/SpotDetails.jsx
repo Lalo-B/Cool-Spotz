@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./SpotDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
