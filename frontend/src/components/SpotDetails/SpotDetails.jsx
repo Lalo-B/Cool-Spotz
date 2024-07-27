@@ -1,4 +1,4 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import "./SpotDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -12,11 +12,12 @@ import { FiStar } from "react-icons/fi";
 const SpotDetails = () => {
     const { spotId } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = useSelector((state) => { return state.session.user });
     const spots = useSelector((state) => { return state.spots.spots })
     const avg = useSelector((state) => { return state.reviews.avgStars })
     const numOfRev = useSelector((state) => { return state.reviews.numOfRev }) //instead state.reviews.length?
-    console.log("🚀 ~ SpotDetails ~ spots:", spots)
+    // console.log("🚀 ~ SpotDetails ~ spots:", spots)
 
     let spot;
     if (spots) {
@@ -42,6 +43,14 @@ const SpotDetails = () => {
         }
     }
     if (!spot) return; // if i move this higher it breaks why?
+
+    const clickNav = async (id) => {
+        // console.log('sendiung click nav with this id',id)
+        const data = await dispatch(spotsActions.getOneSpot(id));
+        console.log('this is data in click nav in spotdetails',data);
+        navigate('/edit-spot');
+        return data;
+    }
 
     return (
         <div className="details-body">
@@ -75,7 +84,7 @@ const SpotDetails = () => {
                     </div>
                 </div>
             </div>
-            {correctUser(user, spot) && <NavLink to='/edit-spot'> Update </NavLink>}
+            {correctUser(user, spot) && <button onClick={()=>clickNav(spot.id)}> Update </button>}
             {correctUser(user, spot) && <OpenModalButton
                 buttonText='delete spot'
                 modalComponent={<DeleteSpotModal spot={spot} />}
