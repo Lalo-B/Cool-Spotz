@@ -17,6 +17,7 @@ const Spots = () => {
     }, [dispatch])
 
     const spots = useSelector((state) => { return state.spots.spots })
+    //should we set spots to a state variable? ask this when going over redux stuff
     // console.log('this is spots', spots)
     useSelector((state) => { return state.session.user })
     if (!spots) return;
@@ -28,7 +29,8 @@ const Spots = () => {
     return (
         <>
             <div className="second-heading">
-                <h1>Spots</h1>
+                <h1 style={{margin: 'auto'}}>Find Your Next Stay</h1>
+                {/* put this in the middle of opening screen */}
             </div>
             <div className="card-container">
                 {spots.map((spot) => {

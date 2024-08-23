@@ -46,7 +46,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu} className='profile-button'>
-        <FiUser />
+        <FiUser style={{padding: '0px', margin:'0px'}}/>
       </button>
       <ul className={`${ulClassName} no-bullets`} ref={ulRef}>
         {user ? (
