@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import Navigation from "./components/Navigation/Navigation.jsx";
 import { restoreUser } from './store/session.js';
+import Navigation from "./components/Navigation/Navigation.jsx";
 import Spots from './components/Spots/Spots.jsx';
 import SpotDetails from "./components/SpotDetails/SpotDetails.jsx";
 import AddSpot from "./components/AddSpot/AddSpot.jsx";

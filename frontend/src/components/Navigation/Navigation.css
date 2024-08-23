@@ -5,6 +5,8 @@
     cursor: pointer;
     border-radius: 50%;
     border: 0px;
+    /* padding: 0px;
+    margin: 0px; */
 }
 
 .hidden {
@@ -37,8 +39,17 @@
 .profile-group{
     display: flex;
     align-items: center;
-    margin: 10px
+    justify-content: center;
+    margin: 10px;
+    border: 1px red solid;
+    border-radius: 40px;
+    padding: 1%;
 }
 .nav-buttons{
     margin: 5px;
 }
+/* #user-things-area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ } */

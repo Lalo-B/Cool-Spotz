@@ -15,7 +15,7 @@ function Navigation({ isLoaded }) {
         <FaAirbnb className='logo' />
         <p className='logo airbnb'>airbnbnb</p>
       </div>
-      <ul className='no-bullets profile-group'>
+      <ul className='no-bullets profile-group' id='user-things-area'>
         {sessionUser && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
         {isLoaded && (
           <li className='nav-buttons'>

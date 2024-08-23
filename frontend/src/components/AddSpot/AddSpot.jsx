@@ -16,39 +16,32 @@ const AddSpot = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [url, setUrl] = useState('');
-    const [errors, setErrors] = useState('')
+    const [errors, setErrors] = useState('');
     const dispatch = useDispatch();
-    const err = {};
+    const [count, setCount] = useState(0);
+    // const err = {};
 
     const isValidUrl = urlString => {
-        if(urlString.includes('www') || urlString.includes('https://') || urlString.includes('.jpeg')){
-            return true
+        if (urlString) {
+            if (urlString.includes('www') || urlString.includes('https://') || urlString.includes('.jpeg')) {
+                // console.log(urlString)
+                return true
+            } else {
+                return false
+            }
         } else {
             return false
         }
     };
 
-
-    //these need to be in onsubmit not before that
     useEffect(() => {
-        if (lat > 180 || lat < -180) {
-            err.lat = "latitude must be between -180 and 180"
-        }
-        if (lng > 180 || lng < -180) {
-            err.lng = "longitude must be between -180 and 180"
-        }
-        if (name.length > 50) {
-            err.name = 'name must be less than 50 characters'
-        }
-        if (price < 1) {
-            err.price = 'Price per day must be a positive number'
-        }
         const urValid = isValidUrl(url)
         if (!urValid) {
-            err.url = 'must be a valid url'
+            // setCount(1)
+        } else {
+            setCount(0)
         }
-        setErrors(err)
-    }, [lat, lng,name,url,price]);
+    }, [url])
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -56,17 +49,28 @@ const AddSpot = () => {
             address, city, state, country,
             lat, lng, name, description, price
         };
+        const isValid = isValidUrl(url)
+        if (!isValid) {
+            setCount(1)
+        }
+
         const res = await dispatch(spotsActions.addSpot(newSpot))
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) {
                     console.log(data.errors)
+                    // console.log(data.message)
                     setErrors(data.errors);
                 }
             })
 
+        // check this one for errors as well?
+        //also what we can do is in the create new spot thunk call add image one as well and get errors from that too
+        //next time try this
         await dispatch(spotsActions.addImgThunk(res.id, url))
         navigate(`/spots/${res.id}`);
+
+
     }
 
     const autoFill = (e) => {
@@ -81,8 +85,8 @@ const AddSpot = () => {
         setDescription('The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal.');
         setPrice('99');
         setUrl('https://images.pexels.com/photos/1115804/pexels-photo-1115804.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')
-        //right now it breaks cuz it needs url in spots.jsx
-    }
+    };
+
     return (
         <div className="biggest">
             <div className="big-box">
@@ -97,7 +101,6 @@ const AddSpot = () => {
                         <label>
                             Country
                             <input
-                                required
                                 type='text'
                                 value={country}
                                 onChange={(e) => { setCountry(e.target.value) }}
@@ -108,7 +111,6 @@ const AddSpot = () => {
                             Street Address
                             <input
                                 type='text'
-                                required
                                 value={address}
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
@@ -118,7 +120,6 @@ const AddSpot = () => {
                             City
                             <input
                                 type='text'
-                                required
                                 value={city}
                                 onChange={(e) => { setCity(e.target.value) }}
                                 placeholder='City' />
@@ -128,7 +129,6 @@ const AddSpot = () => {
                             State
                             <input
                                 type='text'
-                                required
                                 value={state}
                                 onChange={(e) => { setState(e.target.value) }}
                                 placeholder='STATE' />
@@ -195,19 +195,19 @@ const AddSpot = () => {
                     <div className="fifth-sect">
                         <h3>Liven up your spot with photos</h3>
                         <p>Submit a link to at least one photo to publish your spot.</p>
-                        {errors.url && <p className='errors'>{errors.url}</p>}
+                        {(count >= 1) && <p className='errors'>At least one URL is required</p>}
+                        {/* {console.log('this is right below the error message',(count >= 1) && errors.url)} */}
                         <input
                             type='url'
                             value={url}
                             onChange={(e) => { setUrl(e.target.value) }}
-                            placeholder="Preview Image URL"
-                            required />
+                            placeholder="Preview Image URL" />
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit' disabled={Object.values(errors).length ? true : false}>Create Spot</button>
+                    <button type='submit'>Create Spot</button>
                     <button onClick={autoFill}>autofill spot</button>
                 </form>
             </div>
