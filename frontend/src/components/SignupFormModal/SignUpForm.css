@@ -1,3 +1,13 @@
+/*
+    #5382f2 darker blue
+    #7593d9 middle blue
+    #dae4ff light blue
+    */
 .errors {
     color: red;
+}
+.signup-button{
+    width: 102%;
+    margin: 10px 1px 0px;
+    background-color: #dae4ff;
 }

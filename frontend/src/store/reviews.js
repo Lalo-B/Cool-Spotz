@@ -4,6 +4,7 @@ const MAKE_REVIEW = 'reviews/make-review';
 const DELETE_REVIEW = 'reviews/delete-review';
 const GET_REVIEWS = 'reviews/get-reviews';
 const AVERAGE_STAR = 'reviews/get-average-star';
+const GET_ALL_REVIEWS = 'reviews/get-all-reviews';
 
 const makeReview = (review) => {
     return {
@@ -31,19 +32,24 @@ const averageStar = (reviews) => {
     }
 }
 
+const getAllReviews = (reviews) => {
+    return {
+        type: GET_ALL_REVIEWS,
+        payload: reviews
+    }
+}
+
 export const getReviewsofSpot = (spotId) => async dispatch => {
     const res = await csrfFetch(`/api/spots/${spotId}/reviews/user`);
 
     if (res.ok) {
         const data = await res.json();
-        // console.log("🚀 ~ getReviewsofSpot ~ data:", data)
         dispatch(getReviews(data));
         return data;
     }
 }
 
 export const makeReviewThunk = (review, spotId) => async dispatch => {
-    // console.log('this is review at very begining of make review thunk: ', review) this looks good
     const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: 'post',
         body: JSON.stringify(review)
@@ -51,7 +57,6 @@ export const makeReviewThunk = (review, spotId) => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log("🚀 ~ makeReviewThunk ~ data:", data)
         dispatch(makeReview(data));
         return data;
     }
@@ -77,6 +82,15 @@ export const getAvgStars = (spotId) => async dispatch => {
     }
 }
 
+export const getAllSpotsReviews = () => async dispatch => {
+    const res = await csrfFetch('/api/reviews/allSpots');
+
+    if (res.ok){
+        const data = await res.json();
+        dispatch(getAllReviews(data));
+        return data;
+    }
+}
 const reviewsReducer = (state = { reviews: null }, action) => {
     switch (action.type) {
         case GET_REVIEWS:
@@ -91,7 +105,6 @@ const reviewsReducer = (state = { reviews: null }, action) => {
         }
         case AVERAGE_STAR: {
             const newState = { ...state }
-            console.log('this is payload in avg star reducer',action.payload)
             let count = 0;
             const num = action.payload.length;
             action.payload.forEach(el => {
@@ -108,10 +121,13 @@ const reviewsReducer = (state = { reviews: null }, action) => {
                 newState.numOfRev = num;
                 return newState
             }
-
             newState.avgStars = count;
             newState.numOfRev = num;
             return newState
+        }
+        case GET_ALL_REVIEWS:{
+            const newState = {...state, allReviews: action.payload}
+            return newState;
         }
         default:
             return state;

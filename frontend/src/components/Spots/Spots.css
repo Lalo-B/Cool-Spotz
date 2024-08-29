@@ -5,6 +5,7 @@
     #7593d9 middle blue
     #dae4ff light blue
     */
+    font-family: 'New Amsterdam', sans-serif;
 }
 .spot-card {
     justify-content: center;
@@ -23,9 +24,11 @@
 .card-container {
     display: flex;
     width: auto;
+    max-width: 1250px;
     justify-content: center;
     height: auto;
     flex-wrap: wrap;
+    margin:auto
 }
 .card-text-box{
     display: flex;

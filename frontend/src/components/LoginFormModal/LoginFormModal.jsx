@@ -64,10 +64,10 @@ function LoginFormModal() {
           <p>{errors.credential}</p>
         )}
         <button type="submit" disabled={errors.buttonDisabled ? true : false}
-        id='login-button'
-        className={errors.buttonDisabled ? 'isdisabled' : 'notdisabled'}
+        // id='login-button'
+        className={errors.buttonDisabled ? 'isdisabled login-button' : 'notdisabled login-button'}
         >Log In</button>
-        <button id='demouser-button' onClick={setDefault} >Log in as Demo User</button>
+        <button id='demouser-button' onClick={setDefault} className='login-button blue'>Log in as Demo User</button>
       </form>
     </div>
   );

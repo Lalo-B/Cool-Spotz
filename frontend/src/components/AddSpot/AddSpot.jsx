@@ -24,7 +24,6 @@ const AddSpot = () => {
     const isValidUrl = urlString => {
         if (urlString) {
             if (urlString.includes('www') || urlString.includes('https://') || urlString.includes('.jpeg')) {
-                // console.log(urlString)
                 return true
             } else {
                 return false
@@ -58,8 +57,6 @@ const AddSpot = () => {
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) {
-                    console.log(data.errors)
-                    // console.log(data.message)
                     setErrors(data.errors);
                 }
             })
@@ -69,8 +66,6 @@ const AddSpot = () => {
         //next time try this
         await dispatch(spotsActions.addImgThunk(res.id, url))
         navigate(`/spots/${res.id}`);
-
-
     }
 
     const autoFill = (e) => {
@@ -164,7 +159,7 @@ const AddSpot = () => {
                                 onChange={(e) => { setDescription(e.target.value) }}
                                 placeholder='Please write at least 30 characters' />
                         </label>
-                        {errors.description && <p>{errors.description}</p>}
+                        {errors.description && <p className='errors'>{errors.description}</p>}
                     </div>
                     <div className="third-sect">
                         <h3>Create a title for your spot</h3>
@@ -196,7 +191,6 @@ const AddSpot = () => {
                         <h3>Liven up your spot with photos</h3>
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         {(count >= 1) && <p className='errors'>At least one URL is required</p>}
-                        {/* {console.log('this is right below the error message',(count >= 1) && errors.url)} */}
                         <input
                             type='url'
                             value={url}
@@ -207,8 +201,9 @@ const AddSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit'>Create Spot</button>
-                    <button onClick={autoFill}>autofill spot</button>
+                    <button type='submit' className="make-spot-buttons">Create Spot</button>
+                    <br/>
+                    <button onClick={autoFill} className="make-spot-buttons">autofill spot</button>
                 </form>
             </div>
         </div>

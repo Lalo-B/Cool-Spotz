@@ -1,5 +1,9 @@
 # `the airbnbnb`
 
+## Application feature overview
+
+This project has full crud functionality for spots as well as create read and delete for reviews. 
+
 ## Database Schema Design
 
 ![airbnb-database-schema]
