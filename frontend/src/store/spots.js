@@ -87,8 +87,6 @@ export const getOneSpot = (id) => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        // console.log('this is one spot', data.spotInfo[0]);
-        console.log('inside the get one spot thunk')
         dispatch(getOne(data.spotInfo[0]));
         return data.spotInfo[0];
     }
@@ -106,6 +104,7 @@ export const getOneImgThunk = (id) => async dispatch => {
 
 export const editSpot = (spot) => async dispatch => {
     const spotId = spot.id
+    console.log('this is spot above edit fetch', spot)
     const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
         body: JSON.stringify(spot),
@@ -113,7 +112,7 @@ export const editSpot = (spot) => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log('did we edit propperly?', data)
+        console.log('this is data in edit thunk',data)
         dispatch(edit(data));
         return data;
     }
@@ -126,7 +125,6 @@ export const deleteSpot = (spotId) => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log("🚀 ~ deleteSpot ~ data:", data)
         dispatch(removeOne(spotId));
         return data;
     }
@@ -155,7 +153,6 @@ export const addImgThunk = (id, url) => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        // console.log("🚀 ~ addImgThunk ~ data:", data)
         dispatch(addImg(data));
         return data;
     }
@@ -166,12 +163,11 @@ export const getUserSpots = () => async dispatch => {
 
     if (res.ok) {
         const data = await res.json();
-        console.log('this is user spots', data)
         dispatch(userSpots(data));
         return data;
     }
 }
-const spotsReducer = (state = { spots: null }, action) => {
+const spotsReducer = (state = { spots: [] }, action) => {
     switch (action.type) {
         case GET_ALL:{
             const newState = {...state, spots: action.payload}
@@ -180,7 +176,6 @@ const spotsReducer = (state = { spots: null }, action) => {
         case MAKE_ONE: {
             const newState = { ...state }
             newState.spots.push(action.payload);
-            // console.log('this is new state checking for arr length',newState);
             return newState;
         }
         case REMOVE_ONE: {
@@ -208,9 +203,7 @@ const spotsReducer = (state = { spots: null }, action) => {
         case GET_ONE_IMG:
             return { ...state, oneImg: action.payload };
         case GET_USER_SPOTS: {
-            console.log('this is state in get user spots reducer before changes',state)
             const newState = { ...state,spots: action.payload }
-            console.log('this is new state after changes',newState)
             return newState;
         }
         default:

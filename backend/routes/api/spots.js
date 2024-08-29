@@ -45,7 +45,6 @@ router.get('/:spotId/reviews', async (req, res) => {
             id: req.params.spotId
         }
     });
-    console.log('this is reviews in vackend', reviews)
     res.status(200);
     return res.json(reviews);
 });
@@ -177,10 +176,7 @@ router.get('/current', requireAuth, async (req, res) => {
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     const { review, stars } = req.body;
-    // console.log("🚀 ~ router.post ~ stars:", stars)
-    // console.log("🚀 ~ router.post ~ review:", review)
     const { user } = req;
-    console.log("🚀 ~ router.post ~ user:", user)
 
     const foundSpot = await Spot.findByPk(req.params.spotId);
     if (foundSpot === null) {
@@ -259,7 +255,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     } else {
         spot.forEach(booking => {
             const { spotId, startDate, endDate } = booking.Bookings[0];
-            // console.log(booking.Bookings)
             Bookings.push({ spotId, startDate, endDate });
         });
     };
@@ -270,7 +265,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 // add an image to a spot based on the spots id
 router.post('/:spotId/images', requireAuth, async (req, res) => {
-    // console.log('ADD AN IMAGE TO A SPOT',req.body)
 
     const spot = await Spot.findByPk(req.params.spotId);
     if (spot === null) {
@@ -285,7 +279,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     };
     const newImg = req.body.url;
     // our plan is to check sequelize validations for a real url
-    // console.log("🚀 ~ router.post ~ newImg:", newImg)
     const img = await SpotImage.create({
         spotId: req.params.spotId,
         url: newImg,
@@ -339,7 +332,6 @@ router.get('/:spotId', async (req, res) => {
 
 // create new spot
 router.post('/', requireAuth, async (req, res) => {
-    // console.log('this is req.body in the route handler for CREATE NEW SPOT',req.body)
     const { user } = req;
     let spotObj = {
         address,
@@ -354,14 +346,13 @@ router.post('/', requireAuth, async (req, res) => {
     } = req.body;
 
 
-    // console.log(spotObj)
     res.body = {errors: {}};
 
     for (const key in spotObj) {
         if (spotObj[key] === undefined || spotObj[key] === '') {
-            // console.log(key)
+
             res.status(400);
-            // res.body = { message: 'Bad Request' }
+
             if (key === 'address' ) {
                 res.body.errors[key] =  'Street address is required';
             }
@@ -437,10 +428,6 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 // update a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
     let spot;
-    const currentUser = req.user;
-    let spotId = req.params.spotId;
-    // console.log('this is req.body in backend', req.body) //empty obj
-    // console.log('this is the params in back end',req.params.spotId)
     if (req.params.spotId) {
         spot = await Spot.findOne({
             where: {
@@ -457,55 +444,93 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         });
     };
 
-    console.log('this is spot in the back end', spot)
 
     const updateObj = {
         address, city, state, country, lat,
         lng, name, description, price
     } = req.body;
-    // console.log("🚀 ~ router.put ~ updateObj:", updateObj)
 
 
-    if (Object.keys(updateObj).length === 0) {
-        res.status(400);
-        res.body = {
-            "message": "Bad Request",
-            "errors": {
-                "address": "Street address is required",
-                "city": "City is required",
-                "state": "State is required",
-                "country": "Country is required",
-                "lat": "Latitude must be within -90 and 90",
-                "lng": "Longitude must be within -180 and 180",
-                "name": "Name must be less than 50 characters",
-                "description": "Description is required",
-                "price": "Price per day must be a positive number"
+    res.body = {errors: {}};
+
+    for (const key in updateObj) {
+        if (updateObj[key] === undefined || updateObj[key] === '') {
+
+            res.status(400);
+
+            if (key === 'address' ) {
+                res.body.errors[key] =  'Street address is required';
+            }
+            if (key === 'city') {
+                res.body.errors[key] =  'City is required';
+            }
+            if (key === 'state') {
+                res.body.errors[key] =  'State is required';
+            }
+            if (key === 'country') {
+                res.body.errors[key] =  'Country is required';
+            }
+            if (key === 'description') {
+                res.body.errors[key] =  'Description is required';
+            }
+            if (key === 'lat') {
+                res.body.errors[key] =  "Latitude must be within -90 and 90";
+            }
+            if (key === 'lng') {
+                res.body.errors[key] =  "Longitude must be within -180 and 180";
+            }
+            if (key === 'name') {
+                res.body.errors[key] =  "Name must be less than 50 characters";
+            }
+            if (key === 'price') {
+                res.body.errors[key] =  "Price per day must be a positive number";
             }
         };
-        return res.json(res.body);
     };
 
-    for (let key in updateObj) {
-        if (!updateObj[key]) {
-            res.status(400);
-            res.body = {
-                "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
-                "errors": {
-                    "address": "Street address is required",
-                    "city": "City is required",
-                    "state": "State is required",
-                    "country": "Country is required",
-                    "lat": "Latitude must be within -90 and 90",
-                    "lng": "Longitude must be within -180 and 180",
-                    "name": "Name must be less than 50 characters",
-                    "description": "Description is required",
-                    "price": "Price per day must be a positive number"
-                }
-            };
-            return res.json(res.body);
-        }
-    };
-    // console.log(req.user.id === spot.ownerId)
+    if(Object.values(res.body.errors).length > 0){
+        res.body.message = 'Bad Request'
+        return res.json(res.body);
+    }
+    // if (Object.keys(updateObj).length === 0) {
+    //     res.status(400);
+    //     res.body = {
+    //         "message": "Bad Request",
+    //         "errors": {
+    //             "address": "Street address is required",
+    //             "city": "City is required",
+    //             "state": "State is required",
+    //             "country": "Country is required",
+    //             "lat": "Latitude must be within -90 and 90",
+    //             "lng": "Longitude must be within -180 and 180",
+    //             "name": "Name must be less than 50 characters",
+    //             "description": "Description is required",
+    //             "price": "Price per day must be a positive number"
+    //         }
+    //     };
+    //     return res.json(res.body);
+    // };
+
+    // for (let key in updateObj) {
+    //     if (!updateObj[key]) {
+    //         res.status(400);
+    //         res.body = {
+    //             "message": "Bad Request", // (or "Validation error" if generated by Sequelize),
+    //             "errors": {
+    //                 "address": "Street address is required",
+    //                 "city": "City is required",
+    //                 "state": "State is required",
+    //                 "country": "Country is required",
+    //                 "lat": "Latitude must be within -90 and 90",
+    //                 "lng": "Longitude must be within -180 and 180",
+    //                 "name": "Name must be less than 50 characters",
+    //                 "description": "Description is required",
+    //                 "price": "Price per day must be a positive number"
+    //             }
+    //         };
+    //         return res.json(res.body);
+    //     }
+    // };
 
     if (!spot) {
         res.status(404);

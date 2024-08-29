@@ -13,7 +13,6 @@ const ManageSpots = () => {
     const user = useSelector((state) => { return state.session.user });
     const spots = useSelector((state => { return state.spots.spots }))
     const [deletes, setDeletes] = useState(false);
-    console.log('this is at the begining of manage spots')
 
     useEffect(() => {
         // dispatch(spotsActions.getAllThunk())
@@ -40,7 +39,6 @@ const ManageSpots = () => {
     const clickNav = async (id) => {
         // console.log('sendiung click nav with this id',id)
         const data = await dispatch(spotsActions.getOneSpot(id));
-        console.log('this is data in click nav in manage spots jsx',data);
         navigate('/edit-spot');
         return data;
     }
@@ -50,7 +48,7 @@ const ManageSpots = () => {
         <div className="super-big-box">
             <h1>Manage Spots</h1>
             <div id='manage-container'>
-                {spots.length === 0 && <NavLink to='/newSpot'>Create a New Spot</NavLink>}
+                {spots.length === 0 && <NavLink to='/newSpot' className='new-spot-link'>Create a New Spot</NavLink>}
                 {spots.map((spot) => {
                     // console.log(spot)
                     let id = spot.id
@@ -75,11 +73,10 @@ const ManageSpots = () => {
                                 </div>
                             </div>
                             <div className="buttons-manage-spot">
-                                {correctUser(user, spot) && <button onClick={()=>{clickNav(spot.id)}}> Update </button>}
+                                {correctUser(user, spot) && <button onClick={()=>{clickNav(spot.id)}} style={{cursor: 'pointer', backgroundColor: '#7593d9', color: 'white', borderRadius: '3px'}}> Update </button>}
                                 {correctUser(user, spot) && <OpenModalButton
                                     buttonText='delete spot'
                                     modalComponent={<DeleteSpotModal spot={spot}/>}
-                                    onButtonClick={()=>console.log('this is onbutton click in manage spots')}
                                 />}
                             </div>
                         </div>

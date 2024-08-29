@@ -1,18 +1,18 @@
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import "./SpotDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotsActions from '../../store/spots';
 import * as reviewsActions from '../../store/reviews.js';
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
+// import OpenModalButton from "../OpenModalButton/OpenModalButton";
+// import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 import Reviews from "../Reviews/Reviews";
 import { FiStar } from "react-icons/fi";
 
 const SpotDetails = () => {
     const { spotId } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const user = useSelector((state) => { return state.session.user });
     const spots = useSelector((state) => { return state.spots.spots })
     const avg = useSelector((state) => { return state.reviews.avgStars })
@@ -34,23 +34,23 @@ const SpotDetails = () => {
     }, [dispatch, spotId])
     // const spot = useSelector((state) => { return state.spots.oneSpot });
     // state.reviews.reviews? i dont want it to be too broad but it might need to be
-    const correctUser = (user, spot) => {
-        if (!user) { return false }
-        if (user.id === spot.ownerId) {
-            return true
-        } else {
-            return false
-        }
-    }
+    // const correctUser = (user, spot) => {
+    //     if (!user) { return false }
+    //     if (user.id === spot.ownerId) {
+    //         return true
+    //     } else {
+    //         return false
+    //     }
+    // }
     if (!spot) return; // if i move this higher it breaks why?
 
-    const clickNav = async (id) => {
-        // console.log('sendiung click nav with this id',id)
-        const data = await dispatch(spotsActions.getOneSpot(id));
-        console.log('this is data in click nav in spotdetails',data);
-        navigate('/edit-spot');
-        return data;
-    }
+    // const clickNav = async (id) => {
+    //     // console.log('sendiung click nav with this id',id)
+    //     const data = await dispatch(spotsActions.getOneSpot(id));
+    //     console.log('this is data in click nav in spotdetails',data);
+    //     navigate('/edit-spot');
+    //     return data;
+    // }
 
     return (
         <div className="details-body">
@@ -80,15 +80,15 @@ const SpotDetails = () => {
                                 <p style={{ margin: '0px' }}>{isNaN(avg) ? 'New' : `${avg} · ${numOfRev}`}</p>
                             </div>
                         </div>
-                        <button onClick={() => { alert('feature coming soon') }} className="reserve-button">reserve spot</button>
+                        <button onClick={() => { alert('feature coming soon') }} className="reserve-button">Reserve</button>
                     </div>
                 </div>
             </div>
-            {correctUser(user, spot) && <button onClick={()=>clickNav(spot.id)}> Update </button>}
+            {/* {correctUser(user, spot) && <button onClick={()=>clickNav(spot.id)}> Update </button>}
             {correctUser(user, spot) && <OpenModalButton
                 buttonText='delete spot'
                 modalComponent={<DeleteSpotModal spot={spot} />}
-            />}
+            />} */}
 
             <div className="reviews-box">
                 <Reviews props={{ spot, user }} />

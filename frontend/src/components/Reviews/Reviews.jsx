@@ -81,7 +81,6 @@ useEffect(()=>{
                 </div>
             </div>
             {canreview(reviews, isOwner) ? <OpenModalButton
-                className='rev-button'
                 buttonText='Post Your Review'
                 modalComponent={<MakeReviewModal className='modal-comp' spotId={spot.id} />} />
                 : null}

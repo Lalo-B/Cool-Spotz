@@ -7,7 +7,6 @@ const router = express.Router();
 router.delete('/:reviewImageId', requireAuth, async (req, res) => {
     const { user } = req;
     const img = await ReviewImage.findByPk(req.params.reviewImageId);
-    // console.log(img.reviewId);
 
     if (!img) {
         res.status(404);

@@ -88,7 +88,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && <p>Please provide a valid email</p>}
         <label>
           Username
           <input
@@ -121,7 +121,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit" disabled={errors.anyEmpty || errors.lengthCheck}>Sign Up</button>
+        <button type="submit" disabled={errors.anyEmpty || errors.lengthCheck} className='signup-button'>Sign Up</button>
       </form>
     </>
   );

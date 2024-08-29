@@ -8,7 +8,6 @@ const EditSpot = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const spot = useSelector((state) => { return state.spots.oneSpot });
-    // console.log("🚀 ~ EditSpot ~ spot:", spot)
     const user = useSelector((state) => { return state.session.user });
     // if (!spot) {return};
     // console.log(spot)
@@ -24,16 +23,17 @@ const EditSpot = () => {
     // const [url, setUrl] = useState('');
 
 
-    const [address, setAddress] = useState(spot.address);
-    const [city, setCity] = useState(spot.city);
-    const [state, setState] = useState(spot.state);
-    const [country, setCountry] = useState(spot.country);
-    const [lat, setLat] = useState(spot.lat);
-    const [lng, setLng] = useState(spot.lng);
-    const [name, setName] = useState(spot.name);
-    const [description, setDescription] = useState(spot.description);
-    const [price, setPrice] = useState(spot.price);
-    const [url, setUrl] = useState(spot.SpotImages[0].url);
+    const [address, setAddress] = useState(spot?.address);
+    const [city, setCity] = useState(spot?.city);
+    const [state, setState] = useState(spot?.state);
+    const [country, setCountry] = useState(spot?.country);
+    const [lat, setLat] = useState(spot?.lat);
+    const [lng, setLng] = useState(spot?.lng);
+    const [name, setName] = useState(spot?.name);
+    const [description, setDescription] = useState(spot?.description);
+    const [price, setPrice] = useState(spot?.price);
+    const [url, setUrl] = useState(spot?.SpotImages[0].url);
+    const [errors, setErrors] = useState({});
 
 
 
@@ -54,17 +54,22 @@ const EditSpot = () => {
         e.preventDefault();
         const update = {
             id: spot.id,
-            // averageRating: spot.averageRating,
             address, city, state, country,
             lat, lng, name, description, price,
             ownerId: spot.ownerId
         };
-        // console.log(update.id)
-        dispatch(spotsActions.editSpot(update, user))
-        navigate(`/spots/${spot.id}`);
+        const res = await dispatch(spotsActions.editSpot(update, user))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            })
+
+        if (res?.id) {
+            navigate(`/spots/${res.id}`);
+        }
     };
-    // console.log(name)
-    // if(!spot)return;
 
     return (
         <div className="biggest">
@@ -75,7 +80,7 @@ const EditSpot = () => {
                     <p className="headers">Guests will only get your exact address once they booked a
                         reservation.</p>
                 </div>
-                {spot && <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
                     <div className="first-section">
                         <label>
                             Country
@@ -85,6 +90,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setCountry(e.target.value) }}
                                 placeholder='Country' />
                         </label>
+                        {errors.country && <p className="errors">{errors.country}</p>}
                         <label>
                             Street Address
                             <input
@@ -93,6 +99,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
                         </label>
+                        {errors.address && <p className='errors'>{errors.address}</p>}
                         <label>
                             City
                             <input
@@ -101,6 +108,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setCity(e.target.value) }}
                                 placeholder='City' />
                         </label>
+                        {errors.city && <p className='errors'>{errors.city}</p>}
                         <label>
                             State
                             <input
@@ -109,7 +117,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setState(e.target.value) }}
                                 placeholder='STATE' />
                         </label>
-
+                        {errors.state && <p className='errors'>{errors.state}</p>}
                         <label>
                             Latitude
                             <input
@@ -118,6 +126,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setLat(e.target.value) }}
                                 placeholder='Latitude' />
                         </label>
+                        {errors.lat && <p className='errors'>{errors.lat}</p>}
                         <label>
                             Longitude
                             <input
@@ -126,6 +135,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setLng(e.target.value) }}
                                 placeholder='Longitude' />
                         </label>
+                        {errors.lng && <p className='errors'>{errors.lng}</p>}
                     </div>
                     <div className="second-sect">
                         <h3>Describe your place to guests</h3>
@@ -138,6 +148,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setDescription(e.target.value) }}
                                 placeholder='Please write at least 30 characters' />
                         </label>
+                        {errors.description && <p className='errors'>{errors.description}</p>}
                     </div>
                     <div className="third-sect">
                         <h3>Create a title for your spot</h3>
@@ -150,6 +161,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setName(e.target.value) }}
                                 placeholder='Name of your spot' />
                         </label>
+                        {errors.name && <p className='errors'>{errors.name}</p>}
                     </div>
                     <div className="fourth-sect">
                         <h3>Set a base price for your spot</h3>
@@ -162,6 +174,7 @@ const EditSpot = () => {
                                 onChange={(e) => { setPrice(e.target.value) }}
                                 placeholder='Price per night (USD)' />
                         </label>
+                        {errors.price && <p className='errors'>{errors.price}</p>}
                     </div>
                     <div className="fifth-sect">
                         <h3>Liven up your spot with photos</h3>
@@ -176,8 +189,8 @@ const EditSpot = () => {
                         <input type="text" placeholder="Image URL" />
                         <input type="text" placeholder="Image URL" />
                     </div>
-                    <button type='submit'>Update your Spot</button>
-                </form>}
+                    <button type='submit' className="update-spot-button">Update your Spot</button>
+                </form>
             </div>
         </div>
     )

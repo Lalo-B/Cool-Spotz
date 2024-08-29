@@ -9,7 +9,7 @@ import { useModal } from '../../context/Modal.jsx';
 const MakeReviewModal = ({ spotId }) => {
     const { closeModal } = useModal()
 
-    const [review, setReview] = useState();
+    const [review, setReview] = useState('');
     const [star, setStar] = useState();
     const [rating, setRating] = useState(0);
     const [activeRating, setActiveRating] = useState(rating);
@@ -111,7 +111,7 @@ const MakeReviewModal = ({ spotId }) => {
                     <p>Stars</p>
                 </div>
                 <button className={'review-button ' +(errors.buttonDisabled ? 'isdisabled' : 'notdisabled')}
-                    disabled={!review || review.length < 10 ? true : false}>Submit Your Review</button>
+                    disabled={!review || review.length < 10 ? true : false || !star }>Submit Your Review</button>
             </form>
         </div>
     )

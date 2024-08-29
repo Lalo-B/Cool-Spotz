@@ -12,7 +12,6 @@ const seedFunct = () => {
       url: "https://media.istockphoto.com/id/1293762741/photo/modern-living-room-interior-3d-render.jpg?s=612x612&w=0&k=20&c=iZ561ZIXOtPYGSzqlKUnLrliorreOYVz1pzu8WJmrnc="
     });
   };
-  // console.log(seedArr[0].url.length)
 };
 
 /** @type {import('sequelize-cli').Migration} */
@@ -20,7 +19,6 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     options.tableName = 'ReviewImages';
     seedFunct();
-    // console.log(seedArr)
     await queryInterface.bulkInsert(options, [...seedArr], { validate: true });
   },
   async down (queryInterface, Sequelize) {

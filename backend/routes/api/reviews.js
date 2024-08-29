@@ -162,6 +162,18 @@ router.get('/all', async (req,res)=>{
     return res.json(obj);
 })
 
+//get literally all reviews
+router.get('/allSpots', async (req,res)=>{
+    const reviews = await Review.findAll({});
+
+    let obj = {};
+    reviews.forEach(el=>{
+        obj[el.id] = el;
+    })
+    res.status(200);
+    return res.json(obj)
+});
+
 //get all reviews of current user
 router.get('/', requireAuth, async (req, res) => {
     const { user } = req;
