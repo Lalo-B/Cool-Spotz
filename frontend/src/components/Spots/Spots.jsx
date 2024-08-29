@@ -22,27 +22,27 @@ const Spots = () => {
         innerFunct();
     }, [dispatch])
 
-    const avgStars = (spots, reviews) => {
-        let count = 0;
-        // spots.forEach(el => {
-        //     el.avgRating = reviews[el.spotId]
-        // });
-        
-        // const num = action.payload.length;
-        // action.payload.forEach(el => {
-        //     count = count + (+el.stars)
-        // });
-        // count = count / num;
-        // if (count.toString().length === 1) {
-        //     newState.avgStars = `${count}.0`;
-        //     return newState
-        // } else if (count.toString().length > 2) {
-        //     count = count.toString().slice(0, 3)
-        //     newState.avgStars = count;
-        //     return newState
-        // }
-        // newState.avgStars = count;
-    };
+    // const avgStars = (spots, reviews) => {
+    //     let count = 0;
+    //     // spots.forEach(el => {
+    //     //     el.avgRating = reviews[el.spotId]
+    //     // });
+
+    //     // const num = action.payload.length;
+    //     // action.payload.forEach(el => {
+    //     //     count = count + (+el.stars)
+    //     // });
+    //     // count = count / num;
+    //     // if (count.toString().length === 1) {
+    //     //     newState.avgStars = `${count}.0`;
+    //     //     return newState
+    //     // } else if (count.toString().length > 2) {
+    //     //     count = count.toString().slice(0, 3)
+    //     //     newState.avgStars = count;
+    //     //     return newState
+    //     // }
+    //     // newState.avgStars = count;
+    // };
 
     // get the avg review
     // useEffect(()=>{
@@ -54,7 +54,7 @@ const Spots = () => {
     //     }
     // },[reviews,spots])
 
-    console.log(reviews)
+    // console.log(reviews)
     if (!spots) return;
     if (!reviews) return;
     const send = (id) => {
