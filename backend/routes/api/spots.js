@@ -499,13 +499,13 @@ router.put('/:spotId', requireAuth, async (req, res) => {
             if (key === 'country') {
                 res.body.errors[key] =  'Country must be longer than 4 characters';
             }
-            if (key === 'description') {
-                res.body.errors[key] =  'Description must be longer than 4 characters';
-            }
             if (key === 'name') {
                 res.body.errors[key] =  "Name must be longer than 4 characters";
             }
         };
+        if (key === 'description' && updateObj[key].length < 30) {
+            res.body.errors[key] =  'Description must be longer than 30 characters';
+        }
         if (key === 'price' && updateObj[key] < 0) {
             res.body.errors[key] =  "Price per day must be a positive number";
         }
