@@ -22,37 +22,33 @@ const Spots = () => {
         innerFunct();
     }, [dispatch])
 
-    const avgStars = (spots, reviews) => {
-        let count = 0;
-        // spots.forEach(el => {
-        //     el.avgRating = reviews[el.spotId]
-        // });
-
-        // const num = action.payload.length;
-        // action.payload.forEach(el => {
-        //     count = count + (+el.stars)
-        // });
-        // count = count / num;
-        // if (count.toString().length === 1) {
-        //     newState.avgStars = `${count}.0`;
-        //     return newState
-        // } else if (count.toString().length > 2) {
-        //     count = count.toString().slice(0, 3)
-        //     newState.avgStars = count;
-        //     return newState
-        // }
-        // newState.avgStars = count;
-    };
-
-    // get the avg review
-    // useEffect(()=>{
-    //     if(spots && reviews){
-    //         const newAvg = reviews.forEach((el)=>{})
-    //         spots.forEach(el => {
-    //             el.avg = reviews[el.id]
-    //         });
+    // const avgStars = (spots, reviews) => {
+    //     const middleObj = {};
+    //     for (const revId in reviews) {
+    //         const { spotId } = reviews[revId];
+    //         const temp = middleObj[spotId];
+    //         middleObj[spotId] = { ...temp, [revId]: { ...reviews[revId] } };
     //     }
-    // },[reviews,spots])
+    //     spots.forEach(spot => {
+    //         if (middleObj[spot.id]) {
+    //             const spotsRevs = middleObj[spot.id];
+    //             const count = Object.values(spotsRevs).length;
+    //             let total = 0;
+    //             for (const rev in spotsRevs) {
+    //                 let star = spotsRevs[rev].stars;
+    //                 total += star;
+    //             }
+    //             total = total / count;
+    //             spot.averageRating = total;
+    //         }
+    //     });
+    // };
+
+    useEffect(() => {
+        if (reviews && spots) {
+            avgStars(spots, reviews);
+        }
+    }, [reviews, spots])
 
     if (!spots) return;
     if (!reviews) return;
