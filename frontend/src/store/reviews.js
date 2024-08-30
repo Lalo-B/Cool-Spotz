@@ -1,3 +1,4 @@
+import { SiOtto } from "react-icons/si";
 import { csrfFetch } from "./csrf";
 
 const MAKE_REVIEW = 'reviews/make-review';
@@ -96,9 +97,11 @@ export const getAllSpotsReviews = () => async dispatch => {
             const temp = middleObj[spotId];
             middleObj[spotId] = { ...temp, [revId]: { ...data[revId] } };
         }
+        // console.log('this is middle obj after going through all revs in data', middleObj);
         let newObj = {};
         let total;
         Spots.forEach(spot => {
+            // console.log('this is in spots arr checking if the rev obj has revs for each spot', middleObj[spot.id]);
             if (middleObj[spot.id]) {
                 const spotsRevs = middleObj[spot.id];
                 const count = Object.values(spotsRevs).length;
@@ -114,9 +117,11 @@ export const getAllSpotsReviews = () => async dispatch => {
                     total = total.toString().slice(0, 3)
                 }
                 // spot.averageRating = +total;
+                newObj = {...newObj, [spot.id]: +total}
             }
-            newObj = {...newObj, [spot.id]: +total}
+            // if(middleObj[])
         });
+        // console.log(newObj);
         dispatch(getAllReviews(newObj));
         return newObj;
     }

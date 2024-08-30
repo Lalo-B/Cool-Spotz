@@ -41,6 +41,7 @@ const Spots = () => {
                     {spots.map((spot) => {
                         let id = spot.id
                         let avg = reviews[id];
+                        // console.log('this is avg star for each spot in spot component',avg);
                         let imgs = spot.SpotImages;
                         // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
                         if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
