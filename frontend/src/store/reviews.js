@@ -1,4 +1,3 @@
-import { SiOtto } from "react-icons/si";
 import { csrfFetch } from "./csrf";
 
 const MAKE_REVIEW = 'reviews/make-review';
