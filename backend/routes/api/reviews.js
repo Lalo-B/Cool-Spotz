@@ -1,5 +1,5 @@
 const express = require('express');
-const { Review, ReviewImage, User } = require('../../db/models');
+const { Review, ReviewImage, User, Spot } = require('../../db/models');
 const { setTokenCookie, restoreUser, requireAuth, authErrorCatcher } = require('../../utils/auth');
 
 const router = express.Router();
@@ -164,7 +164,13 @@ router.get('/all', async (req,res)=>{
 
 //get literally all reviews
 router.get('/allSpots', async (req,res)=>{
-    const reviews = await Review.findAll({});
+    const reviews = await Review.findAll({
+        where: {},
+        include: [{
+            model: Spot,
+            through: Spot.id
+        }]
+    });
 
     let obj = {};
     reviews.forEach(el=>{

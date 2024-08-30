@@ -10,7 +10,7 @@ const Spots = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const spots = useSelector((state) => { return state.spots.spots });
-    const reviews = useSelector(state => state.reviews.allReviews);
+    const reviews = useSelector(state => state.reviews.allAvgReviews);
     useSelector((state) => { return state.session.user });
 
 
@@ -22,38 +22,6 @@ const Spots = () => {
         innerFunct();
     }, [dispatch])
 
-    const avgStars = (spots, reviews) => {
-        const middleObj = {};
-        for (const revId in reviews) {
-            const { spotId } = reviews[revId];
-            const temp = middleObj[spotId];
-            middleObj[spotId] = { ...temp, [revId]: { ...reviews[revId] } };
-        }
-        spots.forEach(spot => {
-            if (middleObj[spot.id]) {
-                const spotsRevs = middleObj[spot.id];
-                const count = Object.values(spotsRevs).length;
-                let total = 0;
-                for (const rev in spotsRevs) {
-                    let star = +spotsRevs[rev].stars;
-                    total += +star;
-                }
-                total = +total / +count;
-                if (total.toString().length === 1) {
-                    total = `${total}.0`;
-                } else if (total.toString().length > 2) {
-                    total = total.toString().slice(0,3)
-                }
-                spot.averageRating = +total;
-            }
-        });
-    };
-
-    useEffect(() => {
-        if (reviews && spots) {
-            avgStars(spots, reviews);
-        }
-    }, [reviews, spots])
 
     if (!spots) return;
     if (!reviews) return;
@@ -72,7 +40,7 @@ const Spots = () => {
                     <div className="inner-card-container">
                     {spots.map((spot) => {
                         let id = spot.id
-                        let avg = spot.averageRating;
+                        let avg = reviews[id];
                         let imgs = spot.SpotImages;
                         // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
                         if (avg && avg.toString().length === 1) { avg = `${avg}.0` }

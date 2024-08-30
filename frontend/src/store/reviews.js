@@ -82,13 +82,43 @@ export const getAvgStars = (spotId) => async dispatch => {
     }
 }
 
+// this is for the average review number not actually used for the content of the reviews
 export const getAllSpotsReviews = () => async dispatch => {
     const res = await csrfFetch('/api/reviews/allSpots');
+    const spotsRes = await csrfFetch('/api/spots');
 
-    if (res.ok){
+    if (res.ok) {
         const data = await res.json();
-        dispatch(getAllReviews(data));
-        return data;
+        const {Spots} = await spotsRes.json();
+        const middleObj = {};
+        for (const revId in data) {
+            const { spotId } = data[revId];
+            const temp = middleObj[spotId];
+            middleObj[spotId] = { ...temp, [revId]: { ...data[revId] } };
+        }
+        let newObj = {};
+        let total;
+        Spots.forEach(spot => {
+            if (middleObj[spot.id]) {
+                const spotsRevs = middleObj[spot.id];
+                const count = Object.values(spotsRevs).length;
+                total = 0;
+                for (const rev in spotsRevs) {
+                    let star = +spotsRevs[rev].stars;
+                    total += +star;
+                }
+                total = +total / +count;
+                if (total.toString().length === 1) {
+                    total = `${total}.0`;
+                } else if (total.toString().length > 2) {
+                    total = total.toString().slice(0, 3)
+                }
+                // spot.averageRating = +total;
+            }
+            newObj = {...newObj, [spot.id]: +total}
+        });
+        dispatch(getAllReviews(newObj));
+        return newObj;
     }
 }
 const reviewsReducer = (state = { reviews: null }, action) => {
@@ -99,7 +129,7 @@ const reviewsReducer = (state = { reviews: null }, action) => {
             return { ...state, reviews: [...state.reviews, action.payload] };
         case DELETE_REVIEW: {
             const newState = { ...state };
-            const newrevs = newState.reviews.filter((el)=>{return el.id !== action.payload});
+            const newrevs = newState.reviews.filter((el) => { return el.id !== action.payload });
             newState.reviews = newrevs;
             return newState;
         }
@@ -116,7 +146,7 @@ const reviewsReducer = (state = { reviews: null }, action) => {
                 newState.numOfRev = num;
                 return newState
             } else if (count.toString().length > 2) {
-                count = count.toString().slice(0,3)
+                count = count.toString().slice(0, 3)
                 newState.avgStars = count;
                 newState.numOfRev = num;
                 return newState
@@ -125,8 +155,8 @@ const reviewsReducer = (state = { reviews: null }, action) => {
             newState.numOfRev = num;
             return newState
         }
-        case GET_ALL_REVIEWS:{
-            const newState = {...state, allReviews: action.payload}
+        case GET_ALL_REVIEWS: {
+            const newState = { ...state, allAvgReviews: action.payload }
             return newState;
         }
         default:
