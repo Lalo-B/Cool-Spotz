@@ -11,8 +11,26 @@
     width: fit-content;
 }
 #manage-container{
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+    max-width: 1050px;
+    gap: 10px;
+    margin: auto;
+}
+@media screen and (max-width : 1049px) {
+    #manage-container {
+        grid-template-columns: repeat(3, 250px);
+    }
+}
+@media screen and (max-width : 803px) {
+    #manage-container {
+        grid-template-columns: repeat(2, 250px);
+    }
+}
+@media screen and (max-width : 542px) {
+    #manage-container {
+        grid-template-columns: repeat(1, 250px);
+    }
 }
 .buttons-manage-spot{
     display: flex;

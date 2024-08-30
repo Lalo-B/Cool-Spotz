@@ -17,7 +17,7 @@ const DeleteReviewModal = ({ revId }) => {
     <div className='delete-spot-modal-box'>
       <h1>Confirm Delete</h1>
       <p>Are you sure you want to delete this review?</p>
-      <button className='delete-spot-button red' onClick={() => { click() }}>Yes (Delete Review)</button>
+      <button className='delete-spot-button blue' onClick={() => { click() }}>Yes (Delete Review)</button>
       <button className='delete-spot-button grey' onClick={() => { closeModal() }}>No (Keep Review)</button>
     </div>
   )

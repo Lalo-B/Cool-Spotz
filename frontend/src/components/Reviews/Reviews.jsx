@@ -77,7 +77,7 @@ useEffect(()=>{
                 <div className={'review-header-box ' + (isNaN(avgStars) ? 'shouldb-skinny' : '')}>
                     <FiStar />
                     <p>{isNaN(avgStars) ? 'New' : `${avgStars} · ${reviews.length}`}</p>
-                    <h2 className={reviews.length === 0 ? 'hidden-h' : ''}>{reviews.length > 1 ? 'reviews' : 'review'}</h2>
+                    <p className={reviews.length === 0 ? 'hidden-h' : ''}>{reviews.length > 1 ? 'reviews' : 'review'}</p>
                 </div>
             </div>
             {canreview(reviews, isOwner) ? <OpenModalButton

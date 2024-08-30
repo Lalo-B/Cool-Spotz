@@ -22,27 +22,27 @@ const Spots = () => {
         innerFunct();
     }, [dispatch])
 
-    // const avgStars = (spots, reviews) => {
-    //     let count = 0;
-    //     // spots.forEach(el => {
-    //     //     el.avgRating = reviews[el.spotId]
-    //     // });
+    const avgStars = (spots, reviews) => {
+        let count = 0;
+        // spots.forEach(el => {
+        //     el.avgRating = reviews[el.spotId]
+        // });
 
-    //     // const num = action.payload.length;
-    //     // action.payload.forEach(el => {
-    //     //     count = count + (+el.stars)
-    //     // });
-    //     // count = count / num;
-    //     // if (count.toString().length === 1) {
-    //     //     newState.avgStars = `${count}.0`;
-    //     //     return newState
-    //     // } else if (count.toString().length > 2) {
-    //     //     count = count.toString().slice(0, 3)
-    //     //     newState.avgStars = count;
-    //     //     return newState
-    //     // }
-    //     // newState.avgStars = count;
-    // };
+        // const num = action.payload.length;
+        // action.payload.forEach(el => {
+        //     count = count + (+el.stars)
+        // });
+        // count = count / num;
+        // if (count.toString().length === 1) {
+        //     newState.avgStars = `${count}.0`;
+        //     return newState
+        // } else if (count.toString().length > 2) {
+        //     count = count.toString().slice(0, 3)
+        //     newState.avgStars = count;
+        //     return newState
+        // }
+        // newState.avgStars = count;
+    };
 
     // get the avg review
     // useEffect(()=>{
@@ -54,7 +54,6 @@ const Spots = () => {
     //     }
     // },[reviews,spots])
 
-    // console.log(reviews)
     if (!spots) return;
     if (!reviews) return;
     const send = (id) => {
@@ -62,37 +61,41 @@ const Spots = () => {
     }
 
     return (
-        <>
+        <div >
             <div className="second-heading">
-                <h1 style={{ margin: 'auto', color: '#5382f2' }}>Find Your Next Stay</h1>
+                <h1 style={{ margin: '0px', color: '#5382f2' }}>Find Your Next Stay</h1>
                 {/* put this in the middle of opening screen */}
             </div>
-            <div className="card-container">
-                {spots.map((spot) => {
-                    let id = spot.id
-                    let avg = spot.averageRating;
-                    let imgs = spot.SpotImages;
-                    // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
-                    if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
-                    return (
-                        <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
-                            <span className="tooltiptext">{spot.name}</span>
-                            {imgs.length !== 0 && <img className="spot-img" src={imgs.length > 0 ? imgs[0].url : null} alt='' />}
-                            <div className="card-text-box">
-                                <div className="left-text">
-                                    <p className="card-text">{spot.city}, {spot.state}</p>
-                                    <p className="card-text">{spot.price} night</p>
-                                </div>
-                                <div className="right-text">
-                                    <FiStar />
-                                    <p id='rating'>{avg ? avg : 'New'}</p>
+            <div className='main-body'>
+                <div className="card-container">
+                    <div className="inner-card-container">
+                    {spots.map((spot) => {
+                        let id = spot.id
+                        let avg = spot.averageRating;
+                        let imgs = spot.SpotImages;
+                        // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
+                        if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
+                        return (
+                            <div key={id} className='spot-card tooltip' onClick={() => { send(id) }}>
+                                <span className="tooltiptext">{spot.name}</span>
+                                {imgs.length !== 0 && <img className="spot-img" src={imgs.length > 0 ? imgs[0].url : null} alt='' />}
+                                <div className="card-text-box">
+                                    <div className="left-text">
+                                        <p className="card-text">{spot.city}, {spot.state}</p>
+                                        <p className="card-text">{spot.price} night</p>
+                                    </div>
+                                    <div className="right-text">
+                                        <FiStar />
+                                        <p id='rating'>{avg ? avg : 'New'}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                    </div>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 export default Spots;

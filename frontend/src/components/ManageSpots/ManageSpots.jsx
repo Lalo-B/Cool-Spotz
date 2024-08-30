@@ -39,14 +39,14 @@ const ManageSpots = () => {
     const clickNav = async (id) => {
         // console.log('sendiung click nav with this id',id)
         const data = await dispatch(spotsActions.getOneSpot(id));
-        navigate('/edit-spot');
+        navigate(`/edit-spot/${id}`);
         return data;
     }
     // console.log('this is spots',spots)
 
     return (
         <div className="super-big-box">
-            <h1>Manage Spots</h1>
+            <h1 style={{ margin: ' 0 auto', width: 'fit-content', color: '#5382f2'}}>Manage Spots</h1>
             <div id='manage-container'>
                 {spots.length === 0 && <NavLink to='/newSpot' className='new-spot-link'>Create a New Spot</NavLink>}
                 {spots.map((spot) => {
@@ -73,10 +73,10 @@ const ManageSpots = () => {
                                 </div>
                             </div>
                             <div className="buttons-manage-spot">
-                                {correctUser(user, spot) && <button onClick={()=>{clickNav(spot.id)}} style={{cursor: 'pointer', backgroundColor: '#7593d9', color: 'white', borderRadius: '3px'}}> Update </button>}
+                                {correctUser(user, spot) && <button onClick={() => { clickNav(spot.id) }} style={{ cursor: 'pointer', backgroundColor: '#7593d9', color: 'white', borderRadius: '3px' }}> Update </button>}
                                 {correctUser(user, spot) && <OpenModalButton
                                     buttonText='delete spot'
-                                    modalComponent={<DeleteSpotModal spot={spot}/>}
+                                    modalComponent={<DeleteSpotModal spot={spot} />}
                                 />}
                             </div>
                         </div>
