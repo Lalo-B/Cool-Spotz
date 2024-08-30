@@ -22,27 +22,28 @@ const Spots = () => {
         innerFunct();
     }, [dispatch])
 
-    const avgStars = (spots, reviews) => {
-        const middleObj = {};
-        for (const revId in reviews) {
-            const { spotId } = reviews[revId];
-            const temp = middleObj[spotId];
-            middleObj[spotId] = { ...temp, [revId]: { ...reviews[revId] } };
-        }
-        spots.forEach(spot => {
-            if (middleObj[spot.id]) {
-                const spotsRevs = middleObj[spot.id];
-                const count = Object.values(spotsRevs).length;
-                let total = 0;
-                for (const rev in spotsRevs) {
-                    let star = spotsRevs[rev].stars;
-                    total += star;
-                }
-                total = total / count;
-                spot.averageRating = total;
-            }
-        });
-    };
+    // const avgStars = (spots, reviews) => {
+    //     const middleObj = {};
+    //     for (const revId in reviews) {
+    //         const { spotId } = reviews[revId];
+    //         const temp = middleObj[spotId];
+    //         middleObj[spotId] = { ...temp, [revId]: { ...reviews[revId] } };
+    //     }
+    //     spots.forEach(spot => {
+    //         if (middleObj[spot.id]) {
+    //             const spotsRevs = middleObj[spot.id];
+    //             const count = Object.values(spotsRevs).length;
+    //             let total = 0;
+    //             for (const rev in spotsRevs) {
+    //                 let star = spotsRevs[rev].stars;
+    //                 total += star;
+    //             }
+    //             total = total / count;
+    //             spot.averageRating = total;
+    //         }
+    //     });
+    // };
+
     useEffect(() => {
         if (reviews && spots) {
             avgStars(spots, reviews);
