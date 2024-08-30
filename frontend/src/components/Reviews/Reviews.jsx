@@ -92,7 +92,7 @@ useEffect(()=>{
                     <div key={rev.id} className='review'>
                         <h4 className='review-items'>{rev.User.firstName}</h4>
                         <p className='review-items'>{month} 20{rev.createdAt.slice(2, 4)}</p>
-                        <p className='review-items'>review: {rev.review}</p>
+                        <p className='review-items'>{rev.review}</p>
                         {canDelete(rev, user) ? <OpenModalButton
                             buttonText='Delete'
                             modalComponent={<DeleteReviewModal revId={rev.id} />} /> : null}

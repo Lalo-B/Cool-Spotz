@@ -14,20 +14,20 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-  const err = {anyEmpty: false};
+  const err = { anyEmpty: false };
 
-  useEffect(()=>{
-    if(!email || !username || !firstName || !lastName || !password || !confirmPassword){
+  useEffect(() => {
+    if (!email || !username || !firstName || !lastName || !password || !confirmPassword) {
       err.anyEmpty = true;
     } else {
       err.anyEmpty = false;
     }
-    if(username.length < 4 || password.length < 6){
+    if (username.length < 4 || password.length < 6) {
       err.lengthCheck = true;
     }
     setErrors(err);
     // console.log(err.anyEmpty)
-  },[firstName,lastName,email,username,password,confirmPassword])
+  }, [firstName, lastName, email, username, password, confirmPassword])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,9 +59,10 @@ function SignupFormModal() {
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-      <label>
+        <label>
           First Name
           <input
+            className='signup-in'
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -72,6 +73,7 @@ function SignupFormModal() {
         <label>
           Last Name
           <input
+            className='signup-in'
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -82,6 +84,7 @@ function SignupFormModal() {
         <label>
           Email
           <input
+            className='signup-in'
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -92,6 +95,7 @@ function SignupFormModal() {
         <label>
           Username
           <input
+            className='signup-in'
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -102,6 +106,7 @@ function SignupFormModal() {
         <label>
           Password
           <input
+            className='signup-in'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -112,6 +117,7 @@ function SignupFormModal() {
         <label>
           Confirm Password
           <input
+            className='signup-in'
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}

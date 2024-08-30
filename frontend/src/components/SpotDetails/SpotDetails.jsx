@@ -76,7 +76,7 @@ const SpotDetails = () => {
                     </div>
                     <div className="reserve-box" >
                         <div className="reserve-text">
-                            <p style={{marginLeft: '10px'}}>{spot.price} night</p>
+                            <p style={{marginLeft: '10px'}}>{spot.price.includes('$') ? spot.price : '$' + spot.price } night</p>
                             <div className="right-side-reserve">
                                 <FiStar />
                                 <p style={{ margin: '0px' }}>{isNaN(avg) ? 'New' : numOfRev > 1 ? `${avg} · ${numOfRev} Reviews`: `${avg} · ${numOfRev} Review`}</p>

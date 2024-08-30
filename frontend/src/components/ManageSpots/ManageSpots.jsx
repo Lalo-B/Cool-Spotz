@@ -57,7 +57,7 @@ const ManageSpots = () => {
                     // console.log("🚀 ~ {spots.map ~ imgs:", imgs)
                     if (avg && avg.toString().length === 1) { avg = `${avg}.0` }
                     return (
-                        <div key={id} className="manage-spots-container">
+                        <div key={id} className="manage-spots-card">
                             <div className='spot-card tooltip' onClick={() => { send(id) }}>
                                 <span className="tooltiptext">{spot.name}</span>
                                 <img className="spot-img" src={imgs.length ? imgs[0].url : null} alt='' />

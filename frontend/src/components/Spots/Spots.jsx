@@ -35,11 +35,16 @@ const Spots = () => {
                 const count = Object.values(spotsRevs).length;
                 let total = 0;
                 for (const rev in spotsRevs) {
-                    let star = spotsRevs[rev].stars;
-                    total += star;
+                    let star = +spotsRevs[rev].stars;
+                    total += +star;
                 }
-                total = total / count;
-                spot.averageRating = total;
+                total = +total / +count;
+                if (total.toString().length === 1) {
+                    total = `${total}.0`;
+                } else if (total.toString().length > 2) {
+                    total = total.toString().slice(0,3)
+                }
+                spot.averageRating = +total;
             }
         });
     };
