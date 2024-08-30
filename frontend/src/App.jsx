@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         path:'/manage',
         element: <ManageSpots />
       },{
-        path: '/edit-spot',
+        path: '/edit-spot/:spotId',
         element: <EditSpot/>
       }
     ]

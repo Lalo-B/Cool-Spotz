@@ -6,3 +6,19 @@
     border-radius: 3px;
     cursor: pointer;
 }
+.half{
+    width: 50%;
+}
+.width-check{
+    width: 99%;
+}
+#cit-stat{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+#lat-lng{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}

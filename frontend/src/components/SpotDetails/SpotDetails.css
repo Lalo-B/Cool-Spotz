@@ -2,7 +2,10 @@
 } */
  .header-container-spotd{
     justify-self: left;
-    margin: 0px 20px;
+    /* margin: 0px 20px 0px 50px; */
+    margin: auto;
+    /* padding: 0 10px; */
+    width: 88%;
  }
  .spotname-header{
     margin: 10px 0px;
@@ -20,11 +23,13 @@
 .spot-detail-img {
     border-radius: 30px;
     width: 100%;
+    max-height: 500px;
+    /* max-width: 45%; */
 }
 
 .middle-sect {
     display: flex;
-    width: 100%;
+    width: 90%;
     justify-content: space-between;
 
 }
@@ -39,14 +44,17 @@
         'one one two four'
         'one one three five';
     /* height: 350px; */
-    width: 100%;
-    gap: 5px
+    width: 90%;
+    max-height: 500px;
+    gap: 5px;
 }
 
 .one {
     grid-area: one;
     /* height: 350px; */
     width: 100%;
+    /* max-width: 830px;
+    max-height: 550px; */
 }
 
 .two {
@@ -59,6 +67,7 @@
 .five {
     padding: none;
     margin: none;
+    max-height: 245px;
 }
 
 .edit-button {
@@ -66,9 +75,9 @@
 }
 
 .reserve-box {
-    border: 1px grey solid;
+    border: 5px grey solid;
     border-radius: 5px;
-    width: 300px;
+    /* width: 500px; */
     height: 125px;
     display: flex;
     flex-wrap: wrap;
@@ -90,11 +99,13 @@
     height: 40px;
     box-shadow: 3px 3px 1px grey;
     border-radius: 2px;
+    cursor: pointer;
 }
 
 .reviews-box {
-    margin-top: 10px;
+    margin: 10px auto;
     border-top: 1px solid grey;
+    width: 90%;
 }
 
 .right-side-reserve {

@@ -1,27 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as spotsActions from '../../store/spots.js';
 import './EditSpot.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditSpot = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { spotId } = useParams();
     const spot = useSelector((state) => { return state.spots.oneSpot });
     const user = useSelector((state) => { return state.session.user });
-    // if (!spot) {return};
     // console.log(spot)
-    // const [address, setAddress] = useState('');
-    // const [city, setCity] = useState('');
-    // const [state, setState] = useState('');
-    // const [country, setCountry] = useState('');
-    // const [lat, setLat] = useState('');
-    // const [lng, setLng] = useState('');
-    // const [name, setName] = useState('');
-    // const [description, setDescription] = useState('');
-    // const [price, setPrice] = useState('');
-    // const [url, setUrl] = useState('');
-
 
     const [address, setAddress] = useState(spot?.address);
     const [city, setCity] = useState(spot?.city);
@@ -34,21 +23,33 @@ const EditSpot = () => {
     const [price, setPrice] = useState(spot?.price);
     const [url, setUrl] = useState(spot?.SpotImages[0].url);
     const [errors, setErrors] = useState({});
+    const [count, setCount] = useState(0);
 
+    const setInfo = () => {
+        setAddress(spot?.address || '')
+        setCity(spot?.city)
+        setState(spot?.state)
+        setCountry(spot?.country)
+        setLat(spot?.lat)
+        setLng(spot?.lng)
+        setName(spot?.name)
+        setDescription(spot?.description)
+        let newPrice;
+        if (spot?.price) {
+            newPrice = spot.price.slice(1);
+        }
+        setPrice(newPrice)
+        setUrl(spot?.SpotImages[0].url)
+    };
 
+    useEffect(() => {
+        dispatch(spotsActions.getOneSpot(spotId));
+    }, [dispatch, spotId, count]);
+    if(spot && count < 2){
+        setCount(count + 1);
+        setInfo();
+    }
 
-    // if (spot) {
-    //     setAddress(spot.address);
-    //     setCity(spot.city);
-    //     setState(spot.state);
-    //     setCountry(spot.country);
-    //     setLat(spot.lat);
-    //     setLng(spot.lng);
-    //     setName(spot.name);
-    //     setDescription(spot.description);
-    //     setPrice(spot.price);
-    //     setUrl(spot.SpotImages[0].url);
-    // }
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -65,11 +66,12 @@ const EditSpot = () => {
                     setErrors(data.errors);
                 }
             })
-
         if (res?.id) {
             navigate(`/spots/${res.id}`);
         }
     };
+
+    if (!spot) return
 
     return (
         <div className="biggest">
@@ -85,6 +87,7 @@ const EditSpot = () => {
                         <label>
                             Country
                             <input
+                                className="input"
                                 type='text'
                                 value={country}
                                 onChange={(e) => { setCountry(e.target.value) }}
@@ -94,47 +97,68 @@ const EditSpot = () => {
                         <label>
                             Street Address
                             <input
+                                className="input"
                                 type='text'
                                 value={address}
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
                         </label>
                         {errors.address && <p className='errors'>{errors.address}</p>}
-                        <label>
-                            City
-                            <input
-                                type='text'
-                                value={city}
-                                onChange={(e) => { setCity(e.target.value) }}
-                                placeholder='City' />
-                        </label>
+                        <div id='cit-stat2'>
+                            <div className="half">
+                                <label>
+                                    City
+                                    <input
+                                        id='city2'
+                                        className="input"
+                                        type='text'
+                                        value={city}
+                                        onChange={(e) => { setCity(e.target.value) }}
+                                        placeholder='City' />
+                                </label>
+                            </div>
+                            <div className="half right">
+                                <label>
+                                    State
+                                    <input
+                                        id='state2'
+                                        className="input"
+                                        type='text'
+                                        value={state}
+                                        onChange={(e) => { setState(e.target.value) }}
+                                        placeholder='STATE' />
+                                </label>
+                            </div>
+                        </div>
                         {errors.city && <p className='errors'>{errors.city}</p>}
-                        <label>
-                            State
-                            <input
-                                type='text'
-                                value={state}
-                                onChange={(e) => { setState(e.target.value) }}
-                                placeholder='STATE' />
-                        </label>
                         {errors.state && <p className='errors'>{errors.state}</p>}
-                        <label>
-                            Latitude
-                            <input
-                                type='text'
-                                value={lat}
-                                onChange={(e) => { setLat(e.target.value) }}
-                                placeholder='Latitude' />
-                        </label>
+                        <div id='lat-lng2'>
+                            <div className="half">
+                                <label>
+                                    Latitude
+                                    <input
+                                        id='latitude2'
+                                        className="input"
+                                        type='number'
+                                        value={lat}
+                                        onChange={(e) => { setLat(e.target.value) }}
+                                        placeholder='Latitude' />
+                                </label>
+                            </div>
+                            <div className="half" id='div-longitude2'>
+                                <label>
+                                    Longitude
+                                    <input
+                                        id='longitude2'
+                                        className="input"
+                                        type='number'
+                                        value={lng}
+                                        onChange={(e) => { setLng(e.target.value) }}
+                                        placeholder='Longitude' />
+                                </label>
+                            </div>
+                        </div>
                         {errors.lat && <p className='errors'>{errors.lat}</p>}
-                        <label>
-                            Longitude
-                            <input
-                                type='text'
-                                value={lng}
-                                onChange={(e) => { setLng(e.target.value) }}
-                                placeholder='Longitude' />
-                        </label>
                         {errors.lng && <p className='errors'>{errors.lng}</p>}
                     </div>
                     <div className="second-sect">
@@ -156,6 +180,7 @@ const EditSpot = () => {
                         </p>
                         <label>
                             <input
+                                className="input"
                                 type='text'
                                 value={name}
                                 onChange={(e) => { setName(e.target.value) }}
@@ -169,7 +194,8 @@ const EditSpot = () => {
                             in search results.</p>
                         <label>
                             <input
-                                type='text'
+                                className="input"
+                                type='number'
                                 value={price}
                                 onChange={(e) => { setPrice(e.target.value) }}
                                 placeholder='Price per night (USD)' />
@@ -180,14 +206,15 @@ const EditSpot = () => {
                         <h3>Liven up your spot with photos</h3>
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         <input
+                            className="input"
                             type='text'
                             value={url}
                             onChange={(e) => { setUrl(e.target.value) }}
                             placeholder="Preview Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
                     </div>
                     <button type='submit' className="update-spot-button">Update your Spot</button>
                 </form>

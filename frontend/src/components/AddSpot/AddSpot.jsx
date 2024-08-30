@@ -61,9 +61,6 @@ const AddSpot = () => {
                 }
             })
 
-        // check this one for errors as well?
-        //also what we can do is in the create new spot thunk call add image one as well and get errors from that too
-        //next time try this
         await dispatch(spotsActions.addImgThunk(res.id, url))
         navigate(`/spots/${res.id}`);
     }
@@ -96,6 +93,7 @@ const AddSpot = () => {
                         <label>
                             Country
                             <input
+                                className="input"
                                 type='text'
                                 value={country}
                                 onChange={(e) => { setCountry(e.target.value) }}
@@ -105,48 +103,69 @@ const AddSpot = () => {
                         <label>
                             Street Address
                             <input
+                                className="input"
                                 type='text'
                                 value={address}
                                 onChange={(e) => { setAddress(e.target.value) }}
                                 placeholder='Address' />
                         </label>
                         {errors.address && <p className='errors'>{errors.address}</p>}
-                        <label>
-                            City
-                            <input
-                                type='text'
-                                value={city}
-                                onChange={(e) => { setCity(e.target.value) }}
-                                placeholder='City' />
-                        </label>
-                        {errors.city && <p className='errors'>{errors.city}</p>}
-                        <label>
-                            State
-                            <input
-                                type='text'
-                                value={state}
-                                onChange={(e) => { setState(e.target.value) }}
-                                placeholder='STATE' />
-                        </label>
-                        {errors.state && <p className='errors'>{errors.state}</p>}
-                        <label>
-                            Latitude
-                            <input
-                                type='number'
-                                value={lat}
-                                onChange={(e) => { setLat(e.target.value) }}
-                                placeholder='Latitude' />
-                        </label>
-                        {errors.lat && <p className='errors'>{errors.lat}</p>}
-                        <label>
-                            Longitude
-                            <input
-                                type='number'
-                                value={lng}
-                                onChange={(e) => { setLng(e.target.value) }}
-                                placeholder='Longitude' />
-                        </label>
-                        {errors.lng && <p className='errors'>{errors.lng}</p>}
+                        <div id='cit-stat'>
+                            <div className="half">
+                                <label>
+                                    City
+                                    <input
+                                        className="input width-check"
+                                        id='city'
+                                        type='text'
+                                        value={city}
+                                        onChange={(e) => { setCity(e.target.value) }}
+                                        placeholder='City' />
+                                </label>
+                                {errors.city && <p className='errors'>{errors.city}</p>}
+                            </div>
+                            <div className="half">
+                                <label>
+                                    State
+                                    <input
+                                        className="input width-check"
+                                        id='state'
+                                        type='text'
+                                        value={state}
+                                        onChange={(e) => { setState(e.target.value) }}
+                                        placeholder='STATE' />
+                                </label>
+                                {errors.state && <p className='errors'>{errors.state}</p>}
+                            </div>
+                        </div>
+                        <div id='lat-lng'>
+                            <div className="half">
+                                <label>
+                                    Latitude
+                                    <input
+                                        id='latitude'
+                                        className="input width-check"
+                                        type='number'
+                                        value={lat}
+                                        onChange={(e) => { setLat(e.target.value) }}
+                                        placeholder='Latitude' />
+                                </label>
+                                {errors.lat && <p className='errors'>{errors.lat}</p>}
+                            </div>
+                            <div className="half">
+                                <label>
+                                    Longitude
+                                    <input
+                                        id='longitude'
+                                        className="input width-check"
+                                        type='number'
+                                        value={lng}
+                                        onChange={(e) => { setLng(e.target.value) }}
+                                        placeholder='Longitude' />
+                                </label>
+                                {errors.lng && <p className='errors'>{errors.lng}</p>}
+                            </div>
+                        </div>
                     </div>
                     <div className="second-sect">
                         <h3>Describe your place to guests</h3>
@@ -167,6 +186,7 @@ const AddSpot = () => {
                         </p>
                         <label>
                             <input
+                                className="input"
                                 type='text'
                                 value={name}
                                 onChange={(e) => { setName(e.target.value) }}
@@ -180,6 +200,7 @@ const AddSpot = () => {
                             in search results.</p>
                         <label>
                             <input
+                                className="input"
                                 type='number'
                                 value={price}
                                 onChange={(e) => { setPrice(e.target.value) }}
@@ -192,17 +213,18 @@ const AddSpot = () => {
                         <p>Submit a link to at least one photo to publish your spot.</p>
                         {(count >= 1) && <p className='errors'>At least one URL is required</p>}
                         <input
+                            className="input"
                             type='url'
                             value={url}
                             onChange={(e) => { setUrl(e.target.value) }}
                             placeholder="Preview Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
-                        <input type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
+                        <input className="input" type="text" placeholder="Image URL" />
                     </div>
                     <button type='submit' className="make-spot-buttons">Create Spot</button>
-                    <br/>
+                    <br />
                     <button onClick={autoFill} className="make-spot-buttons">autofill spot</button>
                 </form>
             </div>

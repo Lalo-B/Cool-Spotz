@@ -1,63 +1,51 @@
-*{
+* {
     /* background-color: rgb(255, 248, 226); */
     /*
     #5382f2 darker blue
     #7593d9 middle blue
     #dae4ff light blue
     */
-    font-family: 'New Amsterdam', sans-serif;
+    font-family: 'Roboto Mono', monospace;
 }
+
+.main-body {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.inner-card-container {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
+    max-width: 1050px;
+    gap: 10px;
+}
+
+@media screen and (max-width : 1049px) {
+    .inner-card-container {
+        grid-template-columns: repeat(3, 250px);
+    }
+}
+@media screen and (max-width : 803px) {
+    .inner-card-container {
+        grid-template-columns: repeat(2, 250px);
+    }
+}
+@media screen and (max-width : 542px) {
+    .inner-card-container {
+        grid-template-columns: repeat(1, 250px);
+    }
+}
+
 .spot-card {
-    justify-content: center;
     margin: 5px;
     border: 1px solid grey;
     border-radius: 11px;
     cursor: pointer;
-}
-
-.spot-img {
-    height: 170px;
     width: 250px;
-    border-radius: 10px;
 }
 
-.card-container {
-    display: flex;
-    width: auto;
-    max-width: 1250px;
-    justify-content: center;
-    height: auto;
-    flex-wrap: wrap;
-    margin:auto
-}
-.card-text-box{
-    display: flex;
-    justify-content: space-between;
-}
-.left-text{
-    /* display: flex; */
-    width:fit-content;
-}
-.right-text{
-    display: flex;
-}
-.card-text {
-    margin: 5px;
-}
 
-.second-heading {
-    display: flex;
-    justify-content: space-between;
-    /* background-color: #c9d7ff; */
-}
-
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-}
-
-.tooltip .tooltiptext {
+.tooltiptext {
     visibility: hidden;
     width: 120px;
     background-color: grey;
@@ -68,13 +56,45 @@
     position: absolute;
     z-index: 1;
     opacity: 0.9;
-
 }
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
 
 }
-#rating{
+
+.spot-img {
+    height: 170px;
+    width: 250px;
+    border-radius: 10px;
+}
+
+.card-text-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-text {
+    width: fit-content;
+}
+
+.right-text {
+    display: flex;
+}
+
+.card-text {
+    margin: 5px;
+}
+
+.second-heading {
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+    width: 100%;
+    justify-content: center;
+}
+
+
+#rating {
     margin: 0px;
 }
