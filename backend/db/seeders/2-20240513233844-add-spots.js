@@ -23,6 +23,7 @@ const createRandomSpot = () => {
 };
 let seedArr = [];
 //we can make as much data as we want with this
+// we need to change the seed data! @Lalo-B woah thats cool
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
